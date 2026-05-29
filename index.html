@@ -3,38 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CV - Pavlo Pashkin (2 colonnes)</title>
+    <title>CV - Pavlo Pashkin (responsive)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #eef2f8;
             font-family: 'Inter', sans-serif;
-            padding: 20px;
+            padding: 16px;
         }
-        /* Контейнер для редактирования и предпросмотра */
-        .app {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
         }
+        /* Панель инструментов */
         .toolbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 20px;
             background: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 10px 16px;
+            border-radius: 40px;
+            margin-bottom: 20px;
         }
         .lang-buttons {
             display: flex;
@@ -44,11 +39,10 @@
         .lang-btn {
             background: #f0f2f5;
             border: none;
-            padding: 6px 14px;
+            padding: 8px 14px;
             border-radius: 30px;
-            cursor: pointer;
-            font-weight: 500;
             font-size: 0.8rem;
+            cursor: pointer;
         }
         .lang-btn.active {
             background: #1f4870;
@@ -56,30 +50,30 @@
         }
         .btn-pdf {
             background: #1f4870;
-            color: white;
             border: none;
-            padding: 8px 24px;
+            padding: 8px 20px;
             border-radius: 40px;
+            color: white;
             font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
-        /* Панель редактирования (вы можете изменять данные) */
+        /* Редактор */
         .editor {
             background: white;
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             display: flex;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 20px;
         }
         .editor-column {
             flex: 1;
-            min-width: 250px;
+            min-width: 240px;
         }
         .form-group {
             margin-bottom: 12px;
@@ -93,16 +87,16 @@
         }
         .form-group input, .form-group textarea {
             width: 100%;
-            padding: 8px 12px;
-            border-radius: 16px;
+            padding: 10px 12px;
+            border-radius: 20px;
             border: 1px solid #cfdfed;
             font-family: inherit;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
         .array-item {
             background: #fafcff;
             padding: 12px;
-            border-radius: 16px;
+            border-radius: 20px;
             margin-bottom: 12px;
             border: 1px solid #e9f0f5;
         }
@@ -112,81 +106,83 @@
             color: #c0392b;
             float: right;
             cursor: pointer;
+            font-size: 1rem;
         }
         .btn-add {
             background: #eff3f8;
             border: 1px dashed #8ba3bc;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.7rem;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
             cursor: pointer;
             margin-top: 5px;
         }
-        hr {
-            margin: 15px 0;
-        }
-        /* СТИЛИ САМОГО РЕЗЮМЕ – ТОЧНО ПО ВАШЕМУ ОБРАЗЦУ */
+        hr { margin: 16px 0; }
+
+        /* СТИЛИ CV — адаптивные */
         .cv {
             background: white;
             max-width: 100%;
             margin: 0 auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        /* Шапка: фото + имя */
         .cv-header {
             display: flex;
             align-items: center;
-            gap: 25px;
-            padding: 25px 30px;
+            gap: 20px;
+            padding: 20px 25px;
             background: #f8fbfe;
             border-bottom: 3px solid #2a6f6f;
+            flex-wrap: wrap;
         }
         .cv-photo {
-            width: 110px;
-            height: 110px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid #2a6f6f;
             background: #eef2f8;
         }
         .cv-name {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: #1f4870;
+            word-break: break-word;
         }
-        /* Две колонки */
         .cv-two-cols {
             display: flex;
+            flex-wrap: wrap;
         }
         .cv-left {
-            width: 34%;
+            flex: 1;
+            min-width: 250px;
             background: #fafcff;
-            padding: 25px 20px;
+            padding: 20px;
             border-right: 1px solid #e2edf5;
         }
         .cv-right {
-            width: 66%;
-            padding: 25px 25px;
+            flex: 2;
+            min-width: 280px;
+            padding: 20px;
         }
-        /* Левый блок */
         .cv-left-title {
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #1f4870;
             border-bottom: 2px solid #2a6f6f;
             display: inline-block;
-            margin: 0 0 15px 0;
+            margin: 0 0 12px 0;
         }
         .cv-contact {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 10px;
+            margin-bottom: 12px;
             font-size: 0.85rem;
-            color: #1e2a3a;
+            word-break: break-word;
         }
         .cv-contact i {
-            width: 24px;
+            width: 22px;
             color: #2a6f6f;
         }
         .cv-text {
@@ -194,7 +190,6 @@
             line-height: 1.4;
             margin-bottom: 20px;
         }
-        /* Правый блок */
         .cv-section-title {
             font-weight: 800;
             font-size: 1rem;
@@ -205,13 +200,13 @@
         }
         .cv-stage {
             background: #eef3fa;
-            padding: 12px 18px;
+            padding: 12px;
             border-radius: 20px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         .cv-stage p {
-            margin: 5px 0;
+            margin: 4px 0;
         }
         .cv-skills {
             display: flex;
@@ -227,7 +222,7 @@
             font-weight: 500;
         }
         .cv-job {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
         .cv-job-title {
             font-weight: 700;
@@ -235,6 +230,7 @@
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 5px;
         }
         .cv-job-date {
             font-weight: 400;
@@ -256,6 +252,7 @@
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 5px;
         }
         .cv-edu-date {
             font-weight: 400;
@@ -267,64 +264,76 @@
             color: #4a627a;
             margin-top: 2px;
         }
+
+        /* Адаптация для телефонов */
         @media (max-width: 700px) {
-            .cv-two-cols { flex-direction: column; }
-            .cv-left, .cv-right { width: 100%; }
+            body { padding: 12px; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .lang-buttons { justify-content: center; }
+            .btn-pdf { justify-content: center; }
+            .editor { padding: 16px; }
+            .cv-header { flex-direction: column; text-align: center; }
+            .cv-name { font-size: 1.5rem; }
+            .cv-left, .cv-right { border-right: none; }
+            .cv-left { border-bottom: 1px solid #e2edf5; margin-bottom: 10px; }
         }
-        /* для предпросмотра */
-        .cv-preview {
-            margin-top: 20px;
+        /* Для очень маленьких экранов */
+        @media (max-width: 480px) {
+            .cv-photo { width: 70px; height: 70px; }
+            .cv-name { font-size: 1.2rem; }
+            .form-group input, .form-group textarea { font-size: 0.8rem; padding: 8px 10px; }
         }
     </style>
 </head>
 <body>
-<div class="app">
+<div class="container">
     <div class="toolbar">
         <div class="lang-buttons">
             <button class="lang-btn" data-lang="fr">Français</button>
             <button class="lang-btn" data-lang="en">English</button>
             <button class="lang-btn" data-lang="uk">Українська</button>
             <button class="lang-btn" data-lang="ru">Русский</button>
-            <button class="lang-btn" data-lang="ar">العربية</button>
-            <button class="lang-btn" data-lang="prs">دری</button>
         </div>
         <button class="btn-pdf" id="downloadPDF"><i class="fas fa-download"></i> PDF (A4)</button>
     </div>
 
-    <!-- Панель редактирования – все поля уже заполнены вашими данными -->
     <div class="editor">
         <div class="editor-column">
-            <div class="form-group"><label>📷 Photo</label><input type="file" id="photoUpload" accept="image/*"></div>
-            <div class="form-group"><label>Nom complet</label><input type="text" id="fullname" value="Pavlo Pashkin"></div>
+            <div class="form-group"><label>📷 Photo</label><input type="file" id="photoUpload"></div>
+            <div class="form-group"><label>Nom</label><input type="text" id="fullname" value="Pavlo Pashkin"></div>
             <div class="form-group"><label>Téléphone</label><input type="text" id="phone" value="07 45 62 50 07"></div>
-            <div class="form-group"><label>Email</label><input type="email" id="email" value="contact@paulmultiservice.fr"></div>
+            <div class="form-group"><label>Email</label><input type="text" id="email" value="contact@paulmultiservice.fr"></div>
             <div class="form-group"><label>Adresse</label><input type="text" id="address" value="Rennes, France"></div>
             <div class="form-group"><label>Permis</label><input type="text" id="license" value="Permis B, Véhicule"></div>
             <div class="form-group"><label>Site web</label><input type="text" id="website" value="paulmultiservice.fr"></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="hideWebsite"> Masquer le site</label></div>
+            <div><label><input type="checkbox" id="hideWebsite"> Masquer le site</label></div>
+            <div class="form-group"><label>Langues</label><input type="text" id="languages" value="Ukrainien (maternel), Russe (bilingue), Français (A2-B1)"></div>
+            <div class="form-group"><label>Loisirs</label><input type="text" id="hobbies" value="Football, Boxe, Nouvelles technologies"></div>
         </div>
         <div class="editor-column">
             <div class="form-group"><label>Titre du stage</label><input type="text" id="stageTitle" value="Recherche un stage"></div>
             <div class="form-group"><label>Date début</label><input type="text" id="stageStart" value="29/06/2026"></div>
             <div class="form-group"><label>Date fin</label><input type="text" id="stageEnd" value="17/07/2026"></div>
-            <div class="form-group"><label>Poste recherché</label><input type="text" id="stagePoste" value="Stagiaire CLPS"></div>
-            <div class="form-group"><label>Compétences (virgules)</label><textarea id="skills" rows="3">Petit bricolage, Maintenance technique, Conseil informatique, Assistance technique, Gestion des flux logistiques, Développement Web (HTML/Java), Pack Office (Excel avancé), Maintenance PC/Mac/iPhone, Management d'équipe, Gestion de crise</textarea></div>
-            <div class="form-group"><label>Langues</label><input type="text" id="languages" value="Ukrainien (maternel), Russe (bilingue), Français (A2-B1)"></div>
-            <div class="form-group"><label>Loisirs</label><input type="text" id="hobbies" value="Football, Boxe, Handball, Nouvelles technologies"></div>
+            <div class="form-group"><label>Poste</label><input type="text" id="stagePoste" value="Stagiaire CLPS"></div>
+            <div class="form-group"><label>Compétences (virgules)</label><textarea id="skills" rows="3">Petit bricolage, Maintenance technique, Conseil informatique, Assistance technique, Gestion des flux logistiques, Développement Web (HTML/JS), Pack Office, Management d'équipe, Gestion de crise</textarea></div>
+            <div class="form-group"><label>Expériences</label></div>
+            <div id="expList"></div>
+            <button class="btn-add" id="addExpBtn">+ Ajouter expérience</button>
+            <div class="form-group"><label>Formations</label></div>
+            <div id="eduList"></div>
+            <button class="btn-add" id="addEduBtn">+ Ajouter formation</button>
         </div>
     </div>
 
-    <!-- Здесь будет отображаться живое резюме -->
-    <div id="cvContainer" class="cv-preview"></div>
+    <div id="cvPreview"></div>
 </div>
 
 <script>
-    // Данные опыта и образования (вы можете их менять через интерфейс)
     let experiences = [
-        { title: "Chef d'Entreprise - PaulMultiService", company: "Rennes", period: "02/2026 - En cours", description: "Conseil informatique, assistance technique, petit bricolage. Développement du site paulmultiservice.fr. Gestion administrative, comptabilité, relation client." },
-        { title: "Officier Logisticien - Chef de Bureau des Transports", company: "Service des Transports Militaires (Ukraine)", period: "2023-2024", description: "Planification et optimisation des flux de transport à grande échelle. Management d'une unité opérationnelle et gestion de crise sous haute pression." },
-        { title: "Élève-officier / Cadet Logisticien", company: "Académie Militaire / Forces Armées", period: "2019-2023", description: "Formation militaire et opérationnelle de commandement. Apprentissage de la gestion des flux logistiques, de la régulation des transports et du management d'équipe. Discipline de fer." },
-        { title: "Formation militaire et opérationnelle", company: "Forces Armées de l'Ukraine", period: "2018-2019", description: "Missions de sécurisation, protection des infrastructures. Déploiement en zone de combat (Opération ATO/OOS). Obtention du Statut d'Ancien Combattant." }
+        { title: "Chef d'Entreprise - PaulMultiService", company: "Rennes", period: "02/2026 - En cours", desc: "Conseil informatique, assistance technique, petit bricolage. Développement du site paulmultiservice.fr. Gestion administrative, comptabilité, relation client." },
+        { title: "Officier Logisticien - Chef de Bureau des Transports", company: "Service des Transports Militaires (Ukraine)", period: "2023-2024", desc: "Planification et optimisation des flux de transport à grande échelle. Management d'une unité opérationnelle et gestion de crise." },
+        { title: "Élève-officier / Cadet Logisticien", company: "Académie Militaire / Forces Armées", period: "2019-2023", desc: "Formation militaire, gestion des flux logistiques, régulation des transports, management d'équipe." },
+        { title: "Formation militaire et opérationnelle", company: "Forces Armées de l'Ukraine", period: "2018-2019", desc: "Sécurisation, protection des infrastructures, déploiement en zone de combat (ATO/OOS). Statut d'Ancien Combattant." }
     ];
     let educations = [
         { degree: "Formation Prépa Avenir FL", institution: "CLPS Rennes", year: "2026 (En cours)" },
@@ -335,43 +344,39 @@
     let photoBase64 = "";
     let currentLang = "fr";
 
-    const translations = {
-        fr: { contact:"Coordonnées", languages:"Langues", hobbies:"Loisirs", skills:"COMPÉTENCES", experience:"EXPÉRIENCES PROFESSIONNELLES", education:"FORMATIONS / DIPLÔMES", stage:"Stage" },
-        en: { contact:"Contact", languages:"Languages", hobbies:"Hobbies", skills:"SKILLS", experience:"WORK EXPERIENCE", education:"EDUCATION / DEGREES", stage:"Internship" },
-        uk: { contact:"Контакти", languages:"Мови", hobbies:"Хобі", skills:"НАВИЧКИ", experience:"ДОСВІД РОБОТИ", education:"ОСВІТА / ДИПЛОМИ", stage:"Стажування" },
-        ru: { contact:"Контакты", languages:"Языки", hobbies:"Хобби", skills:"НАВЫКИ", experience:"ОПЫТ РАБОТЫ", education:"ОБРАЗОВАНИЕ / ДИПЛОМЫ", stage:"Стажировка" },
-        ar: { contact:"معلومات الاتصال", languages:"اللغات", hobbies:"الهوايات", skills:"المهارات", experience:"الخبرات المهنية", education:"التعليم / الشهادات", stage:"تدريب" },
-        prs: { contact:"اطلاعات تماس", languages:"زبان‌ها", hobbies:"سرگرمی‌ها", skills:"مهارت‌ها", experience:"تجارب کاری", education:"تحصیلات / دیپلم‌ها", stage:"کارآموزی" }
+    const texts = {
+        fr: { contact:"Coordonnées", lang:"Langues", loisir:"Loisirs", comp:"COMPÉTENCES", exp:"EXPÉRIENCES PROFESSIONNELLES", edu:"FORMATIONS / DIPLÔMES" },
+        en: { contact:"Contact", lang:"Languages", loisir:"Hobbies", comp:"SKILLS", exp:"WORK EXPERIENCE", edu:"EDUCATION / DEGREES" },
+        uk: { contact:"Контакти", lang:"Мови", loisir:"Хобі", comp:"НАВИЧКИ", exp:"ДОСВІД РОБОТИ", edu:"ОСВІТА / ДИПЛОМИ" },
+        ru: { contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ" }
     };
 
-    function renderCV() {
-        const t = translations[currentLang];
-        const fullname = document.getElementById('fullname').value || "Pavlo Pashkin";
+    function renderPreview() {
+        const t = texts[currentLang];
+        const fullname = document.getElementById('fullname').value;
         const phone = document.getElementById('phone').value;
         const email = document.getElementById('email').value;
         const address = document.getElementById('address').value;
         const license = document.getElementById('license').value;
         let website = document.getElementById('website').value;
         if(document.getElementById('hideWebsite').checked) website = "";
+        const languages = document.getElementById('languages').value;
+        const hobbies = document.getElementById('hobbies').value;
         const stageTitle = document.getElementById('stageTitle').value;
         const stageStart = document.getElementById('stageStart').value;
         const stageEnd = document.getElementById('stageEnd').value;
         const stagePoste = document.getElementById('stagePoste').value;
         const skillsRaw = document.getElementById('skills').value;
         const skills = skillsRaw.split(',').map(s=>s.trim()).filter(s=>s);
-        const languages = document.getElementById('languages').value;
-        const hobbies = document.getElementById('hobbies').value;
 
         let html = `<div class="cv">`;
-        // Шапка
         html += `<div class="cv-header">`;
-        if(photoBase64) html += `<img src="${photoBase64}" class="cv-photo" alt="photo">`;
-        else html += `<div class="cv-photo" style="background:#eef2f8; display:flex; align-items:center; justify-content:center;">📷</div>`;
-        html += `<div class="cv-name">${escapeHtml(fullname)}</div>`;
+        if(photoBase64) html += `<img src="${photoBase64}" class="cv-photo">`;
+        else html += `<div class="cv-photo" style="display:flex; align-items:center; justify-content:center; background:#eef2f8;">📷</div>`;
+        html += `<div class="cv-name">${escapeHtml(fullname) || "Pavlo Pashkin"}</div>`;
         html += `</div>`;
-        // Две колонки
         html += `<div class="cv-two-cols">`;
-        // Левая колонка
+        // gauche
         html += `<div class="cv-left">`;
         html += `<div class="cv-left-title">${t.contact}</div>`;
         if(phone) html += `<div class="cv-contact"><i class="fas fa-phone-alt"></i> ${escapeHtml(phone)}</div>`;
@@ -380,32 +385,32 @@
         if(license) html += `<div class="cv-contact"><i class="fas fa-car"></i> ${escapeHtml(license)}</div>`;
         if(website) html += `<div class="cv-contact"><i class="fas fa-globe"></i> ${escapeHtml(website)}</div>`;
         if(languages) {
-            html += `<div class="cv-left-title">${t.languages}</div>`;
+            html += `<div class="cv-left-title">${t.lang}</div>`;
             html += `<div class="cv-text">${escapeHtml(languages)}</div>`;
         }
         if(hobbies) {
-            html += `<div class="cv-left-title">${t.hobbies}</div>`;
+            html += `<div class="cv-left-title">${t.loisir}</div>`;
             html += `<div class="cv-text">${escapeHtml(hobbies)}</div>`;
         }
         html += `</div>`;
-        // Правая колонка
+        // droite
         html += `<div class="cv-right">`;
-        html += `<div class="cv-stage"><strong>${escapeHtml(stageTitle) || t.stage}</strong><p>Du ${escapeHtml(stageStart)} au ${escapeHtml(stageEnd)}</p><p><strong>${escapeHtml(stagePoste) || ""}</strong></p></div>`;
+        html += `<div class="cv-stage"><strong>${escapeHtml(stageTitle) || "Recherche un stage"}</strong><p>Du ${escapeHtml(stageStart)} au ${escapeHtml(stageEnd)}</p><p><strong>${escapeHtml(stagePoste) || "Stagiaire CLPS"}</strong></p></div>`;
         if(skills.length) {
-            html += `<div class="cv-section-title">${t.skills}</div><div class="cv-skills">`;
+            html += `<div class="cv-section-title">${t.comp}</div><div class="cv-skills">`;
             skills.forEach(s => html += `<span class="cv-skill">${escapeHtml(s)}</span>`);
             html += `</div>`;
         }
         if(experiences.length) {
-            html += `<div class="cv-section-title">${t.experience}</div>`;
+            html += `<div class="cv-section-title">${t.exp}</div>`;
             experiences.forEach(exp => {
                 html += `<div class="cv-job"><div class="cv-job-title"><span>${escapeHtml(exp.title)} - ${escapeHtml(exp.company)}</span><span class="cv-job-date">${escapeHtml(exp.period)}</span></div>`;
-                if(exp.description) html += `<div class="cv-job-desc">${escapeHtml(exp.description)}</div>`;
+                if(exp.desc) html += `<div class="cv-job-desc">${escapeHtml(exp.desc)}</div>`;
                 html += `</div>`;
             });
         }
         if(educations.length) {
-            html += `<div class="cv-section-title">${t.education}</div>`;
+            html += `<div class="cv-section-title">${t.edu}</div>`;
             educations.forEach(edu => {
                 html += `<div class="cv-edu"><div class="cv-edu-title"><span>${escapeHtml(edu.degree)}</span><span class="cv-edu-date">${escapeHtml(edu.year)}</span></div>`;
                 if(edu.institution) html += `<div class="cv-edu-place">${escapeHtml(edu.institution)}</div>`;
@@ -413,73 +418,130 @@
             });
         }
         html += `</div></div></div>`;
-        document.getElementById('cvContainer').innerHTML = html;
+        document.getElementById('cvPreview').innerHTML = html;
     }
 
-    function escapeHtml(str) {
-        if(!str) return '';
-        return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]);
-    }
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 
-    // Привязка событий к полям ввода
-    function bindInputs() {
-        const ids = ['fullname','phone','email','address','license','website','hideWebsite','stageTitle','stageStart','stageEnd','stagePoste','skills','languages','hobbies'];
-        ids.forEach(id => {
-            const el = document.getElementById(id);
-            if(el) el.addEventListener('input', renderCV);
-            if(el && el.type === 'checkbox') el.addEventListener('change', renderCV);
+    function renderExpForm() {
+        const container = document.getElementById('expList');
+        container.innerHTML = '';
+        experiences.forEach((exp, idx) => {
+            const div = document.createElement('div');
+            div.className = 'array-item';
+            div.innerHTML = `<button class="remove-item" data-type="exp" data-idx="${idx}">🗑️</button>
+                <div class="form-group"><label>Titre</label><input class="exp-title" value="${escapeHtml(exp.title)}" data-idx="${idx}" data-field="title"></div>
+                <div class="form-group"><label>Entreprise</label><input class="exp-company" value="${escapeHtml(exp.company)}" data-idx="${idx}" data-field="company"></div>
+                <div class="form-group"><label>Période</label><input class="exp-period" value="${escapeHtml(exp.period)}" data-idx="${idx}" data-field="period"></div>
+                <div class="form-group"><label>Description</label><textarea class="exp-desc" data-idx="${idx}" data-field="desc" rows="2">${escapeHtml(exp.desc)}</textarea></div>`;
+            container.appendChild(div);
+        });
+        attachExpEvents();
+    }
+    function attachExpEvents() {
+        document.querySelectorAll('.exp-title, .exp-company, .exp-period, .exp-desc').forEach(el => {
+            el.addEventListener('input', (e) => {
+                let idx = parseInt(e.target.dataset.idx);
+                let field = e.target.dataset.field;
+                if(experiences[idx]) experiences[idx][field] = e.target.value;
+                renderPreview();
+            });
+        });
+        document.querySelectorAll('.remove-item[data-type="exp"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let idx = parseInt(btn.dataset.idx);
+                experiences.splice(idx,1);
+                renderExpForm();
+                renderPreview();
+            });
+        });
+    }
+    function renderEduForm() {
+        const container = document.getElementById('eduList');
+        container.innerHTML = '';
+        educations.forEach((edu, idx) => {
+            const div = document.createElement('div');
+            div.className = 'array-item';
+            div.innerHTML = `<button class="remove-item" data-type="edu" data-idx="${idx}">🗑️</button>
+                <div class="form-group"><label>Diplôme</label><input class="edu-degree" value="${escapeHtml(edu.degree)}" data-idx="${idx}" data-field="degree"></div>
+                <div class="form-group"><label>Établissement</label><input class="edu-institution" value="${escapeHtml(edu.institution)}" data-idx="${idx}" data-field="institution"></div>
+                <div class="form-group"><label>Année</label><input class="edu-year" value="${escapeHtml(edu.year)}" data-idx="${idx}" data-field="year"></div>`;
+            container.appendChild(div);
+        });
+        attachEduEvents();
+    }
+    function attachEduEvents() {
+        document.querySelectorAll('.edu-degree, .edu-institution, .edu-year').forEach(el => {
+            el.addEventListener('input', (e) => {
+                let idx = parseInt(e.target.dataset.idx);
+                let field = e.target.dataset.field;
+                if(educations[idx]) educations[idx][field] = e.target.value;
+                renderPreview();
+            });
+        });
+        document.querySelectorAll('.remove-item[data-type="edu"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let idx = parseInt(btn.dataset.idx);
+                educations.splice(idx,1);
+                renderEduForm();
+                renderPreview();
+            });
         });
     }
 
-    // Загрузка фото
+    function addExperience() { experiences.push({title:"", company:"", period:"", desc:""}); renderExpForm(); renderPreview(); }
+    function addEducation() { educations.push({degree:"", institution:"", year:""}); renderEduForm(); renderPreview(); }
+
+    function bindInputs() {
+        const ids = ['fullname','phone','email','address','license','website','hideWebsite','languages','hobbies','stageTitle','stageStart','stageEnd','stagePoste','skills'];
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.addEventListener('input', renderPreview);
+            if(el && el.type === 'checkbox') el.addEventListener('change', renderPreview);
+        });
+    }
+
     document.getElementById('photoUpload').addEventListener('change', e => {
         if(e.target.files[0]) {
             const reader = new FileReader();
-            reader.onload = ev => { photoBase64 = ev.target.result; renderCV(); };
+            reader.onload = ev => { photoBase64 = ev.target.result; renderPreview(); };
             reader.readAsDataURL(e.target.files[0]);
         }
     });
+    document.getElementById('addExpBtn').addEventListener('click', addExperience);
+    document.getElementById('addEduBtn').addEventListener('click', addEducation);
 
-    // Генерация PDF
     async function downloadPDF() {
-        const element = document.getElementById('cvContainer');
-        if(!element) return;
+        const el = document.getElementById('cvPreview');
         const btn = document.getElementById('downloadPDF');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ...';
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         btn.disabled = true;
         try {
-            // Убираем возможные внешние отступы у родителя
-            const originalPadding = element.style.padding;
-            element.style.padding = '0';
-            const canvas = await html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#ffffff'
-            });
-            element.style.padding = originalPadding;
+            el.style.padding = '0';
+            const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+            el.style.padding = '';
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-            const pageWidth = 210;
-            const pageHeight = 297;
-            const imgWidth = pageWidth;
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            if(imgHeight > pageHeight) {
-                const ratio = pageHeight / imgHeight;
-                pdf.addImage(canvas, 'PNG', (pageWidth - imgWidth*ratio)/2, 0, imgWidth*ratio, pageHeight);
+            const pageW = 210;
+            const pageH = 297;
+            const imgW = pageW;
+            const imgH = (canvas.height * imgW) / canvas.width;
+            if(imgH > pageH) {
+                const ratio = pageH / imgH;
+                pdf.addImage(canvas, 'PNG', (pageW - imgW*ratio)/2, 0, imgW*ratio, pageH);
             } else {
-                pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.addImage(canvas, 'PNG', 0, 0, imgW, imgH);
             }
             pdf.save('CV_Pavlo_Pashkin.pdf');
-        } catch(e) { alert('Erreur PDF: ' + e); }
-        finally { btn.innerHTML = originalText; btn.disabled = false; }
+        } catch(e) { alert('PDF error: '+e); }
+        finally { btn.innerHTML = orig; btn.disabled = false; }
     }
     document.getElementById('downloadPDF').addEventListener('click', downloadPDF);
 
-    // Переключение языка
     function setLanguage(lang) {
         currentLang = lang;
-        renderCV();
+        renderPreview();
         document.querySelectorAll('.lang-btn').forEach(btn => {
             if(btn.dataset.lang === lang) btn.classList.add('active');
             else btn.classList.remove('active');
@@ -489,8 +551,9 @@
         btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
     });
 
-    // Инициализация
     bindInputs();
+    renderExpForm();
+    renderEduForm();
     setLanguage('fr');
 </script>
 </body>
