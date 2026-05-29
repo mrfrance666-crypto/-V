@@ -35,11 +35,11 @@
         .btn-pdf { background: #1f4870; border: none; padding: 8px 24px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; transition: 0.2s; }
         .btn-pdf:hover { background: #0f3557; transform: translateY(-2px); }
         .cv-card { padding: 0; margin: 0; background: white; }
-        /* STYLES CV - POUR L'ÉCRAN ET LE PDF */
-        .cv-container { max-width: 210mm; margin: 0 auto; background: white; }
+        /* STYLES CV */
+        .cv-container { max-width: 100%; background: white; }
         .cv-header { display: flex; align-items: center; gap: 20px; padding: 20px 25px; background: #f8fbfe; border-bottom: 2px solid #2a6f6f; }
         .cv-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #2a6f6f; background: white; }
-        .cv-name { font-size: 2rem; font-weight: 800; color: #1f4870; }
+        .cv-name { font-size: 1.8rem; font-weight: 800; color: #1f4870; }
         .cv-two-cols { display: flex; }
         .cv-left { width: 33%; background: #fafcff; padding: 20px 18px; border-right: 1px solid #e2edf5; }
         .cv-right { width: 67%; padding: 20px 22px; }
@@ -199,7 +199,7 @@
         const loisirs = document.getElementById('loisirs').value;
 
         let html = `<div class="cv-container">`;
-        // HEADER avec photo et nom
+        // HEADER photo + nom
         html += `<div class="cv-header">`;
         if(photoBase64) html += `<img src="${photoBase64}" class="cv-avatar" alt="photo">`;
         else html += `<div class="cv-avatar" style="background:#eef2f8; display:flex; align-items:center; justify-content:center;">📷</div>`;
@@ -256,7 +256,6 @@
 
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>(m==='&'?'&amp;':m==='<'?'&lt;':'&gt;')); }
 
-    // FORMULAIRES DYNAMIQUES (expériences, formations) – identiques à avant
     function renderExpForm() {
         const container = document.getElementById('expContainer');
         container.innerHTML = '';
@@ -310,7 +309,6 @@
         document.getElementById('hideWebsiteCheckbox').addEventListener('change', renderPreview);
     }
 
-    // Génération PDF avec mise à l'échelle automatique pour tenir sur une page A4
     async function downloadPDF() {
         const element = document.getElementById('resumeCard');
         if (!element) return;
@@ -319,7 +317,6 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ...';
         btn.disabled = true;
         try {
-            // Supprimer les marges/padding pour que le canvas prenne toute la largeur
             const origPadding = element.style.padding;
             const origMargin = element.style.margin;
             element.style.padding = '0';
@@ -333,11 +330,10 @@
             element.style.margin = origMargin;
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-            const pageWidth = 210; // mm
-            const pageHeight = 297; // mm
+            const pageWidth = 210;
+            const pageHeight = 297;
             const imgWidth = pageWidth;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            // Si l'image dépasse la hauteur de la page, on la réduit proportionnellement
             if (imgHeight > pageHeight) {
                 const ratio = pageHeight / imgHeight;
                 const newWidth = imgWidth * ratio;
