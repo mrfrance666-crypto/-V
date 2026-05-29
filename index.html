@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CV Builder - 5 parties (6 langues) | outil gratuit</title>
+    <title>CV Builder - 5 parties (6 langues) | PDF une page</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #eef2f8; font-family: 'Inter', sans-serif; padding: 2rem 1.5rem; color: #1a2c3e; position: relative; min-height: 100vh; }
@@ -15,7 +16,7 @@
         .lang-btn { background: white; border: 1px solid #dce5ef; padding: 8px 20px; border-radius: 60px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #2c4c6e; transition: 0.2s; }
         .lang-btn.active { background: #1f4a6e; color: white; border-color: #1f4a6e; }
         .builder-grid { display: flex; flex-wrap: wrap; gap: 28px; }
-        .editor-panel { flex: 1.2; min-width: 300px; background: white; border-radius: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); padding: 28px 26px; height: fit-content; }
+        .editor-panel { flex: 1.2; min-width: 300px; background: white; border-radius: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); padding: 28px 26px; height: fit-content; max-height: 85vh; overflow-y: auto; }
         .editor-panel h3 { font-size: 1.6rem; font-weight: 700; margin-bottom: 24px; background: linear-gradient(135deg, #1f4870, #2a6f6f); background-clip: text; -webkit-background-clip: text; color: transparent; }
         .form-group { margin-bottom: 20px; }
         label { font-weight: 600; display: block; margin-bottom: 6px; font-size: 0.85rem; color: #2c3e4e; }
@@ -23,28 +24,9 @@
         input:focus, textarea:focus { outline: none; border-color: #2a6f6f; box-shadow: 0 0 0 3px rgba(42,111,111,0.2); }
         .inline-row { display: flex; gap: 14px; flex-wrap: wrap; }
         .inline-row .form-group { flex: 1; }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 8px;
-            padding-left: 4px;
-        }
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin: 0;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .checkbox-group label {
-            font-weight: 500;
-            font-size: 0.85rem;
-            color: #2c3e4e;
-            cursor: pointer;
-            margin: 0;
-            line-height: 1.4;
-        }
+        .checkbox-group { display: flex; align-items: center; gap: 12px; margin-top: 8px; padding-left: 4px; }
+        .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; margin: 0; cursor: pointer; flex-shrink: 0; }
+        .checkbox-group label { font-weight: 500; font-size: 0.85rem; color: #2c3e4e; cursor: pointer; margin: 0; line-height: 1.4; }
         hr { margin: 22px 0; border: none; height: 1px; background: #e2edf5; }
         .array-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
         .btn-add { background: #eff3f8; border: 1px dashed #8ba3bc; padding: 6px 16px; border-radius: 40px; font-size: 0.8rem; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
@@ -52,46 +34,46 @@
         .remove-item { background: none; border: none; color: #c0392b; font-size: 1.2rem; cursor: pointer; float: right; }
         .preview-panel { flex: 1.8; min-width: 360px; background: white; border-radius: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
         .preview-header { padding: 20px 28px; background: #ffffff; border-bottom: 2px solid #eef3fa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .btn-pdf { background: #1f4870; border: none; padding: 10px 22px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .btn-pdf { background: #1f4870; border: none; padding: 10px 22px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        .btn-pdf:hover { background: #0f3557; transform: translateY(-2px); }
         .cv-card { padding: 32px 30px; background: white; }
-        .cv-five { font-family: 'Inter', sans-serif; }
-        .cv-five .section { margin-bottom: 28px; }
-        .cv-five .section-title { font-size: 1.2rem; font-weight: 800; color: #1f4a6e; border-left: 5px solid #2a6f6f; padding-left: 14px; margin-bottom: 16px; }
-        .coordonnees { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; border-bottom: 2px solid #e2edf5; padding-bottom: 18px; flex-wrap: wrap; }
-        .cv-photo { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid #2a6f6f; background: #f4f9fe; flex-shrink: 0; }
-        .coord-text { flex: 1; }
-        .coord-text .name { font-size: 2rem; font-weight: 800; color: #1a4a6e; margin-bottom: 8px; }
-        .contact-details { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 8px; font-size: 0.9rem; color: #2c5a7a; }
-        .titre-stage { background: #f3f9ff; padding: 14px 20px; border-radius: 20px; text-align: center; margin-bottom: 28px; }
-        .competences-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
-        .competence-badge { background: #e6f0f5; padding: 6px 18px; border-radius: 40px; font-size: 0.85rem; font-weight: 500; }
-        .exp-item, .edu-item { margin-bottom: 20px; }
-        .exp-title { font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 4px; }
-        .exp-date { font-weight: 400; color: #5f7d9c; font-size: 0.8rem; }
-        .exp-desc { font-size: 0.85rem; color: #2c4a6e; margin-top: 6px; line-height: 1.4; }
-        .info-complementaire { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 8px; }
-        .info-block { background: #f8fbfe; padding: 8px 16px; border-radius: 20px; }
+        /* STYLES POUR LE CV - VERSION OPTIMISÉE POUR UNE PAGE A4 */
+        .cv-five { font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.3; }
+        .cv-five .section { margin-bottom: 16px; }
+        .cv-five .section-title { font-size: 1rem; font-weight: 800; color: #1f4a6e; border-left: 4px solid #2a6f6f; padding-left: 12px; margin-bottom: 10px; }
+        .coordonnees { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; border-bottom: 1px solid #e2edf5; padding-bottom: 12px; flex-wrap: wrap; }
+        .cv-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #2a6f6f; background: #f4f9fe; flex-shrink: 0; }
+        .coord-text .name { font-size: 1.6rem; font-weight: 800; color: #1a4a6e; margin-bottom: 6px; }
+        .contact-details { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.8rem; color: #2c5a7a; }
+        .titre-stage { background: #f3f9ff; padding: 8px 16px; border-radius: 16px; text-align: center; margin-bottom: 16px; font-size: 0.85rem; }
+        .competences-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+        .competence-badge { background: #e6f0f5; padding: 4px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 500; }
+        .exp-item, .edu-item { margin-bottom: 12px; }
+        .exp-title { font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 2px; font-size: 0.85rem; }
+        .exp-date { font-weight: 400; color: #5f7d9c; font-size: 0.75rem; }
+        .exp-desc { font-size: 0.75rem; color: #2c4a6e; margin-top: 4px; line-height: 1.3; }
+        .info-complementaire { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 6px; }
+        .info-block { background: #f8fbfe; padding: 4px 12px; border-radius: 16px; font-size: 0.75rem; }
         footer { text-align: center; margin-top: 32px; color: #6c86a3; font-size: 0.8rem; }
         @media (max-width: 800px) { body { padding: 1rem; } .coordonnees { flex-direction: column; text-align: center; } .contact-details { justify-content: center; } }
         .rtl { direction: rtl; text-align: right; }
-        .rtl .section-title { border-left: none; border-right: 5px solid #2a6f6f; padding-left: 0; padding-right: 14px; }
-        .creator-credit {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(31, 72, 112, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 8px 18px;
-            border-radius: 40px;
-            color: white;
-            font-size: 0.8rem;
-            font-weight: 500;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            pointer-events: none;
+        .rtl .section-title { border-left: none; border-right: 4px solid #2a6f6f; padding-left: 0; padding-right: 12px; }
+        .creator-credit { position: fixed; bottom: 20px; right: 20px; background: rgba(31,72,112,0.85); backdrop-filter: blur(8px); padding: 6px 16px; border-radius: 40px; color: white; font-size: 0.75rem; font-weight: 500; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); pointer-events: none; }
+        @media print {
+            body { margin: 0; padding: 0; background: white; }
+            .editor-panel, .lang-bar, .preview-header, footer, .creator-credit, .btn-pdf { display: none !important; }
+            .preview-panel { margin: 0; padding: 0; box-shadow: none; width: 100%; }
+            .cv-card { padding: 0.5cm; margin: 0; }
+            .cv-five { font-size: 11pt; line-height: 1.2; }
+            .coordonnees { gap: 12px; }
+            .cv-photo { width: 70px; height: 70px; }
+            .section { margin-bottom: 10px; }
+            .exp-item, .edu-item { margin-bottom: 8px; }
+            .competence-badge { font-size: 9pt; }
+            page-break-after: avoid;
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
-        .creator-credit i { margin-right: 6px; }
-        @media (max-width: 700px) { .creator-credit { font-size: 0.7rem; padding: 5px 14px; } }
     </style>
 </head>
 <body>
@@ -112,12 +94,9 @@
             <div class="inline-row"><div class="form-group"><label id="lblPhone">Téléphone</label><input type="text" id="phone" value="" placeholder="+33 6 12 34 56 78"></div><div class="form-group"><label id="lblEmail">Email</label><input type="email" id="email" value="" placeholder="sophie@exemple.com"></div></div>
             <div class="inline-row"><div class="form-group"><label id="lblAdresse">Adresse / Ville</label><input type="text" id="location" value="" placeholder="Paris, France"></div><div class="form-group"><label id="lblPermis">Permis / Véhicule</label><input type="text" id="permis" value="" placeholder="Permis B"></div></div>
             <div class="form-group"><label id="lblSite">Site web</label><input type="text" id="website" value="" placeholder="www.monsite.com"></div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="hideWebsiteCheckbox">
-                <label id="lblHideWebsite">Masquer le site web dans le CV</label>
-            </div>
+            <div class="checkbox-group"><input type="checkbox" id="hideWebsiteCheckbox"> <label id="lblHideWebsite">Masquer le site web dans le CV</label></div>
             <hr>
-            <div class="form-group"><label id="lblStageTitle">Titre du stage / objectif</label><input type="text" id="stageTitle" value="" placeholder="Recherche stage..."></div>
+            <div class="form-group"><label id="lblStageTitle">Titre du stage / objectif</label><input type="text" id="stageTitle" value="" placeholder="Ex: Recherche stage marketing"></div>
             <div class="inline-row"><div class="form-group"><label id="lblStageStart">Date début</label><input type="text" id="stageStart" value="" placeholder="01/06/2025"></div><div class="form-group"><label id="lblStageEnd">Date fin</label><input type="text" id="stageEnd" value="" placeholder="31/08/2025"></div></div>
             <div class="form-group"><label id="lblStagePoste">Poste recherché</label><input type="text" id="stagePoste" value="" placeholder="Stagiaire marketing"></div>
             <hr>
@@ -131,11 +110,11 @@
             <div class="form-group"><label id="lblLoisirs">Loisirs / Centres d'intérêt</label><input type="text" id="loisirs" value="" placeholder="Sport, photographie, voyage"></div>
         </div>
         <div class="preview-panel">
-            <div class="preview-header"><h2><i class="far fa-file-alt"></i> <span id="previewTitle">Aperçu CV</span></h2><button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF</span></button></div>
+            <div class="preview-header"><h2><i class="far fa-file-alt"></i> <span id="previewTitle">Aperçu CV</span></h2><button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF une page</span></button></div>
             <div class="cv-card" id="resumeCard"><div id="resumeContent"></div></div>
         </div>
     </div>
-    <footer id="footerText">✔️ CV 5 parties + photo. Remplissez vos informations et changez de langue.</footer>
+    <footer id="footerText">✔️ CV 5 parties + photo. Remplissez vos informations et changez de langue. Le PDF tient sur une page A4.</footer>
 </div>
 <div class="creator-credit"><i class="fas fa-code"></i> Créateur : Pavlo Pashkin</div>
 
@@ -149,50 +128,50 @@
         fr: { lblPhoto:"📷 Photo", lblNom:"Nom complet", lblPhone:"Téléphone", lblEmail:"Email", lblAdresse:"Adresse / Ville", lblPermis:"Permis / Véhicule", lblSite:"Site web", lblHideWebsite:"Masquer le site web dans le CV",
               lblStageTitle:"Titre du stage", lblStageStart:"Date début", lblStageEnd:"Date fin", lblStagePoste:"Poste recherché",
               lblCompetences:"Compétences (séparées par virgules)", lblExperiences:"Expériences professionnelles", lblFormations:"Formations / Diplômes",
-              lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", previewTitle:"Aperçu CV", pdfBtnText:"PDF",
-              footerText:"✔️ CV 5 parties + photo. Remplissez vos informations et changez de langue.",
-              newExpTitre:"Nouveau poste", newExpEntreprise:"Entreprise", newExpPeriode:"2024 – 2025", newExpDesc:"Descriptif du poste",
-              newDiplome:"Nouveau diplôme", newEtablissement:"Établissement", newAnnee:"2025",
+              lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", previewTitle:"Aperçu CV", pdfBtnText:"PDF une page",
+              footerText:"✔️ CV 5 parties + photo. Remplissez vos informations et changez de langue. Le PDF tient sur une page A4.",
+              newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
+              newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - COMPÉTENCES", sectionExp:"EXPÉRIENCES PROFESSIONNELLES", sectionForm:"IV - FORMATIONS / DIPLÔMES", sectionInfo:"V - INFORMATIONS COMPLÉMENTAIRES", langLabel:"Langues :", loisirLabel:"Loisirs :", stageDu:"Du", stageAu:"au" },
         en: { lblPhoto:"📷 Photo", lblNom:"Full name", lblPhone:"Phone", lblEmail:"Email", lblAdresse:"Address / City", lblPermis:"License / Vehicle", lblSite:"Website", lblHideWebsite:"Hide website in CV",
               lblStageTitle:"Internship title", lblStageStart:"Start date", lblStageEnd:"End date", lblStagePoste:"Position sought",
               lblCompetences:"Skills (comma separated)", lblExperiences:"Work experience", lblFormations:"Education / Degrees",
-              lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", previewTitle:"CV Preview", pdfBtnText:"PDF",
-              footerText:"✔️ 5-part CV + photo. Fill in your info and switch language.",
-              newExpTitre:"New position", newExpEntreprise:"Company", newExpPeriode:"2024 – 2025", newExpDesc:"Job description",
-              newDiplome:"New degree", newEtablissement:"Institution", newAnnee:"2025",
+              lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", previewTitle:"CV Preview", pdfBtnText:"PDF one page",
+              footerText:"✔️ 5-part CV + photo. Fill in your info and switch language. PDF fits on one A4 page.",
+              newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
+              newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - SKILLS", sectionExp:"WORK EXPERIENCE", sectionForm:"IV - EDUCATION", sectionInfo:"V - ADDITIONAL INFO", langLabel:"Languages:", loisirLabel:"Hobbies:", stageDu:"From", stageAu:"to" },
         uk: { lblPhoto:"📷 Фото", lblNom:"Повне ім'я", lblPhone:"Телефон", lblEmail:"Email", lblAdresse:"Адреса / Місто", lblPermis:"Права / Транспорт", lblSite:"Веб-сайт", lblHideWebsite:"Сховати веб-сайт у резюме",
               lblStageTitle:"Мета стажування", lblStageStart:"Дата початку", lblStageEnd:"Дата завершення", lblStagePoste:"Посада",
               lblCompetences:"Навички (через кому)", lblExperiences:"Досвід роботи", lblFormations:"Освіта / Дипломи",
-              lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", previewTitle:"Попередній перегляд", pdfBtnText:"PDF",
-              footerText:"✔️ Резюме з 5 частин + фото. Заповніть свої дані та змініть мову.",
-              newExpTitre:"Нова посада", newExpEntreprise:"Компанія", newExpPeriode:"2024 – 2025", newExpDesc:"Опис обов'язків",
-              newDiplome:"Новий диплом", newEtablissement:"Заклад", newAnnee:"2025",
+              lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", previewTitle:"Попередній перегляд", pdfBtnText:"PDF одна сторінка",
+              footerText:"✔️ Резюме з 5 частин + фото. Заповніть свої дані та змініть мову. PDF вміщується на одній сторінці A4.",
+              newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
+              newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - НАВИЧКИ", sectionExp:"ДОСВІД РОБОТИ", sectionForm:"IV - ОСВІТА", sectionInfo:"V - ДОДАТКОВА ІНФОРМАЦІЯ", langLabel:"Мови:", loisirLabel:"Хобі:", stageDu:"з", stageAu:"по" },
         ru: { lblPhoto:"📷 Фото", lblNom:"Полное имя", lblPhone:"Телефон", lblEmail:"Email", lblAdresse:"Адрес / Город", lblPermis:"Права / Транспорт", lblSite:"Сайт", lblHideWebsite:"Скрыть сайт в резюме",
               lblStageTitle:"Цель стажировки", lblStageStart:"Дата начала", lblStageEnd:"Дата окончания", lblStagePoste:"Должность",
               lblCompetences:"Навыки (через запятую)", lblExperiences:"Опыт работы", lblFormations:"Образование / Дипломы",
-              lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", previewTitle:"Просмотр резюме", pdfBtnText:"PDF",
-              footerText:"✔️ Резюме из 5 частей + фото. Заполните свои данные и смените язык.",
-              newExpTitre:"Новая должность", newExpEntreprise:"Компания", newExpPeriode:"2024 – 2025", newExpDesc:"Описание обязанностей",
-              newDiplome:"Новый диплом", newEtablissement:"Учреждение", newAnnee:"2025",
+              lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", previewTitle:"Просмотр резюме", pdfBtnText:"PDF одна страница",
+              footerText:"✔️ Резюме из 5 частей + фото. Заполните свои данные и смените язык. PDF умещается на одной странице A4.",
+              newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
+              newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - НАВЫКИ", sectionExp:"ОПЫТ РАБОТЫ", sectionForm:"IV - ОБРАЗОВАНИЕ", sectionInfo:"V - ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ", langLabel:"Языки:", loisirLabel:"Хобби:", stageDu:"с", stageAu:"по" },
         ar: { lblPhoto:"📷 صورة", lblNom:"الاسم الكامل", lblPhone:"الهاتف", lblEmail:"البريد الإلكتروني", lblAdresse:"العنوان / المدينة", lblPermis:"رخصة القيادة", lblSite:"الموقع الإلكتروني", lblHideWebsite:"إخفاء الموقع الإلكتروني في السيرة الذاتية",
               lblStageTitle:"عنوان التدريب", lblStageStart:"تاريخ البداية", lblStageEnd:"تاريخ النهاية", lblStagePoste:"المنصب المطلوب",
               lblCompetences:"المهارات (مفصولة بفواصل)", lblExperiences:"الخبرات المهنية", lblFormations:"التعليم / الشهادات",
-              lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", previewTitle:"معاينة السيرة الذاتية", pdfBtnText:"PDF",
-              footerText:"✔️ سيرة ذاتية من 5 أجزاء + صورة. املأ معلوماتك وغيّر اللغة.",
-              newExpTitre:"منصب جديد", newExpEntreprise:"الشركة", newExpPeriode:"2024 – 2025", newExpDesc:"وصف الوظيفة",
-              newDiplome:"شهادة جديدة", newEtablissement:"المؤسسة", newAnnee:"2025",
+              lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", previewTitle:"معاينة السيرة الذاتية", pdfBtnText:"PDF صفحة واحدة",
+              footerText:"✔️ سيرة ذاتية من 5 أجزاء + صورة. املأ معلوماتك وغيّر اللغة. PDF يلتحم على صفحة A4 واحدة.",
+              newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
+              newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"ثالثاً - المهارات", sectionExp:"الخبرات المهنية", sectionForm:"رابعاً - التعليم", sectionInfo:"خامساً - معلومات إضافية", langLabel:"اللغات:", loisirLabel:"الهوايات:", stageDu:"من", stageAu:"إلى" },
         prs: { lblPhoto:"📷 عکس", lblNom:"نام کامل", lblPhone:"تلفن", lblEmail:"ایمیل", lblAdresse:"آدرس / شهر", lblPermis:"جواز رانندگی", lblSite:"ویب‌سایت", lblHideWebsite:"پنهان کردن وب‌سایت در رزومه",
               lblStageTitle:"عنوان کارآموزی", lblStageStart:"تاریخ شروع", lblStageEnd:"تاریخ ختم", lblStagePoste:"موقعیت مورد نظر",
               lblCompetences:"مهارت‌ها (با کاما جدا شود)", lblExperiences:"تجارب کاری", lblFormations:"تحصیلات / دیپلم‌ها",
-              lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", previewTitle:"پیش‌نمایش رزومه", pdfBtnText:"PDF",
-              footerText:"✔️ رزومه ۵ بخشی + عکس. معلومات خود را پر کنید و زبان را تغییر دهید.",
-              newExpTitre:"موقعیت جدید", newExpEntreprise:"شرکت", newExpPeriode:"۲۰۲۴ – ۲۰۲۵", newExpDesc:"شرح وظایف",
-              newDiplome:"دیپلم جدید", newEtablissement:"مؤسسه", newAnnee:"۲۰۲۵",
+              lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", previewTitle:"پیش‌نمایش رزومه", pdfBtnText:"PDF یک صفحه",
+              footerText:"✔️ رزومه ۵ بخشی + عکس. معلومات خود را پر کنید و زبان را تغییر دهید. PDF در یک صفحه A4 جای می‌گیرد.",
+              newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
+              newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - مهارت‌ها", sectionExp:"تجارب کاری", sectionForm:"IV - تحصیلات", sectionInfo:"V - اطلاعات تکمیلی", langLabel:"زبان‌ها:", loisirLabel:"سرگرمی‌ها:", stageDu:"از", stageAu:"تا" }
     };
 
@@ -296,6 +275,7 @@
 
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>(m==='&'?'&amp;':m==='<'?'&lt;':'&gt;')); }
 
+    // Formulaires dynamiques avec champs vides et placeholders
     function renderExpForm() {
         const container = document.getElementById('expContainer');
         container.innerHTML = '';
@@ -340,15 +320,58 @@
     }
     function updateEdu(e) { let idx = parseInt(e.target.dataset.index); if(!isNaN(idx) && formations[idx]) { formations[idx][e.target.dataset.field] = e.target.value; renderPreview(); } }
 
-    function addExperience() { const t=translations[currentLang]; experiences.push({titre: t.newExpTitre, entreprise: t.newExpEntreprise, periode: t.newExpPeriode, description: t.newExpDesc}); renderExpForm(); renderPreview(); }
-    function addEducation() { const t=translations[currentLang]; formations.push({diplome: t.newDiplome, etablissement: t.newEtablissement, annee: t.newAnnee}); renderEduForm(); renderPreview(); }
+    // Ajout d'expérience et d'éducation : tous les champs vides
+    function addExperience() { experiences.push({titre: "", entreprise: "", periode: "", description: ""}); renderExpForm(); renderPreview(); }
+    function addEducation() { formations.push({diplome: "", etablissement: "", annee: ""}); renderEduForm(); renderPreview(); }
 
     function bindInputs() {
         const ids = ['fullname','phone','email','location','permis','website','stageTitle','stageStart','stageEnd','stagePoste','competencesInput','langues','loisirs','hideWebsiteCheckbox'];
         ids.forEach(id => { let el = document.getElementById(id); if(el) el.addEventListener('input', renderPreview); });
         document.getElementById('hideWebsiteCheckbox').addEventListener('change', renderPreview);
     }
-    function downloadPDF() { html2pdf().set({ margin: 0.5, filename: `CV_${currentLang}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(document.getElementById('resumeCard')).save(); }
+
+    // Génération PDF avec html2canvas + jsPDF (A4 portrait)
+    async function downloadPDF() {
+        const element = document.getElementById('resumeCard');
+        if (!element) return;
+        const btn = document.getElementById('downloadPDFBtn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération...';
+        btn.disabled = true;
+        try {
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                logging: false,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            });
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+            const imgWidth = 210;
+            const pageHeight = 297;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let position = 0;
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            if (imgHeight > pageHeight) {
+                let remainingHeight = imgHeight;
+                let currentPos = -pageHeight;
+                while (remainingHeight > 0) {
+                    pdf.addPage();
+                    currentPos += pageHeight;
+                    pdf.addImage(imgData, 'PNG', 0, -currentPos, imgWidth, imgHeight);
+                    remainingHeight -= pageHeight;
+                }
+            }
+            pdf.save(`CV_${currentLang}.pdf`);
+        } catch (error) {
+            console.error('Erreur PDF:', error);
+            alert('Erreur lors de la génération du PDF. Vérifiez la console.');
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    }
 
     function setLanguage(lang) {
         currentLang = lang;
