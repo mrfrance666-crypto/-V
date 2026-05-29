@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CV Builder - 5 parties (6 langues) | PDF 1 page automatique</title>
+    <title>CV Builder - 5 parties (6 langues) | PDF pleine largeur A4</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -38,7 +38,7 @@
         .btn-pdf:hover { background: #0f3557; transform: translateY(-2px); }
         .cv-card { padding: 32px 30px; background: white; }
 
-        /* STYLES CV - ADAPTATIFS POUR PDF */
+        /* STYLES CV - ADAPTATIFS POUR PDF PLEINE LARGEUR */
         .cv-five { font-family: 'Inter', sans-serif; font-size: 12pt; line-height: 1.3; }
         .cv-five .section { margin-bottom: 14px; }
         .cv-five .section-title { font-size: 1.1rem; font-weight: 800; color: #1f4a6e; border-left: 4px solid #2a6f6f; padding-left: 12px; margin-bottom: 10px; }
@@ -64,7 +64,7 @@
             body { margin: 0; padding: 0; background: white; }
             .editor-panel, .lang-bar, .preview-header, footer, .creator-credit, .btn-pdf { display: none !important; }
             .preview-panel { margin: 0; padding: 0; box-shadow: none; width: 100%; }
-            .cv-card { padding: 0.2cm; margin: 0; }
+            .cv-card { padding: 0; margin: 0; }
             .cv-five { font-size: 11pt; line-height: 1.2; }
             .coordonnees { gap: 12px; }
             .cv-photo { width: 80px; height: 80px; }
@@ -111,11 +111,11 @@
             <div class="form-group"><label id="lblLoisirs">Loisirs / Centres d'intérêt</label><input type="text" id="loisirs" value="" placeholder="Sport, photographie, voyage"></div>
         </div>
         <div class="preview-panel">
-            <div class="preview-header"><h2><i class="far fa-file-alt"></i> <span id="previewTitle">Aperçu CV</span></h2><button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF 1 page</span></button></div>
+            <div class="preview-header"><h2><i class="far fa-file-alt"></i> <span id="previewTitle">Aperçu CV</span></h2><button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF pleine largeur</span></button></div>
             <div class="cv-card" id="resumeCard"><div id="resumeContent"></div></div>
         </div>
     </div>
-    <footer id="footerText">✔️ CV 5 parties + photo. Le PDF s'adapte automatiquement pour tenir sur une page A4 sans rien couper.</footer>
+    <footer id="footerText">✔️ CV 5 parties + photo. Le PDF occupe toute la largeur A4, sans marges blanches.</footer>
 </div>
 <div class="creator-credit"><i class="fas fa-code"></i> Créateur : Pavlo Pashkin</div>
 
@@ -129,48 +129,48 @@
         fr: { lblPhoto:"📷 Photo", lblNom:"Nom complet", lblPhone:"Téléphone", lblEmail:"Email", lblAdresse:"Adresse / Ville", lblPermis:"Permis / Véhicule", lblSite:"Site web", lblHideWebsite:"Masquer le site web dans le CV",
               lblStageTitle:"Titre du stage", lblStageStart:"Date début", lblStageEnd:"Date fin", lblStagePoste:"Poste recherché",
               lblCompetences:"Compétences (séparées par virgules)", lblExperiences:"Expériences professionnelles", lblFormations:"Formations / Diplômes",
-              lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", previewTitle:"Aperçu CV", pdfBtnText:"PDF 1 page",
-              footerText:"✔️ CV 5 parties + photo. Le PDF s'adapte automatiquement pour tenir sur une page A4 sans rien couper.",
+              lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", previewTitle:"Aperçu CV", pdfBtnText:"PDF pleine largeur",
+              footerText:"✔️ CV 5 parties + photo. Le PDF occupe toute la largeur A4, sans marges blanches.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - COMPÉTENCES", sectionExp:"EXPÉRIENCES PROFESSIONNELLES", sectionForm:"IV - FORMATIONS / DIPLÔMES", sectionInfo:"V - INFORMATIONS COMPLÉMENTAIRES", langLabel:"Langues :", loisirLabel:"Loisirs :", stageDu:"Du", stageAu:"au" },
         en: { lblPhoto:"📷 Photo", lblNom:"Full name", lblPhone:"Phone", lblEmail:"Email", lblAdresse:"Address / City", lblPermis:"License / Vehicle", lblSite:"Website", lblHideWebsite:"Hide website in CV",
               lblStageTitle:"Internship title", lblStageStart:"Start date", lblStageEnd:"End date", lblStagePoste:"Position sought",
               lblCompetences:"Skills (comma separated)", lblExperiences:"Work experience", lblFormations:"Education / Degrees",
-              lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", previewTitle:"CV Preview", pdfBtnText:"PDF 1 page",
-              footerText:"✔️ 5-part CV + photo. PDF automatically fits on one A4 page without cutting anything.",
+              lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", previewTitle:"CV Preview", pdfBtnText:"PDF full width",
+              footerText:"✔️ 5-part CV + photo. PDF occupies full A4 width, no white margins.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - SKILLS", sectionExp:"WORK EXPERIENCE", sectionForm:"IV - EDUCATION", sectionInfo:"V - ADDITIONAL INFO", langLabel:"Languages:", loisirLabel:"Hobbies:", stageDu:"From", stageAu:"to" },
         uk: { lblPhoto:"📷 Фото", lblNom:"Повне ім'я", lblPhone:"Телефон", lblEmail:"Email", lblAdresse:"Адреса / Місто", lblPermis:"Права / Транспорт", lblSite:"Веб-сайт", lblHideWebsite:"Сховати веб-сайт у резюме",
               lblStageTitle:"Мета стажування", lblStageStart:"Дата початку", lblStageEnd:"Дата завершення", lblStagePoste:"Посада",
               lblCompetences:"Навички (через кому)", lblExperiences:"Досвід роботи", lblFormations:"Освіта / Дипломи",
-              lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", previewTitle:"Попередній перегляд", pdfBtnText:"PDF 1 сторінка",
-              footerText:"✔️ Резюме з 5 частин + фото. PDF автоматично вміщується на одній сторінці A4 нічого не обрізаючи.",
+              lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", previewTitle:"Попередній перегляд", pdfBtnText:"PDF повна ширина",
+              footerText:"✔️ Резюме з 5 частин + фото. PDF займає всю ширину A4, без білих полів.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - НАВИЧКИ", sectionExp:"ДОСВІД РОБОТИ", sectionForm:"IV - ОСВІТА", sectionInfo:"V - ДОДАТКОВА ІНФОРМАЦІЯ", langLabel:"Мови:", loisirLabel:"Хобі:", stageDu:"з", stageAu:"по" },
         ru: { lblPhoto:"📷 Фото", lblNom:"Полное имя", lblPhone:"Телефон", lblEmail:"Email", lblAdresse:"Адрес / Город", lblPermis:"Права / Транспорт", lblSite:"Сайт", lblHideWebsite:"Скрыть сайт в резюме",
               lblStageTitle:"Цель стажировки", lblStageStart:"Дата начала", lblStageEnd:"Дата окончания", lblStagePoste:"Должность",
               lblCompetences:"Навыки (через запятую)", lblExperiences:"Опыт работы", lblFormations:"Образование / Дипломы",
-              lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", previewTitle:"Просмотр резюме", pdfBtnText:"PDF 1 страница",
-              footerText:"✔️ Резюме из 5 частей + фото. PDF автоматически помещается на одной странице A4, ничего не обрезая.",
+              lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", previewTitle:"Просмотр резюме", pdfBtnText:"PDF полная ширина",
+              footerText:"✔️ Резюме из 5 частей + фото. PDF занимает всю ширину A4, без белых полей.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - НАВЫКИ", sectionExp:"ОПЫТ РАБОТЫ", sectionForm:"IV - ОБРАЗОВАНИЕ", sectionInfo:"V - ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ", langLabel:"Языки:", loisirLabel:"Хобби:", stageDu:"с", stageAu:"по" },
         ar: { lblPhoto:"📷 صورة", lblNom:"الاسم الكامل", lblPhone:"الهاتف", lblEmail:"البريد الإلكتروني", lblAdresse:"العنوان / المدينة", lblPermis:"رخصة القيادة", lblSite:"الموقع الإلكتروني", lblHideWebsite:"إخفاء الموقع الإلكتروني في السيرة الذاتية",
               lblStageTitle:"عنوان التدريب", lblStageStart:"تاريخ البداية", lblStageEnd:"تاريخ النهاية", lblStagePoste:"المنصب المطلوب",
               lblCompetences:"المهارات (مفصولة بفواصل)", lblExperiences:"الخبرات المهنية", lblFormations:"التعليم / الشهادات",
-              lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", previewTitle:"معاينة السيرة الذاتية", pdfBtnText:"PDF صفحة واحدة",
-              footerText:"✔️ سيرة ذاتية من 5 أجزاء + صورة. يتم ضبط PDF تلقائياً ليلائم صفحة A4 واحدة دون قص أي شيء.",
+              lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", previewTitle:"معاينة السيرة الذاتية", pdfBtnText:"PDF عرض كامل",
+              footerText:"✔️ سيرة ذاتية من 5 أجزاء + صورة. PDF يشغل عرض A4 بالكامل، بدون هوامش بيضاء.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"ثالثاً - المهارات", sectionExp:"الخبرات المهنية", sectionForm:"رابعاً - التعليم", sectionInfo:"خامساً - معلومات إضافية", langLabel:"اللغات:", loisirLabel:"الهوايات:", stageDu:"من", stageAu:"إلى" },
         prs: { lblPhoto:"📷 عکس", lblNom:"نام کامل", lblPhone:"تلفن", lblEmail:"ایمیل", lblAdresse:"آدرس / شهر", lblPermis:"جواز رانندگی", lblSite:"ویب‌سایت", lblHideWebsite:"پنهان کردن وب‌سایت در رزومه",
               lblStageTitle:"عنوان کارآموزی", lblStageStart:"تاریخ شروع", lblStageEnd:"تاریخ ختم", lblStagePoste:"موقعیت مورد نظر",
               lblCompetences:"مهارت‌ها (با کاما جدا شود)", lblExperiences:"تجارب کاری", lblFormations:"تحصیلات / دیپلم‌ها",
-              lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", previewTitle:"پیش‌نمایش رزومه", pdfBtnText:"PDF یک صفحه",
-              footerText:"✔️ رزومه ۵ بخشی + عکس. PDF به طور خودکار در یک صفحه A4 جا می‌شود بدون اینکه چیزی بریده شود.",
+              lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", previewTitle:"پیش‌نمایش رزومه", pdfBtnText:"PDF تمام عرض",
+              footerText:"✔️ رزومه ۵ بخشی + عکس. PDF تمام عرض A4 را اشغال می‌کند، بدون حاشیه سفید.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - مهارت‌ها", sectionExp:"تجارب کاری", sectionForm:"IV - تحصیلات", sectionInfo:"V - اطلاعات تکمیلی", langLabel:"زبان‌ها:", loisirLabel:"سرگرمی‌ها:", stageDu:"از", stageAu:"تا" }
@@ -276,7 +276,7 @@
 
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>(m==='&'?'&amp;':m==='<'?'&lt;':'&gt;')); }
 
-    // Formulaires dynamiques
+    // Formulaires dynamiques avec champs vides
     function renderExpForm() {
         const container = document.getElementById('expContainer');
         container.innerHTML = '';
@@ -330,7 +330,7 @@
         document.getElementById('hideWebsiteCheckbox').addEventListener('change', renderPreview);
     }
 
-    // PDF avec ajustement automatique pour que tout tienne sur une page
+    // PDF : pleine largeur sans marges blanches
     async function downloadPDF() {
         const element = document.getElementById('resumeCard');
         if (!element) return;
@@ -339,41 +339,28 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération...';
         btn.disabled = true;
         try {
-            // 1. Rendre le canvas avec une bonne qualité (scale 2)
             const canvas = await html2canvas(element, {
                 scale: 2,
                 logging: false,
                 useCORS: true,
                 backgroundColor: '#ffffff'
             });
-            
-            // 2. Dimensions du canvas original (px)
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            
-            // 3. Dimensions de la page A4 en mm (largeur 210, hauteur 297)
-            const pageWidthMM = 210;
-            const pageHeightMM = 297;
-            
-            // 4. Convertir la hauteur du canvas en mm approximativement (1 px = 0.264583 mm à 96 DPI)
-            // Calcul plus précis : on utilise le rapport largeur
-            const canvasAspect = canvasHeight / canvasWidth;
-            // Largeur souhaitée = pageWidthMM, donc hauteur correspondante en mm
-            let desiredHeightMM = pageWidthMM * canvasAspect;
-            
-            // 5. Si la hauteur dépasse la page, on réduit proportionnellement
-            let finalWidthMM = pageWidthMM;
-            let finalHeightMM = desiredHeightMM;
-            if (desiredHeightMM > pageHeightMM) {
-                const ratio = pageHeightMM / desiredHeightMM;
-                finalWidthMM = pageWidthMM * ratio;
-                finalHeightMM = pageHeightMM;
-            }
-            
-            // 6. Créer le PDF et ajouter l'image redimensionnée
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-            pdf.addImage(canvas, 'PNG', (pageWidthMM - finalWidthMM) / 2, 0, finalWidthMM, finalHeightMM);
+            const pageWidthMM = 210;
+            const pageHeightMM = 297;
+            const imgWidthMM = pageWidthMM;   // pleine largeur, pas de marge
+            const imgHeightMM = (canvas.height * imgWidthMM) / canvas.width;
+            let yOffset = 0;
+            if (imgHeightMM > pageHeightMM) {
+                // Si trop haut, on réduit pour tout faire tenir sur une page (mais on garde largeur pleine)
+                const ratio = pageHeightMM / imgHeightMM;
+                const finalWidthMM = imgWidthMM * ratio;
+                const finalHeightMM = pageHeightMM;
+                pdf.addImage(canvas, 'PNG', (pageWidthMM - finalWidthMM) / 2, 0, finalWidthMM, finalHeightMM);
+            } else {
+                pdf.addImage(canvas, 'PNG', 0, 0, imgWidthMM, imgHeightMM);
+            }
             pdf.save(`CV_${currentLang}.pdf`);
         } catch (error) {
             console.error('Erreur PDF:', error);
