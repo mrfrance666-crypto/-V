@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CV Builder - 5 parties | PDF pleine largeur A4</title>
+    <title>CV - Pavlo Pashkin | 2 colonnes | PDF pleine largeur</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -20,44 +20,51 @@
         .editor-panel h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; color: #1f4870; }
         .form-group { margin-bottom: 16px; }
         label { font-weight: 600; display: block; margin-bottom: 6px; font-size: 0.8rem; color: #2c3e4e; }
-        input, textarea { width: 100%; padding: 10px 14px; border-radius: 20px; border: 1px solid #cfdfed; font-family: inherit; font-size: 0.85rem; }
+        input, textarea { width: 100%; padding: 10px 14px; border-radius: 20px; border: 1px solid #cfdfed; font-family: inherit; font-size: 0.85rem; background: white; }
         .inline-row { display: flex; gap: 12px; flex-wrap: wrap; }
         .inline-row .form-group { flex: 1; }
         .checkbox-group { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
         .checkbox-group label { font-weight: 500; margin: 0; }
-        hr { margin: 18px 0; }
+        hr { margin: 18px 0; border: none; border-top: 1px solid #e2edf5; }
         .array-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
         .btn-add { background: #eff3f8; border: 1px dashed #8ba3bc; padding: 5px 14px; border-radius: 40px; font-size: 0.75rem; cursor: pointer; }
         .array-item { background: #fafcff; padding: 12px; border-radius: 20px; margin-bottom: 12px; border: 1px solid #e9f0f5; position: relative; }
-        .remove-item { background: none; border: none; color: #c0392b; cursor: pointer; float: right; }
+        .remove-item { background: none; border: none; color: #c0392b; cursor: pointer; float: right; font-size: 1rem; }
         .preview-panel { flex: 1.8; min-width: 340px; background: white; border-radius: 28px; box-shadow: 0 10px 25px -12px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
-        .preview-header { padding: 12px 20px; background: white; border-bottom: 1px solid #eef3fa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .zoom-controls { display: flex; gap: 8px; align-items: center; background: #f8fafc; padding: 4px 10px; border-radius: 40px; }
-        .zoom-btn { background: #eef2f8; border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
-        .zoom-value { font-weight: 600; min-width: 45px; text-align: center; font-size: 0.8rem; }
-        .btn-pdf { background: #1f4870; border: none; padding: 6px 18px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .preview-header { padding: 12px 20px; background: white; border-bottom: 1px solid #eef3fa; display: flex; justify-content: flex-end; align-items: center; }
+        .btn-pdf { background: #1f4870; border: none; padding: 8px 24px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
         .cv-card { padding: 0; margin: 0; background: white; }
-        .cv-five { font-family: 'Inter', sans-serif; line-height: 1.3; width: 100%; margin: 0; padding: 0; }
-        .cv-five .section { margin-bottom: 12px; }
-        .cv-five .section-title { font-weight: 800; color: #1f4a6e; border-left: 4px solid #2a6f6f; padding-left: 10px; margin-bottom: 8px; font-size: 1rem; }
-        .coordonnees { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; border-bottom: 1px solid #e2edf5; padding-bottom: 10px; flex-wrap: wrap; }
-        .cv-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #2a6f6f; background: #f4f9fe; }
-        .coord-text .name { font-weight: 800; color: #1a4a6e; margin-bottom: 4px; font-size: 1.4rem; }
-        .contact-details { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.7rem; color: #2c5a7a; }
-        .titre-stage { background: #f3f9ff; padding: 6px 12px; border-radius: 16px; text-align: center; margin-bottom: 12px; font-size: 0.8rem; }
-        .competences-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .competence-badge { background: #e6f0f5; padding: 3px 12px; border-radius: 30px; font-size: 0.7rem; font-weight: 500; }
-        .exp-item, .edu-item { margin-bottom: 10px; }
-        .exp-title { font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 2px; font-size: 0.85rem; }
-        .exp-date { font-weight: 400; color: #5f7d9c; font-size: 0.7rem; }
-        .exp-desc { font-size: 0.75rem; color: #2c4a6e; margin-top: 3px; line-height: 1.3; }
-        .info-complementaire { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
-        .info-block { background: #f8fbfe; padding: 4px 12px; border-radius: 16px; font-size: 0.7rem; }
-        footer { text-align: center; margin-top: 20px; color: #6c86a3; font-size: 0.7rem; }
-        .rtl { direction: rtl; text-align: right; }
-        .rtl .section-title { border-left: none; border-right: 4px solid #2a6f6f; padding-left: 0; padding-right: 10px; }
+        /* STRUCTURE 2 COLONNES POUR LE CV */
+        .cv-two-columns { display: flex; width: 100%; background: white; }
+        .cv-left { width: 33%; background: #f8fbfe; padding: 20px 15px; border-right: 1px solid #e2edf5; }
+        .cv-right { width: 67%; padding: 20px 20px 20px 25px; }
+        /* STYLES COMMUNS */
+        .cv-photo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #2a6f6f; margin: 0 auto 15px auto; display: block; background: white; }
+        .cv-name { font-size: 1.4rem; font-weight: 800; color: #1f4870; text-align: center; margin-bottom: 20px; }
+        .cv-contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.8rem; color: #2c5a7a; word-break: break-word; }
+        .cv-contact-item i { width: 20px; color: #2a6f6f; }
+        .cv-left-section { margin-top: 25px; }
+        .cv-left-section-title { font-weight: 700; font-size: 0.9rem; color: #1f4870; border-bottom: 2px solid #2a6f6f; display: inline-block; margin-bottom: 12px; letter-spacing: 1px; }
+        .cv-left-text { font-size: 0.8rem; line-height: 1.4; margin-bottom: 8px; color: #1e2a3a; }
+        .cv-right-section { margin-bottom: 20px; }
+        .cv-right-section-title { font-weight: 800; font-size: 1rem; color: #1f4a6e; border-left: 4px solid #2a6f6f; padding-left: 12px; margin-bottom: 12px; }
+        .cv-stage-box { background: #eef3fa; padding: 8px 12px; border-radius: 12px; text-align: center; margin-bottom: 20px; }
+        .cv-stage-title { font-weight: 700; font-size: 0.9rem; }
+        .cv-skills-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+        .cv-skill-badge { background: #e6f0f5; padding: 4px 12px; border-radius: 30px; font-size: 0.7rem; font-weight: 500; }
+        .cv-job { margin-bottom: 15px; }
+        .cv-job-title { font-weight: 700; font-size: 0.85rem; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 4px; }
+        .cv-job-date { font-weight: 400; color: #5f7d9c; font-size: 0.7rem; }
+        .cv-job-desc { font-size: 0.75rem; color: #2c4a6e; line-height: 1.35; margin-top: 4px; }
+        .cv-edu { margin-bottom: 12px; }
+        .cv-edu-title { font-weight: 700; font-size: 0.85rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .cv-edu-date { font-weight: 400; color: #5f7d9c; font-size: 0.7rem; }
+        .cv-edu-place { font-size: 0.75rem; color: #4a627a; }
+        @media (max-width: 650px) {
+            .cv-two-columns { flex-direction: column; }
+            .cv-left, .cv-right { width: 100%; }
+        }
         .creator-credit { position: fixed; bottom: 15px; right: 15px; background: rgba(31,72,112,0.85); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 30px; color: white; font-size: 0.7rem; z-index: 1000; pointer-events: none; }
-        @media (max-width: 700px) { .coordonnees { flex-direction: column; text-align: center; } .contact-details { justify-content: center; } }
     </style>
 </head>
 <body>
@@ -72,146 +79,116 @@
     </div>
     <div class="builder-grid">
         <div class="editor-panel">
-            <h3>✎ CV 5 parties</h3>
+            <h3>✎ Éditeur CV</h3>
             <div class="form-group"><label id="lblPhoto">📷 Photo</label><input type="file" id="photoUpload" accept="image/jpeg, image/png, image/jpg"></div>
-            <div class="form-group"><label id="lblNom">Nom complet</label><input type="text" id="fullname" value="Pavlo Pashkin" placeholder="Pavlo Pashkin"></div>
+            <div class="form-group"><label id="lblNom">Nom complet</label><input type="text" id="fullname" value="Pavlo Pashkin"></div>
             <div class="inline-row"><div class="form-group"><label id="lblPhone">Téléphone</label><input type="text" id="phone" value="07 45 62 50 07"></div><div class="form-group"><label id="lblEmail">Email</label><input type="email" id="email" value="contact@paulmultiservice.fr"></div></div>
-            <div class="inline-row"><div class="form-group"><label id="lblAdresse">Adresse / Ville</label><input type="text" id="location" value="Rennes, France"></div><div class="form-group"><label id="lblPermis">Permis / Véhicule</label><input type="text" id="permis" value="Permis B, C"></div></div>
+            <div class="inline-row"><div class="form-group"><label id="lblAdresse">Adresse / Ville</label><input type="text" id="location" value="Rennes, France"></div><div class="form-group"><label id="lblPermis">Permis / Véhicule</label><input type="text" id="permis" value="Permis B, Véhicule"></div></div>
             <div class="form-group"><label id="lblSite">Site web</label><input type="text" id="website" value="paulmultiservice.fr"></div>
             <div class="checkbox-group"><input type="checkbox" id="hideWebsiteCheckbox"> <label id="lblHideWebsite">Masquer le site web</label></div>
             <hr>
-            <div class="form-group"><label id="lblStageTitle">Titre du stage</label><input type="text" id="stageTitle" value="Recherche stagiaire"></div>
+            <div class="form-group"><label id="lblStageTitle">Titre du stage</label><input type="text" id="stageTitle" value="Recherche un stage"></div>
             <div class="inline-row"><div class="form-group"><label id="lblStageStart">Date début</label><input type="text" id="stageStart" value="29/06/2026"></div><div class="form-group"><label id="lblStageEnd">Date fin</label><input type="text" id="stageEnd" value="17/07/2026"></div></div>
             <div class="form-group"><label id="lblStagePoste">Poste recherché</label><input type="text" id="stagePoste" value="Stagiaire CLPS"></div>
             <hr>
-            <div class="form-group"><label id="lblCompetences">Compétences (séparées par virgules)</label><textarea id="competencesInput" rows="3">Petit bricolage, Maintenance technique, Conseil informatique, Développement Web, Pack Office, Gestion de crise</textarea></div>
+            <div class="form-group"><label id="lblCompetences">Compétences (séparées par virgules)</label><textarea id="competencesInput" rows="3">Petit bricolage, Maintenance technique, Conseil informatique, Assistance technique, Gestion des flux logistiques, Développement Web (HTML/Java), Pack Office (Excel avancé), Maintenance PC/Mac/iPhone, Management d'équipe, Gestion de crise</textarea></div>
             <div class="array-header"><label id="lblExperiences">Expériences</label><button class="btn-add" id="addExpBtn"><i class="fas fa-plus"></i> <span id="addExpText">Ajouter</span></button></div>
             <div id="expContainer"></div>
             <div class="array-header"><label id="lblFormations">Formations</label><button class="btn-add" id="addEduBtn"><i class="fas fa-plus"></i> <span id="addEduText">Ajouter</span></button></div>
             <div id="eduContainer"></div>
             <hr>
             <div class="form-group"><label id="lblLangues">Langues</label><input type="text" id="langues" value="Ukrainien (maternel), Russe (bilingue), Français (A2-B1)"></div>
-            <div class="form-group"><label id="lblLoisirs">Loisirs</label><input type="text" id="loisirs" value="Football, nouvelles technologies"></div>
+            <div class="form-group"><label id="lblLoisirs">Loisirs</label><input type="text" id="loisirs" value="Football, Boxe, Handball, Nouvelles technologies"></div>
         </div>
         <div class="preview-panel">
             <div class="preview-header">
-                <h2><i class="far fa-file-alt"></i> <span id="previewTitle">Aperçu CV</span></h2>
-                <div style="display: flex; gap: 12px; align-items: center;">
-                    <div class="zoom-controls">
-                        <button class="zoom-btn" id="zoomOutBtn">A−</button>
-                        <span class="zoom-value" id="zoomPercent">100%</span>
-                        <button class="zoom-btn" id="zoomInBtn">A+</button>
-                        <button class="zoom-btn" id="zoomResetBtn">↺</button>
-                    </div>
-                    <button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF</span></button>
-                </div>
+                <button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF pleine largeur</span></button>
             </div>
             <div class="cv-card" id="resumeCard"><div id="resumeContent"></div></div>
         </div>
     </div>
-    <footer id="footerText">✔️ Ajustez le zoom, le PDF tient sur une page A4 sans marges latérales.</footer>
+    <footer id="footerText">✔️ CV 2 colonnes. Le PDF occupe toute la largeur A4 sans marges.</footer>
 </div>
 <div class="creator-credit"><i class="fas fa-code"></i> Pavlo Pashkin</div>
 
 <script>
     let experiences = [
-        { titre: "Chef d'Entreprise - PaulMultiService", entreprise: "Rennes", periode: "02/2026 - En cours", description: "Conseil informatique, assistance technique, développement du site web. Gestion administrative et client." },
-        { titre: "Officier Logisticien", entreprise: "Service des Transports Militaires (Ukraine)", periode: "2023-2024", description: "Planification des flux de transport, management d'unité, gestion de crise." }
+        { titre: "Chef d'Entreprise - PaulMultiService", entreprise: "Rennes", periode: "02/2026 - En cours", description: "Conseil informatique, assistance technique et interventions de petit bricolage. Conception, développement complet et déploiement du site internet de l'entreprise (paulmultiservice.fr). Gestion administrative, comptabilité et relation client." },
+        { titre: "Officier Logisticien - Chef de Bureau des Transports", entreprise: "Service des Transports Militaires (Ukraine)", periode: "2023-2024", description: "Planification et optimisation des flux de transport à grande échelle. Management d'une unité opérationnelle et gestion de crise sous haute pression." },
+        { titre: "Élève-officier / Cadet Logisticien", entreprise: "Académie Militaire / Forces Armées", periode: "2019-2023", description: "Formation militaire et opérationnelle de commandement. Apprentissage de la gestion des flux logistiques, de la régulation des transports et du management d'équipe. Discipline de fer et exécution des ordres en environnements exigeants." },
+        { titre: "Formation militaire et opérationnelle", entreprise: "Forces Armées de l'Ukraine", periode: "2018-2019", description: "Missions de sécurisation, de garde et de protection des infrastructures stratégiques. Discipline rigoureuse. Déploiement en zone de combat (Opération ATO/OOS) de novembre 2018 à mai 2019. Obtention du Statut d'Ancien Combattant." }
     ];
     let formations = [
         { diplome: "Formation Prépa Avenir FL", etablissement: "CLPS Rennes", annee: "2026 (En cours)" },
-        { diplome: "Licence - Technologies de Transport", etablissement: "Université d'Ukraine", annee: "2023" }
+        { diplome: "Licence (Bac+3) - Technologies de Transport", etablissement: "Université d'État des Sciences et Technologies de l'Ukraine", annee: "2023 (Mention / Diplôme Rouge)" },
+        { diplome: "Diplôme Professionnel – Opérateur Informatique & Comptabilité", etablissement: "Collège Professionnel de l'Université Nationale de l'Aviation", annee: "2016" }
     ];
     let currentLang = 'fr';
     let photoBase64 = "";
-    let currentZoom = 100;
 
-    // Traductions complètes pour 6 langues
     const translations = {
         fr: { lblPhoto:"📷 Photo", lblNom:"Nom complet", lblPhone:"Téléphone", lblEmail:"Email", lblAdresse:"Adresse / Ville", lblPermis:"Permis / Véhicule", lblSite:"Site web", lblHideWebsite:"Masquer le site web",
               lblStageTitle:"Titre du stage", lblStageStart:"Date début", lblStageEnd:"Date fin", lblStagePoste:"Poste recherché",
               lblCompetences:"Compétences (séparées par virgules)", lblExperiences:"Expériences professionnelles", lblFormations:"Formations / Diplômes",
-              lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", previewTitle:"Aperçu CV", pdfBtnText:"PDF",
-              footerText:"✔️ Ajustez le zoom, le PDF tient sur une page A4 sans marges latérales.",
-              sectionComp:"III - COMPÉTENCES", sectionExp:"EXPÉRIENCES PROFESSIONNELLES", sectionForm:"IV - FORMATIONS / DIPLÔMES", sectionInfo:"V - INFORMATIONS COMPLÉMENTAIRES", langLabel:"Langues :", loisirLabel:"Loisirs :", stageDu:"Du", stageAu:"au" },
+              lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", pdfBtnText:"PDF pleine largeur",
+              footerText:"✔️ CV 2 colonnes. Le PDF occupe toute la largeur A4 sans marges.",
+              contactTitle:"Coordonnées", languagesTitle:"Langues", hobbiesTitle:"Loisirs", stageLabel:"Recherche un stage", internshipPost:"Stagiaire CLPS",
+              sectionComp:"COMPÉTENCES", sectionExp:"EXPÉRIENCES PROFESSIONNELLES", sectionForm:"FORMATIONS / DIPLÔMES" },
         en: { lblPhoto:"📷 Photo", lblNom:"Full name", lblPhone:"Phone", lblEmail:"Email", lblAdresse:"Address / City", lblPermis:"License / Vehicle", lblSite:"Website", lblHideWebsite:"Hide website",
               lblStageTitle:"Internship title", lblStageStart:"Start date", lblStageEnd:"End date", lblStagePoste:"Position sought",
               lblCompetences:"Skills (comma separated)", lblExperiences:"Work experience", lblFormations:"Education / Degrees",
-              lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", previewTitle:"CV Preview", pdfBtnText:"PDF",
-              footerText:"✔️ Adjust zoom, PDF fits A4 full width without margins.",
-              sectionComp:"III - SKILLS", sectionExp:"WORK EXPERIENCE", sectionForm:"IV - EDUCATION", sectionInfo:"V - ADDITIONAL INFO", langLabel:"Languages:", loisirLabel:"Hobbies:", stageDu:"From", stageAu:"to" },
+              lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", pdfBtnText:"PDF full width",
+              footerText:"✔️ 2-column CV. PDF occupies full A4 width without margins.",
+              contactTitle:"Contact", languagesTitle:"Languages", hobbiesTitle:"Hobbies", stageLabel:"Looking for internship", internshipPost:"Trainee CLPS",
+              sectionComp:"SKILLS", sectionExp:"WORK EXPERIENCE", sectionForm:"EDUCATION / DEGREES" },
         uk: { lblPhoto:"📷 Фото", lblNom:"Повне ім'я", lblPhone:"Телефон", lblEmail:"Email", lblAdresse:"Адреса / Місто", lblPermis:"Права / Транспорт", lblSite:"Веб-сайт", lblHideWebsite:"Сховати веб-сайт",
               lblStageTitle:"Мета стажування", lblStageStart:"Дата початку", lblStageEnd:"Дата завершення", lblStagePoste:"Посада",
               lblCompetences:"Навички (через кому)", lblExperiences:"Досвід роботи", lblFormations:"Освіта / Дипломи",
-              lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", previewTitle:"Попередній перегляд", pdfBtnText:"PDF",
-              footerText:"✔️ Регулюйте масштаб, PDF вміщується на A4 без полів.",
-              sectionComp:"III - НАВИЧКИ", sectionExp:"ДОСВІД РОБОТИ", sectionForm:"IV - ОСВІТА", sectionInfo:"V - ДОДАТКОВА ІНФОРМАЦІЯ", langLabel:"Мови:", loisirLabel:"Хобі:", stageDu:"з", stageAu:"по" },
+              lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", pdfBtnText:"PDF повна ширина",
+              footerText:"✔️ Резюме 2 колонки. PDF займає всю ширину A4 без полів.",
+              contactTitle:"Контакти", languagesTitle:"Мови", hobbiesTitle:"Хобі", stageLabel:"Пошук стажування", internshipPost:"Стажер CLPS",
+              sectionComp:"НАВИЧКИ", sectionExp:"ДОСВІД РОБОТИ", sectionForm:"ОСВІТА / ДИПЛОМИ" },
         ru: { lblPhoto:"📷 Фото", lblNom:"Полное имя", lblPhone:"Телефон", lblEmail:"Email", lblAdresse:"Адрес / Город", lblPermis:"Права / Транспорт", lblSite:"Сайт", lblHideWebsite:"Скрыть сайт",
               lblStageTitle:"Цель стажировки", lblStageStart:"Дата начала", lblStageEnd:"Дата окончания", lblStagePoste:"Должность",
               lblCompetences:"Навыки (через запятую)", lblExperiences:"Опыт работы", lblFormations:"Образование / Дипломы",
-              lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", previewTitle:"Просмотр резюме", pdfBtnText:"PDF",
-              footerText:"✔️ Регулируйте масштаб, PDF помещается на A4 без полей.",
-              sectionComp:"III - НАВЫКИ", sectionExp:"ОПЫТ РАБОТЫ", sectionForm:"IV - ОБРАЗОВАНИЕ", sectionInfo:"V - ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ", langLabel:"Языки:", loisirLabel:"Хобби:", stageDu:"с", stageAu:"по" },
+              lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", pdfBtnText:"PDF полная ширина",
+              footerText:"✔️ Резюме 2 колонки. PDF занимает всю ширину A4 без полей.",
+              contactTitle:"Контакты", languagesTitle:"Языки", hobbiesTitle:"Хобби", stageLabel:"Поиск стажировки", internshipPost:"Стажер CLPS",
+              sectionComp:"НАВЫКИ", sectionExp:"ОПЫТ РАБОТЫ", sectionForm:"ОБРАЗОВАНИЕ / ДИПЛОМЫ" },
         ar: { lblPhoto:"📷 صورة", lblNom:"الاسم الكامل", lblPhone:"الهاتف", lblEmail:"البريد الإلكتروني", lblAdresse:"العنوان / المدينة", lblPermis:"رخصة القيادة", lblSite:"الموقع الإلكتروني", lblHideWebsite:"إخفاء الموقع",
               lblStageTitle:"عنوان التدريب", lblStageStart:"تاريخ البداية", lblStageEnd:"تاريخ النهاية", lblStagePoste:"المنصب المطلوب",
               lblCompetences:"المهارات (مفصولة بفواصل)", lblExperiences:"الخبرات المهنية", lblFormations:"التعليم / الشهادات",
-              lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", previewTitle:"معاينة السيرة الذاتية", pdfBtnText:"PDF",
-              footerText:"✔️ ضبط التكبير، PDF يلتحم على صفحة A4 بدون هوامش.",
-              sectionComp:"ثالثاً - المهارات", sectionExp:"الخبرات المهنية", sectionForm:"رابعاً - التعليم", sectionInfo:"خامساً - معلومات إضافية", langLabel:"اللغات:", loisirLabel:"الهوايات:", stageDu:"من", stageAu:"إلى" },
+              lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", pdfBtnText:"PDF عرض كامل",
+              footerText:"✔️ سيرة ذاتية عمودين. PDF يشغل عرض A4 بالكامل بدون هوامش.",
+              contactTitle:"معلومات الاتصال", languagesTitle:"اللغات", hobbiesTitle:"الهوايات", stageLabel:"البحث عن تدريب", internshipPost:"متدرّب CLPS",
+              sectionComp:"المهارات", sectionExp:"الخبرات المهنية", sectionForm:"التعليم / الشهادات" },
         prs: { lblPhoto:"📷 عکس", lblNom:"نام کامل", lblPhone:"تلفن", lblEmail:"ایمیل", lblAdresse:"آدرس / شهر", lblPermis:"جواز رانندگی", lblSite:"ویب‌سایت", lblHideWebsite:"پنهان کردن وب‌سایت",
               lblStageTitle:"عنوان کارآموزی", lblStageStart:"تاریخ شروع", lblStageEnd:"تاریخ ختم", lblStagePoste:"موقعیت مورد نظر",
               lblCompetences:"مهارت‌ها (با کاما جدا شود)", lblExperiences:"تجارب کاری", lblFormations:"تحصیلات / دیپلم‌ها",
-              lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", previewTitle:"پیش‌نمایش رزومه", pdfBtnText:"PDF",
-              footerText:"✔️ بزرگنمایی را تنظیم کنید، PDF در یک صفحه A4 بدون حاشیه جای می‌گیرد.",
-              sectionComp:"III - مهارت‌ها", sectionExp:"تجارب کاری", sectionForm:"IV - تحصیلات", sectionInfo:"V - اطلاعات تکمیلی", langLabel:"زبان‌ها:", loisirLabel:"سرگرمی‌ها:", stageDu:"از", stageAu:"تا" }
+              lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", pdfBtnText:"PDF تمام عرض",
+              footerText:"✔️ رزومه ۲ ستونه. PDF تمام عرض A4 را بدون حاشیه اشغال می‌کند.",
+              contactTitle:"اطلاعات تماس", languagesTitle:"زبان‌ها", hobbiesTitle:"سرگرمی‌ها", stageLabel:"جستجوی کارآموزی", internshipPost:"کارآموز CLPS",
+              sectionComp:"مهارت‌ها", sectionExp:"تجارب کاری", sectionForm:"تحصیلات / دیپلم‌ها" }
     };
 
     function updateUILabels() {
         const t = translations[currentLang];
         if(!t) return;
-        document.getElementById('lblPhoto').innerHTML = t.lblPhoto;
-        document.getElementById('lblNom').innerText = t.lblNom;
-        document.getElementById('lblPhone').innerText = t.lblPhone;
-        document.getElementById('lblEmail').innerText = t.lblEmail;
-        document.getElementById('lblAdresse').innerText = t.lblAdresse;
-        document.getElementById('lblPermis').innerText = t.lblPermis;
-        document.getElementById('lblSite').innerText = t.lblSite;
-        document.getElementById('lblHideWebsite').innerText = t.lblHideWebsite;
-        document.getElementById('lblStageTitle').innerText = t.lblStageTitle;
-        document.getElementById('lblStageStart').innerText = t.lblStageStart;
-        document.getElementById('lblStageEnd').innerText = t.lblStageEnd;
-        document.getElementById('lblStagePoste').innerText = t.lblStagePoste;
-        document.getElementById('lblCompetences').innerText = t.lblCompetences;
+        Object.keys(t).forEach(id => {
+            let el = document.getElementById(id);
+            if(el && id !== 'lblExperiences' && id !== 'lblFormations') el.innerText = t[id];
+        });
         document.getElementById('lblExperiences').innerHTML = '<i class="fas fa-briefcase"></i> ' + t.lblExperiences;
         document.getElementById('lblFormations').innerHTML = '<i class="fas fa-graduation-cap"></i> ' + t.lblFormations;
-        document.getElementById('lblLangues').innerText = t.lblLangues;
-        document.getElementById('lblLoisirs').innerText = t.lblLoisirs;
-        document.getElementById('addExpText').innerText = t.addExpText;
-        document.getElementById('addEduText').innerText = t.addEduText;
-        document.getElementById('previewTitle').innerText = t.previewTitle;
-        document.getElementById('pdfBtnText').innerText = t.pdfBtnText;
-        document.getElementById('footerText').innerText = t.footerText;
     }
-
-    function applyZoom() {
-        const cv = document.querySelector('#resumeContent .cv-five');
-        if(cv) {
-            let base = 11;
-            cv.style.fontSize = (base * currentZoom / 100) + 'pt';
-            document.getElementById('zoomPercent').innerText = currentZoom + '%';
-        }
-    }
-    function zoomIn() { if(currentZoom < 150) { currentZoom += 10; applyZoom(); } }
-    function zoomOut() { if(currentZoom > 60) { currentZoom -= 10; applyZoom(); } }
-    function zoomReset() { currentZoom = 100; applyZoom(); }
 
     function renderPreview() {
         const t = translations[currentLang];
         const nom = document.getElementById('fullname').value;
-        const phone = document.getElementById('phone').value;
-        const email = document.getElementById('email').value;
-        const adresse = document.getElementById('location').value;
-        const permis = document.getElementById('permis').value;
+        let phone = document.getElementById('phone').value;
+        let email = document.getElementById('email').value;
+        let adresse = document.getElementById('location').value;
+        let permis = document.getElementById('permis').value;
         let website = document.getElementById('website').value;
         if(document.getElementById('hideWebsiteCheckbox').checked) website = "";
         const stageTitle = document.getElementById('stageTitle').value;
@@ -223,55 +200,72 @@
         const langues = document.getElementById('langues').value;
         const loisirs = document.getElementById('loisirs').value;
 
-        let html = `<div class="cv-five">`;
-        html += `<div class="coordonnees">`;
+        // Génération HTML 2 colonnes
+        let html = `<div class="cv-two-columns">`;
+        // COLONNE GAUCHE
+        html += `<div class="cv-left">`;
         if(photoBase64) html += `<img src="${photoBase64}" class="cv-photo" alt="photo">`;
         else html += `<div class="cv-photo" style="background:#eef2f8; display:flex; align-items:center; justify-content:center;">📷</div>`;
-        html += `<div class="coord-text"><div class="name">${escapeHtml(nom) || "Votre nom"}</div><div class="contact-details">`;
-        if(phone) html += `<span><i class="fas fa-phone-alt"></i> ${escapeHtml(phone)}</span>`;
-        if(email) html += `<span><i class="fas fa-envelope"></i> ${escapeHtml(email)}</span>`;
-        if(adresse) html += `<span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(adresse)}</span>`;
-        if(permis) html += `<span><i class="fas fa-car"></i> ${escapeHtml(permis)}</span>`;
-        if(website) html += `<span><i class="fas fa-globe"></i> ${escapeHtml(website)}</span>`;
-        html += `</div></div></div>`;
-        html += `<div class="titre-stage"><h3>${escapeHtml(stageTitle) || "Objectif stage"}</h3><p>${t.stageDu} ${escapeHtml(stageStart)} ${t.stageAu} ${escapeHtml(stageEnd)}<br><strong>${escapeHtml(stagePoste) || "Poste recherché"}</strong></p></div>`;
+        html += `<div class="cv-name">${escapeHtml(nom) || "Nom"}</div>`;
+        html += `<div class="cv-left-section"><div class="cv-left-section-title">${t.contactTitle}</div>`;
+        if(phone) html += `<div class="cv-contact-item"><i class="fas fa-phone-alt"></i> ${escapeHtml(phone)}</div>`;
+        if(email) html += `<div class="cv-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(email)}</div>`;
+        if(adresse) html += `<div class="cv-contact-item"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(adresse)}</div>`;
+        if(permis) html += `<div class="cv-contact-item"><i class="fas fa-car"></i> ${escapeHtml(permis)}</div>`;
+        if(website) html += `<div class="cv-contact-item"><i class="fas fa-globe"></i> ${escapeHtml(website)}</div>`;
+        html += `</div>`;
+        // Langues
+        if(langues) {
+            html += `<div class="cv-left-section"><div class="cv-left-section-title">${t.languagesTitle}</div>`;
+            html += `<div class="cv-left-text">${escapeHtml(langues)}</div>`;
+            html += `</div>`;
+        }
+        // Loisirs
+        if(loisirs) {
+            html += `<div class="cv-left-section"><div class="cv-left-section-title">${t.hobbiesTitle}</div>`;
+            html += `<div class="cv-left-text">${escapeHtml(loisirs)}</div>`;
+            html += `</div>`;
+        }
+        html += `</div>`;
+        // COLONNE DROITE
+        html += `<div class="cv-right">`;
+        // Stage
+        html += `<div class="cv-stage-box"><div class="cv-stage-title">${escapeHtml(stageTitle) || t.stageLabel}</div>`;
+        html += `<div>Du ${escapeHtml(stageStart)} au ${escapeHtml(stageEnd)}</div>`;
+        html += `<div><strong>${escapeHtml(stagePoste) || t.internshipPost}</strong></div></div>`;
+        // Compétences
         if(competences.length) {
-            html += `<div class="section"><div class="section-title">${t.sectionComp}</div><div class="competences-list">`;
-            competences.forEach(c => html += `<span class="competence-badge">${escapeHtml(c)}</span>`);
+            html += `<div class="cv-right-section"><div class="cv-right-section-title">${t.sectionComp}</div><div class="cv-skills-list">`;
+            competences.forEach(c => html += `<span class="cv-skill-badge">${escapeHtml(c)}</span>`);
             html += `</div></div>`;
         }
+        // Expériences
         if(experiences.length) {
-            html += `<div class="section"><div class="section-title">${t.sectionExp}</div>`;
+            html += `<div class="cv-right-section"><div class="cv-right-section-title">${t.sectionExp}</div>`;
             experiences.forEach(exp => {
-                html += `<div class="exp-item"><div class="exp-title"><span>${escapeHtml(exp.titre)} - ${escapeHtml(exp.entreprise)}</span><span class="exp-date">${escapeHtml(exp.periode)}</span></div>`;
-                if(exp.description) html += `<div class="exp-desc">${escapeHtml(exp.description)}</div>`;
+                html += `<div class="cv-job"><div class="cv-job-title"><span>${escapeHtml(exp.titre)} - ${escapeHtml(exp.entreprise)}</span><span class="cv-job-date">${escapeHtml(exp.periode)}</span></div>`;
+                if(exp.description) html += `<div class="cv-job-desc">${escapeHtml(exp.description)}</div>`;
                 html += `</div>`;
             });
             html += `</div>`;
         }
+        // Formations
         if(formations.length) {
-            html += `<div class="section"><div class="section-title">${t.sectionForm}</div>`;
+            html += `<div class="cv-right-section"><div class="cv-right-section-title">${t.sectionForm}</div>`;
             formations.forEach(edu => {
-                html += `<div class="edu-item"><div class="exp-title"><span>${escapeHtml(edu.diplome)} - ${escapeHtml(edu.etablissement)}</span><span class="exp-date">${escapeHtml(edu.annee)}</span></div></div>`;
+                html += `<div class="cv-edu"><div class="cv-edu-title"><span>${escapeHtml(edu.diplome)}</span><span class="cv-edu-date">${escapeHtml(edu.annee)}</span></div>`;
+                if(edu.etablissement) html += `<div class="cv-edu-place">${escapeHtml(edu.etablissement)}</div>`;
+                html += `</div>`;
             });
             html += `</div>`;
         }
-        if(langues || loisirs) {
-            html += `<div class="section"><div class="section-title">${t.sectionInfo}</div><div class="info-complementaire">`;
-            if(langues) html += `<div class="info-block"><i class="fas fa-language"></i> ${t.langLabel} ${escapeHtml(langues)}</div>`;
-            if(loisirs) html += `<div class="info-block"><i class="fas fa-heart"></i> ${t.loisirLabel} ${escapeHtml(loisirs)}</div>`;
-            html += `</div></div>`;
-        }
-        html += `</div>`;
+        html += `</div></div>`;
         document.getElementById('resumeContent').innerHTML = html;
-        const cvDiv = document.querySelector('#resumeContent .cv-five');
-        if(cvDiv && (currentLang === 'ar' || currentLang === 'prs')) cvDiv.classList.add('rtl');
-        else if(cvDiv) cvDiv.classList.remove('rtl');
-        applyZoom();
     }
 
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>(m==='&'?'&amp;':m==='<'?'&lt;':'&gt;')); }
 
+    // Fonctions pour les formulaires dynamiques (inchangées)
     function renderExpForm() {
         const container = document.getElementById('expContainer');
         container.innerHTML = '';
@@ -352,8 +346,8 @@
             } else {
                 pdf.addImage(canvas, 'PNG', 0, 0, imgW, imgH);
             }
-            pdf.save(`CV_${currentLang}.pdf`);
-        } catch(e) { alert('Erreur PDF: '+e); }
+            pdf.save('CV_Pavlo_Pashkin.pdf');
+        } catch(e) { alert('Erreur: '+e); }
         finally { btn.innerHTML = originalText; btn.disabled = false; }
     }
 
@@ -370,9 +364,6 @@
     document.getElementById('addExpBtn').onclick = addExperience;
     document.getElementById('addEduBtn').onclick = addEducation;
     document.getElementById('downloadPDFBtn').onclick = downloadPDF;
-    document.getElementById('zoomInBtn').onclick = zoomIn;
-    document.getElementById('zoomOutBtn').onclick = zoomOut;
-    document.getElementById('zoomResetBtn').onclick = zoomReset;
     document.querySelectorAll('.lang-btn').forEach(btn => btn.onclick = () => setLanguage(btn.dataset.lang));
     bindInputs();
     renderExpForm();
