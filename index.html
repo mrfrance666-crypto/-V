@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CV - 5 parties (6 langues) avec photo</title>
+    <title>CV Builder - 5 parties (6 langues) | outil gratuit</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Support des langues RTL pour arabe/dari -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #eef2f8; font-family: 'Inter', sans-serif; padding: 2rem 1.5rem; color: #1a2c3e; }
+        body { background: #eef2f8; font-family: 'Inter', sans-serif; padding: 2rem 1.5rem; color: #1a2c3e; position: relative; min-height: 100vh; }
         .app-wrapper { max-width: 1400px; margin: 0 auto; }
         .lang-bar { display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
         .lang-btn { background: white; border: 1px solid #dce5ef; padding: 8px 20px; border-radius: 60px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #2c4c6e; transition: 0.2s; }
@@ -53,9 +52,33 @@
         .info-block { background: #f8fbfe; padding: 8px 16px; border-radius: 20px; }
         footer { text-align: center; margin-top: 32px; color: #6c86a3; font-size: 0.8rem; }
         @media (max-width: 800px) { body { padding: 1rem; } .coordonnees { flex-direction: column; text-align: center; } .contact-details { justify-content: center; } }
-        /* RTL support */
         .rtl { direction: rtl; text-align: right; }
         .rtl .section-title { border-left: none; border-right: 5px solid #2a6f6f; padding-left: 0; padding-right: 14px; }
+        /* Signature auteur */
+        .creator-credit {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(31, 72, 112, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            pointer-events: none;
+            letter-spacing: 0.3px;
+        }
+        .creator-credit i {
+            margin-right: 6px;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 700px) {
+            .creator-credit { font-size: 0.7rem; padding: 5px 14px; bottom: 12px; right: 12px; }
+        }
     </style>
 </head>
 <body>
@@ -69,27 +92,27 @@
         <button class="lang-btn" data-lang="prs"><i class="fas fa-flag"></i> دری</button>
     </div>
     <div class="builder-grid">
-        <!-- ÉDITEUR -->
+        <!-- ÉDITEUR (tous les champs vides) -->
         <div class="editor-panel">
             <h3>✎ CV 5 parties + photo</h3>
             <div class="form-group"><label id="lblPhoto">📷 Photo</label><input type="file" id="photoUpload" accept="image/jpeg, image/png, image/jpg"><div id="photoPreview"></div></div>
-            <div class="form-group"><label id="lblNom">Nom complet</label><input type="text" id="fullname" value="Paulo PASHKIN"></div>
-            <div class="inline-row"><div class="form-group"><label id="lblPhone">Téléphone</label><input type="text" id="phone" value="07.45 62.50.02"></div><div class="form-group"><label id="lblEmail">Email</label><input type="email" id="email" value="contact@paulmultiservice.fr"></div></div>
-            <div class="inline-row"><div class="form-group"><label id="lblAdresse">Adresse</label><input type="text" id="location" value="Rennes, 35700"></div><div class="form-group"><label id="lblPermis">Permis</label><input type="text" id="permis" value="Permis B - Véhicule"></div></div>
-            <div class="form-group"><label id="lblSite">Site web</label><input type="text" id="website" value="paulmultiservice.fr"></div>
+            <div class="form-group"><label id="lblNom">Nom complet</label><input type="text" id="fullname" value="" placeholder="Ex: Sophie Martin"></div>
+            <div class="inline-row"><div class="form-group"><label id="lblPhone">Téléphone</label><input type="text" id="phone" value="" placeholder="+33 6 12 34 56 78"></div><div class="form-group"><label id="lblEmail">Email</label><input type="email" id="email" value="" placeholder="sophie@exemple.com"></div></div>
+            <div class="inline-row"><div class="form-group"><label id="lblAdresse">Adresse / Ville</label><input type="text" id="location" value="" placeholder="Paris, France"></div><div class="form-group"><label id="lblPermis">Permis / Véhicule</label><input type="text" id="permis" value="" placeholder="Permis B"></div></div>
+            <div class="form-group"><label id="lblSite">Site web</label><input type="text" id="website" value="" placeholder="www.monsite.com"></div>
             <hr>
-            <div class="form-group"><label id="lblStageTitle">Titre du stage</label><input type="text" id="stageTitle" value="Recherche un stage"></div>
-            <div class="inline-row"><div class="form-group"><label id="lblStageStart">Date début</label><input type="text" id="stageStart" value="29/06/2026"></div><div class="form-group"><label id="lblStageEnd">Date fin</label><input type="text" id="stageEnd" value="17/07/2026"></div></div>
-            <div class="form-group"><label id="lblStagePoste">Poste recherché</label><input type="text" id="stagePoste" value="Stagiaire CLPS"></div>
+            <div class="form-group"><label id="lblStageTitle">Titre du stage / objectif</label><input type="text" id="stageTitle" value="" placeholder="Recherche stage..."></div>
+            <div class="inline-row"><div class="form-group"><label id="lblStageStart">Date début</label><input type="text" id="stageStart" value="" placeholder="01/06/2025"></div><div class="form-group"><label id="lblStageEnd">Date fin</label><input type="text" id="stageEnd" value="" placeholder="31/08/2025"></div></div>
+            <div class="form-group"><label id="lblStagePoste">Poste recherché</label><input type="text" id="stagePoste" value="" placeholder="Stagiaire marketing"></div>
             <hr>
-            <div class="form-group"><label id="lblCompetences">Compétences (séparées par virgules)</label><textarea id="competencesInput" rows="2">Suite Adobe, Community management, Gestion de projet, Canva, WordPress</textarea></div>
-            <div class="array-header"><label id="lblExperiences">Expériences</label><button type="button" class="btn-add" id="addExpBtn"><i class="fas fa-plus"></i> <span id="addExpText">Ajouter</span></button></div>
+            <div class="form-group"><label id="lblCompetences">Compétences (séparées par virgules)</label><textarea id="competencesInput" rows="2" placeholder="Gestion de projet, Canva, WordPress, SEO"></textarea></div>
+            <div class="array-header"><label id="lblExperiences">Expériences professionnelles</label><button type="button" class="btn-add" id="addExpBtn"><i class="fas fa-plus"></i> <span id="addExpText">Ajouter</span></button></div>
             <div id="expContainer"></div>
-            <div class="array-header"><label id="lblFormations">Formations</label><button type="button" class="btn-add" id="addEduBtn"><i class="fas fa-plus"></i> <span id="addEduText">Ajouter</span></button></div>
+            <div class="array-header"><label id="lblFormations">Formations / Diplômes</label><button type="button" class="btn-add" id="addEduBtn"><i class="fas fa-plus"></i> <span id="addEduText">Ajouter</span></button></div>
             <div id="eduContainer"></div>
             <hr>
-            <div class="form-group"><label id="lblLangues">Langues</label><input type="text" id="langues" value="Anglais (intermédiaire), Espagnol (notions)"></div>
-            <div class="form-group"><label id="lblLoisirs">Loisirs</label><input type="text" id="loisirs" value="Sport, photographie, bénévolat"></div>
+            <div class="form-group"><label id="lblLangues">Langues</label><input type="text" id="langues" value="" placeholder="Anglais courant, Espagnol intermédiaire"></div>
+            <div class="form-group"><label id="lblLoisirs">Loisirs / Centres d'intérêt</label><input type="text" id="loisirs" value="" placeholder="Sport, photographie, voyage"></div>
         </div>
         <!-- PRÉVISUALISATION -->
         <div class="preview-panel">
@@ -97,28 +120,26 @@
             <div class="cv-card" id="resumeCard"><div id="resumeContent"></div></div>
         </div>
     </div>
-    <footer id="footerText">✔️ CV 5 parties + photo. Changez de langue, tout s'adapte.</footer>
+    <footer id="footerText">✔️ CV 5 parties + photo. Remplissez vos informations et changez de langue.</footer>
+</div>
+<!-- Signature auteur -->
+<div class="creator-credit">
+    <i class="fas fa-code"></i> Créateur : Pavlo Pashkin
 </div>
 
 <script>
-    // Données
-    let experiences = [
-        { titre: "Stagiaire CLPS", entreprise: "CLPS Rennes", periode: "29/06/2026 - 17/07/2026", description: "Découverte des processus administratifs, accueil, classement, saisie." }
-    ];
-    let formations = [
-        { diplome: "Baccalauréat", etablissement: "Lycée X, Rennes", annee: "2025" },
-        { diplome: "Formation multimédia", etablissement: "CLPS Rennes", annee: "2026" }
-    ];
+    // Données initiales vides
+    let experiences = [];
+    let formations = [];
     let currentLang = 'fr';
     let photoBase64 = "";
 
-    // Traductions pour 6 langues
     const translations = {
         fr: { lblPhoto:"📷 Photo", lblNom:"Nom complet", lblPhone:"Téléphone", lblEmail:"Email", lblAdresse:"Adresse / Ville", lblPermis:"Permis / Véhicule", lblSite:"Site web",
               lblStageTitle:"Titre du stage", lblStageStart:"Date début", lblStageEnd:"Date fin", lblStagePoste:"Poste recherché",
               lblCompetences:"Compétences (séparées par virgules)", lblExperiences:"Expériences professionnelles", lblFormations:"Formations / Diplômes",
               lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", previewTitle:"Aperçu CV", pdfBtnText:"PDF",
-              footerText:"✔️ CV 5 parties + photo. Changez de langue, tout s'adapte.",
+              footerText:"✔️ CV 5 parties + photo. Remplissez vos informations et changez de langue.",
               newExpTitre:"Nouveau poste", newExpEntreprise:"Entreprise", newExpPeriode:"2024 – 2025", newExpDesc:"Descriptif du poste",
               newDiplome:"Nouveau diplôme", newEtablissement:"Établissement", newAnnee:"2025",
               sectionComp:"III - COMPÉTENCES", sectionExp:"EXPÉRIENCES PROFESSIONNELLES", sectionForm:"IV - FORMATIONS / DIPLÔMES", sectionInfo:"V - INFORMATIONS COMPLÉMENTAIRES", langLabel:"Langues :", loisirLabel:"Loisirs :", stageDu:"Du", stageAu:"au" },
@@ -126,7 +147,7 @@
               lblStageTitle:"Internship title", lblStageStart:"Start date", lblStageEnd:"End date", lblStagePoste:"Position sought",
               lblCompetences:"Skills (comma separated)", lblExperiences:"Work experience", lblFormations:"Education / Degrees",
               lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", previewTitle:"CV Preview", pdfBtnText:"PDF",
-              footerText:"✔️ 5-part CV + photo. Switch language, everything adapts.",
+              footerText:"✔️ 5-part CV + photo. Fill in your info and switch language.",
               newExpTitre:"New position", newExpEntreprise:"Company", newExpPeriode:"2024 – 2025", newExpDesc:"Job description",
               newDiplome:"New degree", newEtablissement:"Institution", newAnnee:"2025",
               sectionComp:"III - SKILLS", sectionExp:"WORK EXPERIENCE", sectionForm:"IV - EDUCATION", sectionInfo:"V - ADDITIONAL INFO", langLabel:"Languages:", loisirLabel:"Hobbies:", stageDu:"From", stageAu:"to" },
@@ -134,7 +155,7 @@
               lblStageTitle:"Мета стажування", lblStageStart:"Дата початку", lblStageEnd:"Дата завершення", lblStagePoste:"Посада",
               lblCompetences:"Навички (через кому)", lblExperiences:"Досвід роботи", lblFormations:"Освіта / Дипломи",
               lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", previewTitle:"Попередній перегляд", pdfBtnText:"PDF",
-              footerText:"✔️ Резюме з 5 частин + фото. Змініть мову — все оновиться.",
+              footerText:"✔️ Резюме з 5 частин + фото. Заповніть свої дані та змініть мову.",
               newExpTitre:"Нова посада", newExpEntreprise:"Компанія", newExpPeriode:"2024 – 2025", newExpDesc:"Опис обов'язків",
               newDiplome:"Новий диплом", newEtablissement:"Заклад", newAnnee:"2025",
               sectionComp:"III - НАВИЧКИ", sectionExp:"ДОСВІД РОБОТИ", sectionForm:"IV - ОСВІТА", sectionInfo:"V - ДОДАТКОВА ІНФОРМАЦІЯ", langLabel:"Мови:", loisirLabel:"Хобі:", stageDu:"з", stageAu:"по" },
@@ -142,7 +163,7 @@
               lblStageTitle:"Цель стажировки", lblStageStart:"Дата начала", lblStageEnd:"Дата окончания", lblStagePoste:"Должность",
               lblCompetences:"Навыки (через запятую)", lblExperiences:"Опыт работы", lblFormations:"Образование / Дипломы",
               lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", previewTitle:"Просмотр резюме", pdfBtnText:"PDF",
-              footerText:"✔️ Резюме из 5 частей + фото. Смените язык — всё обновится.",
+              footerText:"✔️ Резюме из 5 частей + фото. Заполните свои данные и смените язык.",
               newExpTitre:"Новая должность", newExpEntreprise:"Компания", newExpPeriode:"2024 – 2025", newExpDesc:"Описание обязанностей",
               newDiplome:"Новый диплом", newEtablissement:"Учреждение", newAnnee:"2025",
               sectionComp:"III - НАВЫКИ", sectionExp:"ОПЫТ РАБОТЫ", sectionForm:"IV - ОБРАЗОВАНИЕ", sectionInfo:"V - ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ", langLabel:"Языки:", loisirLabel:"Хобби:", stageDu:"с", stageAu:"по" },
@@ -150,7 +171,7 @@
               lblStageTitle:"عنوان التدريب", lblStageStart:"تاريخ البداية", lblStageEnd:"تاريخ النهاية", lblStagePoste:"المنصب المطلوب",
               lblCompetences:"المهارات (مفصولة بفواصل)", lblExperiences:"الخبرات المهنية", lblFormations:"التعليم / الشهادات",
               lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", previewTitle:"معاينة السيرة الذاتية", pdfBtnText:"PDF",
-              footerText:"✔️ سيرة ذاتية من 5 أجزاء + صورة. غيّر اللغة ويتكيّف كل شيء.",
+              footerText:"✔️ سيرة ذاتية من 5 أجزاء + صورة. املأ معلوماتك وغيّر اللغة.",
               newExpTitre:"منصب جديد", newExpEntreprise:"الشركة", newExpPeriode:"2024 – 2025", newExpDesc:"وصف الوظيفة",
               newDiplome:"شهادة جديدة", newEtablissement:"المؤسسة", newAnnee:"2025",
               sectionComp:"ثالثاً - المهارات", sectionExp:"الخبرات المهنية", sectionForm:"رابعاً - التعليم", sectionInfo:"خامساً - معلومات إضافية", langLabel:"اللغات:", loisirLabel:"الهوايات:", stageDu:"من", stageAu:"إلى" },
@@ -158,7 +179,7 @@
               lblStageTitle:"عنوان کارآموزی", lblStageStart:"تاریخ شروع", lblStageEnd:"تاریخ ختم", lblStagePoste:"موقعیت مورد نظر",
               lblCompetences:"مهارت‌ها (با کاما جدا شود)", lblExperiences:"تجارب کاری", lblFormations:"تحصیلات / دیپلم‌ها",
               lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", previewTitle:"پیش‌نمایش رزومه", pdfBtnText:"PDF",
-              footerText:"✔️ رزومه ۵ بخشی + عکس. زبان را تغییر دهید، همه چیز تطابق می‌یابد.",
+              footerText:"✔️ رزومه ۵ بخشی + عکس. معلومات خود را پر کنید و زبان را تغییر دهید.",
               newExpTitre:"موقعیت جدید", newExpEntreprise:"شرکت", newExpPeriode:"۲۰۲۴ – ۲۰۲۵", newExpDesc:"شرح وظایف",
               newDiplome:"دیپلم جدید", newEtablissement:"مؤسسه", newAnnee:"۲۰۲۵",
               sectionComp:"III - مهارت‌ها", sectionExp:"تجارب کاری", sectionForm:"IV - تحصیلات", sectionInfo:"V - اطلاعات تکمیلی", langLabel:"زبان‌ها:", loisirLabel:"سرگرمی‌ها:", stageDu:"از", stageAu:"تا" }
@@ -192,7 +213,7 @@
 
     function renderPreview() {
         const t = translations[currentLang];
-        const nom = document.getElementById('fullname').value || "Nom";
+        const nom = document.getElementById('fullname').value;
         const phone = document.getElementById('phone').value;
         const email = document.getElementById('email').value;
         const adresse = document.getElementById('location').value;
@@ -208,19 +229,23 @@
         const loisirs = document.getElementById('loisirs').value;
 
         let html = `<div class="cv-five">`;
-        // I - Coordonnées avec photo
+        // I - Coordonnées
         html += `<div class="coordonnees">`;
         if (photoBase64) html += `<img src="${photoBase64}" class="cv-photo" alt="photo">`;
         else html += `<div class="cv-photo" style="background:#eef2f8; display:flex; align-items:center; justify-content:center; font-size:12px; color:#aaa;">📷</div>`;
-        html += `<div class="coord-text"><div class="name">${escapeHtml(nom)}</div><div class="contact-details">`;
+        html += `<div class="coord-text"><div class="name">${escapeHtml(nom) || "Votre nom"}</div><div class="contact-details">`;
         if(phone) html += `<span><i class="fas fa-phone-alt"></i> ${escapeHtml(phone)}</span>`;
         if(email) html += `<span><i class="fas fa-envelope"></i> ${escapeHtml(email)}</span>`;
         if(adresse) html += `<span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(adresse)}</span>`;
         if(permis) html += `<span><i class="fas fa-car"></i> ${escapeHtml(permis)}</span>`;
         if(website) html += `<span><i class="fas fa-globe"></i> ${escapeHtml(website)}</span>`;
         html += `</div></div></div>`;
-        // II - Titre stage
-        html += `<div class="titre-stage"><h3>${escapeHtml(stageTitle)}</h3><p>${t.stageDu} ${escapeHtml(stageStart)} ${t.stageAu} ${escapeHtml(stageEnd)}<br><strong>${escapeHtml(stagePoste)}</strong></p></div>`;
+        // II - Stage
+        if(stageTitle || stageStart || stageEnd || stagePoste) {
+            html += `<div class="titre-stage"><h3>${escapeHtml(stageTitle) || "Objectif stage"}</h3><p>${t.stageDu} ${escapeHtml(stageStart)} ${t.stageAu} ${escapeHtml(stageEnd)}<br><strong>${escapeHtml(stagePoste) || "Poste recherché"}</strong></p></div>`;
+        } else {
+            html += `<div class="titre-stage"><h3>Objectif stage</h3><p><br><strong>---</strong></p></div>`;
+        }
         // III - Compétences
         if(competences.length) {
             html += `<div class="section"><div class="section-title">${t.sectionComp}</div><div class="competences-list">`;
@@ -254,28 +279,24 @@
         }
         html += `</div>`;
         document.getElementById('resumeContent').innerHTML = html;
-        // Appliquer RTL si nécessaire
         const cvDiv = document.querySelector('#resumeContent .cv-five');
-        if (currentLang === 'ar' || currentLang === 'prs') {
-            cvDiv.classList.add('rtl');
-        } else {
-            cvDiv.classList.remove('rtl');
-        }
+        if (cvDiv && (currentLang === 'ar' || currentLang === 'prs')) cvDiv.classList.add('rtl');
+        else if (cvDiv) cvDiv.classList.remove('rtl');
     }
 
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>(m==='&'?'&amp;':m==='<'?'&lt;':'&gt;')); }
 
-    // Gestion des expériences et formations (même code que précédemment, adapté pour préserver les données)
+    // Gestion expériences
     function renderExpForm() {
         const container = document.getElementById('expContainer');
         container.innerHTML = '';
         experiences.forEach((exp, idx) => {
             let div = document.createElement('div'); div.className = 'array-item';
             div.innerHTML = `<button type="button" class="remove-item" data-type="exp" data-index="${idx}"><i class="fas fa-trash-alt"></i></button>
-                <div class="form-group"><label>Titre</label><input class="exp-titre" value="${escapeHtml(exp.titre)}" data-index="${idx}" data-field="titre"></div>
-                <div class="form-group"><label>Entreprise</label><input class="exp-entreprise" value="${escapeHtml(exp.entreprise)}" data-index="${idx}" data-field="entreprise"></div>
-                <div class="form-group"><label>Période</label><input class="exp-periode" value="${escapeHtml(exp.periode)}" data-index="${idx}" data-field="periode"></div>
-                <div class="form-group"><label>Description</label><textarea class="exp-desc" data-index="${idx}" data-field="description" rows="2">${escapeHtml(exp.description)}</textarea></div>`;
+                <div class="form-group"><label>Titre</label><input class="exp-titre" value="${escapeHtml(exp.titre)}" data-index="${idx}" data-field="titre" placeholder="Ex: Chef de projet"></div>
+                <div class="form-group"><label>Entreprise</label><input class="exp-entreprise" value="${escapeHtml(exp.entreprise)}" data-index="${idx}" data-field="entreprise" placeholder="Nom de l'entreprise"></div>
+                <div class="form-group"><label>Période</label><input class="exp-periode" value="${escapeHtml(exp.periode)}" data-index="${idx}" data-field="periode" placeholder="2022 – 2024"></div>
+                <div class="form-group"><label>Description</label><textarea class="exp-desc" data-index="${idx}" data-field="description" rows="2" placeholder="Descriptif...">${escapeHtml(exp.description)}</textarea></div>`;
             container.appendChild(div);
         });
         attachExpEvents();
@@ -294,9 +315,9 @@
         formations.forEach((edu, idx) => {
             let div = document.createElement('div'); div.className = 'array-item';
             div.innerHTML = `<button type="button" class="remove-item" data-type="edu" data-index="${idx}"><i class="fas fa-trash-alt"></i></button>
-                <div class="form-group"><label>Diplôme</label><input class="edu-diplome" value="${escapeHtml(edu.diplome)}" data-index="${idx}" data-field="diplome"></div>
-                <div class="form-group"><label>Établissement</label><input class="edu-etablissement" value="${escapeHtml(edu.etablissement)}" data-index="${idx}" data-field="etablissement"></div>
-                <div class="form-group"><label>Année</label><input class="edu-annee" value="${escapeHtml(edu.annee)}" data-index="${idx}" data-field="annee"></div>`;
+                <div class="form-group"><label>Diplôme</label><input class="edu-diplome" value="${escapeHtml(edu.diplome)}" data-index="${idx}" data-field="diplome" placeholder="Master, Licence..."></div>
+                <div class="form-group"><label>Établissement</label><input class="edu-etablissement" value="${escapeHtml(edu.etablissement)}" data-index="${idx}" data-field="etablissement" placeholder="Université, école"></div>
+                <div class="form-group"><label>Année</label><input class="edu-annee" value="${escapeHtml(edu.annee)}" data-index="${idx}" data-field="annee" placeholder="2023"></div>`;
             container.appendChild(div);
         });
         attachEduEvents();
@@ -309,6 +330,7 @@
         document.querySelectorAll('.remove-item[data-type="edu"]').forEach(btn => btn.addEventListener('click', (e) => { let idx = parseInt(btn.dataset.index); if(!isNaN(idx)) { formations.splice(idx,1); renderEduForm(); renderPreview(); } }));
     }
     function updateEdu(e) { let idx = parseInt(e.target.dataset.index); if(!isNaN(idx) && formations[idx]) { formations[idx][e.target.dataset.field] = e.target.value; renderPreview(); } }
+
     function addExperience() { const t=translations[currentLang]; experiences.push({titre: t.newExpTitre, entreprise: t.newExpEntreprise, periode: t.newExpPeriode, description: t.newExpDesc}); renderExpForm(); renderPreview(); }
     function addEducation() { const t=translations[currentLang]; formations.push({diplome: t.newDiplome, etablissement: t.newEtablissement, annee: t.newAnnee}); renderEduForm(); renderPreview(); }
 
@@ -325,16 +347,10 @@
         document.querySelectorAll('.lang-btn').forEach(btn => { if(btn.dataset.lang === lang) btn.classList.add('active'); else btn.classList.remove('active'); });
     }
 
-    // Gestion photo
     document.getElementById('photoUpload').addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if(file) {
-            const reader = new FileReader();
-            reader.onload = function(ev) { photoBase64 = ev.target.result; renderPreview(); };
-            reader.readAsDataURL(file);
-        }
+        if(file) { const reader = new FileReader(); reader.onload = function(ev) { photoBase64 = ev.target.result; renderPreview(); }; reader.readAsDataURL(file); }
     });
-
     document.getElementById('addExpBtn').addEventListener('click', addExperience);
     document.getElementById('addEduBtn').addEventListener('click', addEducation);
     document.getElementById('downloadPDFBtn').addEventListener('click', downloadPDF);
