@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CV Builder - 5 parties (6 langues) | PDF pleine largeur A4</title>
+    <title>CV Builder - 5 parties (6 langues) | + zoom preview</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -33,48 +33,36 @@
         .array-item { background: #fafcff; padding: 16px; border-radius: 24px; margin-bottom: 18px; border: 1px solid #e9f0f5; position: relative; }
         .remove-item { background: none; border: none; color: #c0392b; font-size: 1.2rem; cursor: pointer; float: right; }
         .preview-panel { flex: 1.8; min-width: 360px; background: white; border-radius: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
-        .preview-header { padding: 20px 28px; background: #ffffff; border-bottom: 2px solid #eef3fa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .btn-pdf { background: #1f4870; border: none; padding: 10px 22px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        .preview-header { padding: 15px 28px; background: #ffffff; border-bottom: 2px solid #eef3fa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .zoom-controls { display: flex; gap: 12px; align-items: center; background: #f8fafc; padding: 5px 12px; border-radius: 40px; }
+        .zoom-btn { background: #eef2f8; border: none; width: 32px; height: 32px; border-radius: 50%; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; }
+        .zoom-btn:hover { background: #dce5ef; }
+        .zoom-value { font-weight: 600; min-width: 50px; text-align: center; font-size: 0.9rem; }
+        .btn-pdf { background: #1f4870; border: none; padding: 8px 20px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
         .btn-pdf:hover { background: #0f3557; transform: translateY(-2px); }
-        .cv-card { padding: 32px 30px; background: white; }
-
-        /* STYLES CV - ADAPTATIFS POUR PDF PLEINE LARGEUR */
-        .cv-five { font-family: 'Inter', sans-serif; font-size: 12pt; line-height: 1.3; }
+        .cv-card { padding: 32px 30px; background: white; overflow-x: auto; }
+        /* Style CV de base (le font-size sera modifié dynamiquement via JS) */
+        .cv-five { font-family: 'Inter', sans-serif; line-height: 1.3; transition: font-size 0.1s ease; }
         .cv-five .section { margin-bottom: 14px; }
-        .cv-five .section-title { font-size: 1.1rem; font-weight: 800; color: #1f4a6e; border-left: 4px solid #2a6f6f; padding-left: 12px; margin-bottom: 10px; }
+        .cv-five .section-title { font-weight: 800; color: #1f4a6e; border-left: 4px solid #2a6f6f; padding-left: 12px; margin-bottom: 10px; }
         .coordonnees { display: flex; align-items: center; gap: 20px; margin-bottom: 14px; border-bottom: 1px solid #e2edf5; padding-bottom: 14px; flex-wrap: wrap; }
         .cv-photo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid #2a6f6f; background: #f4f9fe; flex-shrink: 0; }
-        .coord-text .name { font-size: 1.8rem; font-weight: 800; color: #1a4a6e; margin-bottom: 6px; }
-        .contact-details { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.85rem; color: #2c5a7a; }
-        .titre-stage { background: #f3f9ff; padding: 8px 16px; border-radius: 20px; text-align: center; margin-bottom: 14px; font-size: 0.9rem; }
+        .coord-text .name { font-weight: 800; color: #1a4a6e; margin-bottom: 6px; }
+        .contact-details { display: flex; flex-wrap: wrap; gap: 12px; color: #2c5a7a; }
+        .titre-stage { background: #f3f9ff; padding: 8px 16px; border-radius: 20px; text-align: center; margin-bottom: 14px; }
         .competences-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-        .competence-badge { background: #e6f0f5; padding: 4px 14px; border-radius: 30px; font-size: 0.8rem; font-weight: 500; }
+        .competence-badge { background: #e6f0f5; padding: 4px 14px; border-radius: 30px; font-weight: 500; }
         .exp-item, .edu-item { margin-bottom: 12px; }
-        .exp-title { font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 4px; font-size: 0.9rem; }
-        .exp-date { font-weight: 400; color: #5f7d9c; font-size: 0.8rem; }
-        .exp-desc { font-size: 0.8rem; color: #2c4a6e; margin-top: 4px; line-height: 1.35; }
+        .exp-title { font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 4px; }
+        .exp-date { font-weight: 400; color: #5f7d9c; }
+        .exp-desc { color: #2c4a6e; margin-top: 4px; line-height: 1.35; }
         .info-complementaire { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; }
-        .info-block { background: #f8fbfe; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; }
+        .info-block { background: #f8fbfe; padding: 5px 14px; border-radius: 20px; }
         footer { text-align: center; margin-top: 32px; color: #6c86a3; font-size: 0.8rem; }
         @media (max-width: 800px) { body { padding: 1rem; } .coordonnees { flex-direction: column; text-align: center; } .contact-details { justify-content: center; } }
         .rtl { direction: rtl; text-align: right; }
         .rtl .section-title { border-left: none; border-right: 4px solid #2a6f6f; padding-left: 0; padding-right: 12px; }
-        .creator-credit { position: fixed; bottom: 20px; right: 20px; background: rgba(31,72,112,0.85); backdrop-filter: blur(8px); padding: 6px 16px; border-radius: 40px; color: white; font-size: 0.75rem; font-weight: 500; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); pointer-events: none; }
-        @media print {
-            body { margin: 0; padding: 0; background: white; }
-            .editor-panel, .lang-bar, .preview-header, footer, .creator-credit, .btn-pdf { display: none !important; }
-            .preview-panel { margin: 0; padding: 0; box-shadow: none; width: 100%; }
-            .cv-card { padding: 0; margin: 0; }
-            .cv-five { font-size: 11pt; line-height: 1.2; }
-            .coordonnees { gap: 12px; }
-            .cv-photo { width: 80px; height: 80px; }
-            .section { margin-bottom: 10px; }
-            .exp-item, .edu-item { margin-bottom: 8px; }
-            .competence-badge { font-size: 9pt; }
-            page-break-after: avoid;
-            page-break-inside: avoid;
-            break-inside: avoid;
-        }
+        .creator-credit { position: fixed; bottom: 20px; right: 20px; background: rgba(31,72,112,0.85); backdrop-filter: blur(8px); padding: 6px 16px; border-radius: 40px; color: white; font-size: 0.75rem; font-weight: 500; z-index: 1000; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -91,31 +79,42 @@
         <div class="editor-panel">
             <h3>✎ CV 5 parties + photo</h3>
             <div class="form-group"><label id="lblPhoto">📷 Photo</label><input type="file" id="photoUpload" accept="image/jpeg, image/png, image/jpg"></div>
-            <div class="form-group"><label id="lblNom">Nom complet</label><input type="text" id="fullname" value="" placeholder="Ex: Sophie Martin"></div>
-            <div class="inline-row"><div class="form-group"><label id="lblPhone">Téléphone</label><input type="text" id="phone" value="" placeholder="+33 6 12 34 56 78"></div><div class="form-group"><label id="lblEmail">Email</label><input type="email" id="email" value="" placeholder="sophie@exemple.com"></div></div>
-            <div class="inline-row"><div class="form-group"><label id="lblAdresse">Adresse / Ville</label><input type="text" id="location" value="" placeholder="Paris, France"></div><div class="form-group"><label id="lblPermis">Permis / Véhicule</label><input type="text" id="permis" value="" placeholder="Permis B"></div></div>
-            <div class="form-group"><label id="lblSite">Site web</label><input type="text" id="website" value="" placeholder="www.monsite.com"></div>
+            <div class="form-group"><label id="lblNom">Nom complet</label><input type="text" id="fullname" value="" placeholder="Ex: Pavlo Pashkin"></div>
+            <div class="inline-row"><div class="form-group"><label id="lblPhone">Téléphone</label><input type="text" id="phone" value="" placeholder="07 45 62 50 07"></div><div class="form-group"><label id="lblEmail">Email</label><input type="email" id="email" value="" placeholder="contact@paulmultiservice.fr"></div></div>
+            <div class="inline-row"><div class="form-group"><label id="lblAdresse">Adresse / Ville</label><input type="text" id="location" value="" placeholder="Rennes, France"></div><div class="form-group"><label id="lblPermis">Permis / Véhicule</label><input type="text" id="permis" value="" placeholder="Permis B, C"></div></div>
+            <div class="form-group"><label id="lblSite">Site web</label><input type="text" id="website" value="" placeholder="paulmultiservice.fr"></div>
             <div class="checkbox-group"><input type="checkbox" id="hideWebsiteCheckbox"> <label id="lblHideWebsite">Masquer le site web dans le CV</label></div>
             <hr>
-            <div class="form-group"><label id="lblStageTitle">Titre du stage / objectif</label><input type="text" id="stageTitle" value="" placeholder="Ex: Recherche stage marketing"></div>
-            <div class="inline-row"><div class="form-group"><label id="lblStageStart">Date début</label><input type="text" id="stageStart" value="" placeholder="01/06/2025"></div><div class="form-group"><label id="lblStageEnd">Date fin</label><input type="text" id="stageEnd" value="" placeholder="31/08/2025"></div></div>
-            <div class="form-group"><label id="lblStagePoste">Poste recherché</label><input type="text" id="stagePoste" value="" placeholder="Stagiaire marketing"></div>
+            <div class="form-group"><label id="lblStageTitle">Titre du stage / objectif</label><input type="text" id="stageTitle" value="" placeholder="Recherche stagiaire"></div>
+            <div class="inline-row"><div class="form-group"><label id="lblStageStart">Date début</label><input type="text" id="stageStart" value="" placeholder="29/06/2026"></div><div class="form-group"><label id="lblStageEnd">Date fin</label><input type="text" id="stageEnd" value="" placeholder="17/07/2026"></div></div>
+            <div class="form-group"><label id="lblStagePoste">Poste recherché</label><input type="text" id="stagePoste" value="" placeholder="Stagiaire CLPS"></div>
             <hr>
-            <div class="form-group"><label id="lblCompetences">Compétences (séparées par virgules)</label><textarea id="competencesInput" rows="2" placeholder="Gestion de projet, Canva, WordPress, SEO"></textarea></div>
+            <div class="form-group"><label id="lblCompetences">Compétences (séparées par virgules)</label><textarea id="competencesInput" rows="3" placeholder="Petit bricolage, Maintenance technique, Conseil informatique, Développement Web, Pack Office, Gestion de crise"></textarea></div>
             <div class="array-header"><label id="lblExperiences">Expériences professionnelles</label><button type="button" class="btn-add" id="addExpBtn"><i class="fas fa-plus"></i> <span id="addExpText">Ajouter</span></button></div>
             <div id="expContainer"></div>
             <div class="array-header"><label id="lblFormations">Formations / Diplômes</label><button type="button" class="btn-add" id="addEduBtn"><i class="fas fa-plus"></i> <span id="addEduText">Ajouter</span></button></div>
             <div id="eduContainer"></div>
             <hr>
-            <div class="form-group"><label id="lblLangues">Langues</label><input type="text" id="langues" value="" placeholder="Anglais courant, Espagnol intermédiaire"></div>
-            <div class="form-group"><label id="lblLoisirs">Loisirs / Centres d'intérêt</label><input type="text" id="loisirs" value="" placeholder="Sport, photographie, voyage"></div>
+            <div class="form-group"><label id="lblLangues">Langues</label><input type="text" id="langues" value="" placeholder="Français, Anglais, Russe"></div>
+            <div class="form-group"><label id="lblLoisirs">Loisirs / Centres d'intérêt</label><input type="text" id="loisirs" value="" placeholder="Sport, photographie, bénévolat"></div>
         </div>
         <div class="preview-panel">
-            <div class="preview-header"><h2><i class="far fa-file-alt"></i> <span id="previewTitle">Aperçu CV</span></h2><button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF pleine largeur</span></button></div>
+            <div class="preview-header">
+                <h2><i class="far fa-file-alt"></i> <span id="previewTitle">Aperçu CV</span></h2>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" id="zoomOutBtn">A−</button>
+                        <span class="zoom-value" id="zoomPercent">100%</span>
+                        <button class="zoom-btn" id="zoomInBtn">A+</button>
+                        <button class="zoom-btn" id="zoomResetBtn" style="font-size: 0.8rem;">↺</button>
+                    </div>
+                    <button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF</span></button>
+                </div>
+            </div>
             <div class="cv-card" id="resumeCard"><div id="resumeContent"></div></div>
         </div>
     </div>
-    <footer id="footerText">✔️ CV 5 parties + photo. Le PDF occupe toute la largeur A4, sans marges blanches.</footer>
+    <footer id="footerText">✔️ Ajustez le zoom (A− / A+) pour voir le rendu. Le PDF utilisera la taille de texte actuelle.</footer>
 </div>
 <div class="creator-credit"><i class="fas fa-code"></i> Créateur : Pavlo Pashkin</div>
 
@@ -124,53 +123,54 @@
     let formations = [];
     let currentLang = 'fr';
     let photoBase64 = "";
+    let currentZoom = 100; // pourcentage
 
     const translations = {
         fr: { lblPhoto:"📷 Photo", lblNom:"Nom complet", lblPhone:"Téléphone", lblEmail:"Email", lblAdresse:"Adresse / Ville", lblPermis:"Permis / Véhicule", lblSite:"Site web", lblHideWebsite:"Masquer le site web dans le CV",
               lblStageTitle:"Titre du stage", lblStageStart:"Date début", lblStageEnd:"Date fin", lblStagePoste:"Poste recherché",
               lblCompetences:"Compétences (séparées par virgules)", lblExperiences:"Expériences professionnelles", lblFormations:"Formations / Diplômes",
-              lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", previewTitle:"Aperçu CV", pdfBtnText:"PDF pleine largeur",
-              footerText:"✔️ CV 5 parties + photo. Le PDF occupe toute la largeur A4, sans marges blanches.",
+              lblLangues:"Langues", lblLoisirs:"Loisirs", addExpText:"Ajouter", addEduText:"Ajouter", previewTitle:"Aperçu CV", pdfBtnText:"PDF",
+              footerText:"✔️ Ajustez le zoom (A− / A+) pour voir le rendu. Le PDF utilisera la taille de texte actuelle.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - COMPÉTENCES", sectionExp:"EXPÉRIENCES PROFESSIONNELLES", sectionForm:"IV - FORMATIONS / DIPLÔMES", sectionInfo:"V - INFORMATIONS COMPLÉMENTAIRES", langLabel:"Langues :", loisirLabel:"Loisirs :", stageDu:"Du", stageAu:"au" },
         en: { lblPhoto:"📷 Photo", lblNom:"Full name", lblPhone:"Phone", lblEmail:"Email", lblAdresse:"Address / City", lblPermis:"License / Vehicle", lblSite:"Website", lblHideWebsite:"Hide website in CV",
               lblStageTitle:"Internship title", lblStageStart:"Start date", lblStageEnd:"End date", lblStagePoste:"Position sought",
               lblCompetences:"Skills (comma separated)", lblExperiences:"Work experience", lblFormations:"Education / Degrees",
-              lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", previewTitle:"CV Preview", pdfBtnText:"PDF full width",
-              footerText:"✔️ 5-part CV + photo. PDF occupies full A4 width, no white margins.",
+              lblLangues:"Languages", lblLoisirs:"Hobbies", addExpText:"Add", addEduText:"Add", previewTitle:"CV Preview", pdfBtnText:"PDF",
+              footerText:"✔️ Adjust zoom (A− / A+) to see rendering. PDF uses current text size.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - SKILLS", sectionExp:"WORK EXPERIENCE", sectionForm:"IV - EDUCATION", sectionInfo:"V - ADDITIONAL INFO", langLabel:"Languages:", loisirLabel:"Hobbies:", stageDu:"From", stageAu:"to" },
         uk: { lblPhoto:"📷 Фото", lblNom:"Повне ім'я", lblPhone:"Телефон", lblEmail:"Email", lblAdresse:"Адреса / Місто", lblPermis:"Права / Транспорт", lblSite:"Веб-сайт", lblHideWebsite:"Сховати веб-сайт у резюме",
               lblStageTitle:"Мета стажування", lblStageStart:"Дата початку", lblStageEnd:"Дата завершення", lblStagePoste:"Посада",
               lblCompetences:"Навички (через кому)", lblExperiences:"Досвід роботи", lblFormations:"Освіта / Дипломи",
-              lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", previewTitle:"Попередній перегляд", pdfBtnText:"PDF повна ширина",
-              footerText:"✔️ Резюме з 5 частин + фото. PDF займає всю ширину A4, без білих полів.",
+              lblLangues:"Мови", lblLoisirs:"Хобі", addExpText:"Додати", addEduText:"Додати", previewTitle:"Попередній перегляд", pdfBtnText:"PDF",
+              footerText:"✔️ Регулюйте масштаб (A− / A+), щоб бачити вигляд. PDF використовує поточний розмір тексту.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - НАВИЧКИ", sectionExp:"ДОСВІД РОБОТИ", sectionForm:"IV - ОСВІТА", sectionInfo:"V - ДОДАТКОВА ІНФОРМАЦІЯ", langLabel:"Мови:", loisirLabel:"Хобі:", stageDu:"з", stageAu:"по" },
         ru: { lblPhoto:"📷 Фото", lblNom:"Полное имя", lblPhone:"Телефон", lblEmail:"Email", lblAdresse:"Адрес / Город", lblPermis:"Права / Транспорт", lblSite:"Сайт", lblHideWebsite:"Скрыть сайт в резюме",
               lblStageTitle:"Цель стажировки", lblStageStart:"Дата начала", lblStageEnd:"Дата окончания", lblStagePoste:"Должность",
               lblCompetences:"Навыки (через запятую)", lblExperiences:"Опыт работы", lblFormations:"Образование / Дипломы",
-              lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", previewTitle:"Просмотр резюме", pdfBtnText:"PDF полная ширина",
-              footerText:"✔️ Резюме из 5 частей + фото. PDF занимает всю ширину A4, без белых полей.",
+              lblLangues:"Языки", lblLoisirs:"Хобби", addExpText:"Добавить", addEduText:"Добавить", previewTitle:"Просмотр резюме", pdfBtnText:"PDF",
+              footerText:"✔️ Регулируйте масштаб (A− / A+), чтобы видеть отображение. PDF использует текущий размер текста.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - НАВЫКИ", sectionExp:"ОПЫТ РАБОТЫ", sectionForm:"IV - ОБРАЗОВАНИЕ", sectionInfo:"V - ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ", langLabel:"Языки:", loisirLabel:"Хобби:", stageDu:"с", stageAu:"по" },
         ar: { lblPhoto:"📷 صورة", lblNom:"الاسم الكامل", lblPhone:"الهاتف", lblEmail:"البريد الإلكتروني", lblAdresse:"العنوان / المدينة", lblPermis:"رخصة القيادة", lblSite:"الموقع الإلكتروني", lblHideWebsite:"إخفاء الموقع الإلكتروني في السيرة الذاتية",
               lblStageTitle:"عنوان التدريب", lblStageStart:"تاريخ البداية", lblStageEnd:"تاريخ النهاية", lblStagePoste:"المنصب المطلوب",
               lblCompetences:"المهارات (مفصولة بفواصل)", lblExperiences:"الخبرات المهنية", lblFormations:"التعليم / الشهادات",
-              lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", previewTitle:"معاينة السيرة الذاتية", pdfBtnText:"PDF عرض كامل",
-              footerText:"✔️ سيرة ذاتية من 5 أجزاء + صورة. PDF يشغل عرض A4 بالكامل، بدون هوامش بيضاء.",
+              lblLangues:"اللغات", lblLoisirs:"الهوايات", addExpText:"إضافة", addEduText:"إضافة", previewTitle:"معاينة السيرة الذاتية", pdfBtnText:"PDF",
+              footerText:"✔️ ضبط التكبير (A− / A+) لرؤية المظهر. PDF يستخدم حجم النص الحالي.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"ثالثاً - المهارات", sectionExp:"الخبرات المهنية", sectionForm:"رابعاً - التعليم", sectionInfo:"خامساً - معلومات إضافية", langLabel:"اللغات:", loisirLabel:"الهوايات:", stageDu:"من", stageAu:"إلى" },
         prs: { lblPhoto:"📷 عکس", lblNom:"نام کامل", lblPhone:"تلفن", lblEmail:"ایمیل", lblAdresse:"آدرس / شهر", lblPermis:"جواز رانندگی", lblSite:"ویب‌سایت", lblHideWebsite:"پنهان کردن وب‌سایت در رزومه",
               lblStageTitle:"عنوان کارآموزی", lblStageStart:"تاریخ شروع", lblStageEnd:"تاریخ ختم", lblStagePoste:"موقعیت مورد نظر",
               lblCompetences:"مهارت‌ها (با کاما جدا شود)", lblExperiences:"تجارب کاری", lblFormations:"تحصیلات / دیپلم‌ها",
-              lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", previewTitle:"پیش‌نمایش رزومه", pdfBtnText:"PDF تمام عرض",
-              footerText:"✔️ رزومه ۵ بخشی + عکس. PDF تمام عرض A4 را اشغال می‌کند، بدون حاشیه سفید.",
+              lblLangues:"زبان‌ها", lblLoisirs:"سرگرمی‌ها", addExpText:"افزودن", addEduText:"افزودن", previewTitle:"پیش‌نمایش رزومه", pdfBtnText:"PDF",
+              footerText:"✔️ بزرگنمایی (A− / A+) را تنظیم کنید تا ظاهر را ببینید. PDF از اندازه فعلی متن استفاده می‌کند.",
               newExpTitre:"", newExpEntreprise:"", newExpPeriode:"", newExpDesc:"",
               newDiplome:"", newEtablissement:"", newAnnee:"",
               sectionComp:"III - مهارت‌ها", sectionExp:"تجارب کاری", sectionForm:"IV - تحصیلات", sectionInfo:"V - اطلاعات تکمیلی", langLabel:"زبان‌ها:", loisirLabel:"سرگرمی‌ها:", stageDu:"از", stageAu:"تا" }
@@ -203,6 +203,20 @@
         document.getElementById('footerText').innerText = t.footerText;
     }
 
+    function applyZoom() {
+        const cvElement = document.querySelector('#resumeContent .cv-five');
+        if (cvElement) {
+            const baseSize = 12; // pt
+            const newSize = (baseSize * currentZoom) / 100;
+            cvElement.style.fontSize = newSize + 'pt';
+            document.getElementById('zoomPercent').innerText = currentZoom + '%';
+        }
+    }
+
+    function zoomIn() { if (currentZoom < 150) { currentZoom += 10; applyZoom(); } }
+    function zoomOut() { if (currentZoom > 60) { currentZoom -= 10; applyZoom(); } }
+    function zoomReset() { currentZoom = 100; applyZoom(); }
+
     function renderPreview() {
         const t = translations[currentLang];
         const nom = document.getElementById('fullname').value;
@@ -222,11 +236,11 @@
         const langues = document.getElementById('langues').value;
         const loisirs = document.getElementById('loisirs').value;
 
-        let html = `<div class="cv-five">`;
+        let html = `<div class="cv-five" style="font-size: ${(12*currentZoom/100)}pt;">`;
         html += `<div class="coordonnees">`;
         if (photoBase64) html += `<img src="${photoBase64}" class="cv-photo" alt="photo">`;
         else html += `<div class="cv-photo" style="background:#eef2f8; display:flex; align-items:center; justify-content:center; font-size:12px; color:#aaa;">📷</div>`;
-        html += `<div class="coord-text"><div class="name">${escapeHtml(nom) || "Votre nom"}</div><div class="contact-details">`;
+        html += `<div class="coord-text"><div class="name" style="font-size: ${(1.8*currentZoom/100)}rem;">${escapeHtml(nom) || "Votre nom"}</div><div class="contact-details">`;
         if(phone) html += `<span><i class="fas fa-phone-alt"></i> ${escapeHtml(phone)}</span>`;
         if(email) html += `<span><i class="fas fa-envelope"></i> ${escapeHtml(email)}</span>`;
         if(adresse) html += `<span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(adresse)}</span>`;
@@ -241,12 +255,12 @@
         }
 
         if(competences.length) {
-            html += `<div class="section"><div class="section-title">${t.sectionComp}</div><div class="competences-list">`;
+            html += `<div class="section"><div class="section-title" style="font-size: ${(1.1*currentZoom/100)}rem;">${t.sectionComp}</div><div class="competences-list">`;
             competences.forEach(c => html += `<span class="competence-badge">${escapeHtml(c)}</span>`);
             html += `</div></div>`;
         }
         if(experiences.length) {
-            html += `<div class="section"><div class="section-title">${t.sectionExp}</div>`;
+            html += `<div class="section"><div class="section-title" style="font-size: ${(1.1*currentZoom/100)}rem;">${t.sectionExp}</div>`;
             experiences.forEach(exp => {
                 html += `<div class="exp-item"><div class="exp-title"><span>${escapeHtml(exp.titre)} - ${escapeHtml(exp.entreprise)}</span><span class="exp-date">${escapeHtml(exp.periode)}</span></div>`;
                 if(exp.description) html += `<div class="exp-desc">${escapeHtml(exp.description)}</div>`;
@@ -255,14 +269,14 @@
             html += `</div>`;
         }
         if(formations.length) {
-            html += `<div class="section"><div class="section-title">${t.sectionForm}</div>`;
+            html += `<div class="section"><div class="section-title" style="font-size: ${(1.1*currentZoom/100)}rem;">${t.sectionForm}</div>`;
             formations.forEach(edu => {
                 html += `<div class="edu-item"><div class="exp-title"><span>${escapeHtml(edu.diplome)} - ${escapeHtml(edu.etablissement)}</span><span class="exp-date">${escapeHtml(edu.annee)}</span></div></div>`;
             });
             html += `</div>`;
         }
         if(langues || loisirs) {
-            html += `<div class="section"><div class="section-title">${t.sectionInfo}</div><div class="info-complementaire">`;
+            html += `<div class="section"><div class="section-title" style="font-size: ${(1.1*currentZoom/100)}rem;">${t.sectionInfo}</div><div class="info-complementaire">`;
             if(langues) html += `<div class="info-block"><i class="fas fa-language"></i> ${t.langLabel} ${escapeHtml(langues)}</div>`;
             if(loisirs) html += `<div class="info-block"><i class="fas fa-heart"></i> ${t.loisirLabel} ${escapeHtml(loisirs)}</div>`;
             html += `</div></div>`;
@@ -272,11 +286,12 @@
         const cvDiv = document.querySelector('#resumeContent .cv-five');
         if (cvDiv && (currentLang === 'ar' || currentLang === 'prs')) cvDiv.classList.add('rtl');
         else if (cvDiv) cvDiv.classList.remove('rtl');
+        applyZoom(); // применяем текущий зум после обновления
     }
 
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>(m==='&'?'&amp;':m==='<'?'&lt;':'&gt;')); }
 
-    // Formulaires dynamiques avec champs vides
+    // Formulaires dynamiques (identiques à avant)
     function renderExpForm() {
         const container = document.getElementById('expContainer');
         container.innerHTML = '';
@@ -330,7 +345,7 @@
         document.getElementById('hideWebsiteCheckbox').addEventListener('change', renderPreview);
     }
 
-    // PDF : pleine largeur sans marges blanches
+    // PDF avec zoom actuel
     async function downloadPDF() {
         const element = document.getElementById('resumeCard');
         if (!element) return;
@@ -349,11 +364,9 @@
             const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
             const pageWidthMM = 210;
             const pageHeightMM = 297;
-            const imgWidthMM = pageWidthMM;   // pleine largeur, pas de marge
+            const imgWidthMM = pageWidthMM;
             const imgHeightMM = (canvas.height * imgWidthMM) / canvas.width;
-            let yOffset = 0;
             if (imgHeightMM > pageHeightMM) {
-                // Si trop haut, on réduit pour tout faire tenir sur une page (mais on garde largeur pleine)
                 const ratio = pageHeightMM / imgHeightMM;
                 const finalWidthMM = imgWidthMM * ratio;
                 const finalHeightMM = pageHeightMM;
@@ -364,7 +377,7 @@
             pdf.save(`CV_${currentLang}.pdf`);
         } catch (error) {
             console.error('Erreur PDF:', error);
-            alert('Erreur lors de la génération du PDF. Vérifiez la console.');
+            alert('Erreur lors de la génération du PDF.');
         } finally {
             btn.innerHTML = originalText;
             btn.disabled = false;
@@ -385,6 +398,9 @@
     document.getElementById('addExpBtn').addEventListener('click', addExperience);
     document.getElementById('addEduBtn').addEventListener('click', addEducation);
     document.getElementById('downloadPDFBtn').addEventListener('click', downloadPDF);
+    document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
+    document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
+    document.getElementById('zoomResetBtn').addEventListener('click', zoomReset);
     document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
     bindInputs(); renderExpForm(); renderEduForm(); setLanguage('fr');
 </script>
