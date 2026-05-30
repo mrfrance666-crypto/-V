@@ -45,15 +45,15 @@
             cursor: pointer;
         }
         .lang-btn.active {
-            background: #1f4870;
-            color: white;
+            background: #fafcff;
+            color: #1f4870;
         }
         .btn-pdf {
-            background: #1f4870;
+            background: #fafcff;
             border: none;
             padding: 8px 20px;
             border-radius: 40px;
-            color: white;
+            color: #1f4870;
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
@@ -119,21 +119,31 @@
         }
         hr { margin: 16px 0; }
 
-        /* СТИЛИ CV — адаптивные */
+        /* СТИЛИ CV */
         .cv {
             background: white;
             max-width: 100%;
             margin: 0 auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .cv-header {
             display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 20px 25px;
+        }
+
+        /* ЛЕВАЯ КОЛОНКА */
+        .cv-left {
+            width: 240px;
+            min-width: 240px;
+            background: #fafcff;
+            color: #1f4870;
+            display: flex;
+            flex-direction: column;
+        }
+        .cv-left-top {
             background: #f8fbfe;
-            border-bottom: 3px solid #2a6f6f;
-            flex-wrap: wrap;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
         .cv-photo {
             width: 90px;
@@ -142,91 +152,95 @@
             object-fit: cover;
             border: 3px solid #2a6f6f;
             background: #eef2f8;
-        }
-        .cv-name {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #1f4870;
-            word-break: break-word;
-        }
-        .cv-two-cols {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .cv-left {
-            flex: 1;
-            min-width: 250px;
-            background: #fafcff;
-            padding: 20px;
-            border-right: 1px solid #e2edf5;
-        }
-        .cv-right {
-            flex: 2;
-            min-width: 280px;
-            padding: 20px;
-        }
-        .cv-left-title {
-            font-weight: 800;
-            font-size: 1rem;
-            color: #1f4870;
-            border-bottom: 2px solid #2a6f6f;
-            display: inline-block;
-            margin: 0 0 12px 0;
-        }
-        .cv-contact {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .cv-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .cv-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1f4870;
+            text-align: center;
             word-break: break-word;
         }
-        .cv-contact i {
-            width: 22px;
+        .cv-left-body { padding: 16px; }
+        .cv-left-title {
+            font-weight: 800;
+            font-size: 0.7rem;
             color: #2a6f6f;
+            border-bottom: 2px solid #2a6f6f;
+            padding-bottom: 4px;
+            margin: 14px 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .cv-left-title:first-child { margin-top: 0; }
+        .cv-contact {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.72rem;
+            color: #2c3e4e;
+            word-break: break-all;
+            line-height: 1.35;
+        }
+        .cv-contact i {
+            width: 14px;
+            color: #2a6f6f;
+            font-size: 0.65rem;
+            margin-top: 2px;
+            flex-shrink: 0;
         }
         .cv-text {
-            font-size: 0.85rem;
-            line-height: 1.4;
-            margin-bottom: 20px;
+            font-size: 0.72rem;
+            line-height: 1.45;
+            color: #2c3e4e;
+            margin-bottom: 4px;
         }
-        .cv-section-title {
-            font-weight: 800;
-            font-size: 1rem;
-            color: #1f4a6e;
-            border-left: 4px solid #2a6f6f;
-            padding-left: 12px;
-            margin: 0 0 12px 0;
+
+        /* ПРАВАЯ КОЛОНКА */
+        .cv-right {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
         .cv-stage {
             background: #eef3fa;
             padding: 12px;
             border-radius: 20px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
-        .cv-stage p {
-            margin: 4px 0;
+        .cv-stage p { margin: 4px 0; }
+        .cv-section-title {
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: #1f4a6e;
+            border-left: 4px solid #2a6f6f;
+            padding-left: 12px;
+            margin: 0 0 10px 0;
         }
         .cv-skills {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 6px;
+            margin-bottom: 14px;
         }
         .cv-skill {
             background: #e6f0f5;
-            padding: 5px 14px;
+            padding: 4px 12px;
             border-radius: 30px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 500;
         }
-        .cv-job {
-            margin-bottom: 16px;
-        }
+        .cv-job { margin-bottom: 12px; }
         .cv-job-title {
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
@@ -235,20 +249,18 @@
         .cv-job-date {
             font-weight: 400;
             color: #5f7d9c;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
         }
         .cv-job-desc {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: #2c4a6e;
-            margin-top: 4px;
+            margin-top: 3px;
             line-height: 1.35;
         }
-        .cv-edu {
-            margin-bottom: 14px;
-        }
+        .cv-edu { margin-bottom: 10px; }
         .cv-edu-title {
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
@@ -257,10 +269,10 @@
         .cv-edu-date {
             font-weight: 400;
             color: #5f7d9c;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
         }
         .cv-edu-place {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: #4a627a;
             margin-top: 2px;
         }
@@ -272,15 +284,13 @@
             .lang-buttons { justify-content: center; }
             .btn-pdf { justify-content: center; }
             .editor { padding: 16px; }
-            .cv-header { flex-direction: column; text-align: center; }
-            .cv-name { font-size: 1.5rem; }
-            .cv-left, .cv-right { border-right: none; }
-            .cv-left { border-bottom: 1px solid #e2edf5; margin-bottom: 10px; }
+            .cv { flex-direction: column; }
+            .cv-left { width: 100%; min-width: 0; }
+            .cv-left-top { flex-direction: row; text-align: left; }
+            .cv-name { font-size: 1.1rem; text-align: left; }
         }
-        /* Для очень маленьких экранов */
         @media (max-width: 480px) {
             .cv-photo { width: 70px; height: 70px; }
-            .cv-name { font-size: 1.2rem; }
             .form-group input, .form-group textarea { font-size: 0.8rem; padding: 8px 10px; }
         }
     </style>
@@ -370,20 +380,22 @@
         const skills = skillsRaw.split(',').map(s=>s.trim()).filter(s=>s);
 
         let html = `<div class="cv">`;
-        html += `<div class="cv-header">`;
-        if(photoBase64) html += `<img src="${photoBase64}" class="cv-photo">`;
-        else html += `<div class="cv-photo" style="display:flex; align-items:center; justify-content:center; background:#eef2f8;">📷</div>`;
+
+        // ── ЛЕВАЯ КОЛОНКА ──
+        html += `<div class="cv-left">`;
+        html += `<div class="cv-left-top">`;
+        if(photoBase64) html += `<div class="cv-photo"><img src="${photoBase64}"></div>`;
+        else html += `<div class="cv-photo">📷</div>`;
         html += `<div class="cv-name">${escapeHtml(fullname) || "Pavlo Pashkin"}</div>`;
         html += `</div>`;
-        html += `<div class="cv-two-cols">`;
-        // gauche
-        html += `<div class="cv-left">`;
+
+        html += `<div class="cv-left-body">`;
         html += `<div class="cv-left-title">${t.contact}</div>`;
-        if(phone) html += `<div class="cv-contact"><i class="fas fa-phone-alt"></i> ${escapeHtml(phone)}</div>`;
-        if(email) html += `<div class="cv-contact"><i class="fas fa-envelope"></i> ${escapeHtml(email)}</div>`;
-        if(address) html += `<div class="cv-contact"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(address)}</div>`;
-        if(license) html += `<div class="cv-contact"><i class="fas fa-car"></i> ${escapeHtml(license)}</div>`;
-        if(website) html += `<div class="cv-contact"><i class="fas fa-globe"></i> ${escapeHtml(website)}</div>`;
+        if(phone)   html += `<div class="cv-contact"><i class="fas fa-phone-alt"></i>${escapeHtml(phone)}</div>`;
+        if(email)   html += `<div class="cv-contact"><i class="fas fa-envelope"></i>${escapeHtml(email)}</div>`;
+        if(address) html += `<div class="cv-contact"><i class="fas fa-map-marker-alt"></i>${escapeHtml(address)}</div>`;
+        if(license) html += `<div class="cv-contact"><i class="fas fa-car"></i>${escapeHtml(license)}</div>`;
+        if(website) html += `<div class="cv-contact"><i class="fas fa-globe"></i>${escapeHtml(website)}</div>`;
         if(languages) {
             html += `<div class="cv-left-title">${t.lang}</div>`;
             html += `<div class="cv-text">${escapeHtml(languages)}</div>`;
@@ -392,8 +404,9 @@
             html += `<div class="cv-left-title">${t.loisir}</div>`;
             html += `<div class="cv-text">${escapeHtml(hobbies)}</div>`;
         }
-        html += `</div>`;
-        // droite
+        html += `</div></div>`;
+
+        // ── ПРАВАЯ КОЛОНКА ──
         html += `<div class="cv-right">`;
         html += `<div class="cv-stage"><strong>${escapeHtml(stageTitle) || "Recherche un stage"}</strong><p>Du ${escapeHtml(stageStart)} au ${escapeHtml(stageEnd)}</p><p><strong>${escapeHtml(stagePoste) || "Stagiaire CLPS"}</strong></p></div>`;
         if(skills.length) {
@@ -417,7 +430,8 @@
                 html += `</div>`;
             });
         }
-        html += `</div></div></div>`;
+        html += `</div></div>`;
+
         document.getElementById('cvPreview').innerHTML = html;
     }
 
