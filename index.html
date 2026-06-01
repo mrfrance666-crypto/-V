@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CV - Pavlo Pashkin (responsive + zoom PDF)</title>
+    <title>CV - Pavlo Pashkin (responsive + zoom + orientation)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -55,20 +55,29 @@
             background: #f0f2f5;
             padding: 5px 15px;
             border-radius: 40px;
+            flex-wrap: wrap;
         }
         .pdf-controls label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #1f4870;
         }
         .pdf-controls input {
-            width: 120px;
+            width: 100px;
+            cursor: pointer;
+        }
+        .pdf-controls select {
+            padding: 5px 8px;
+            border-radius: 20px;
+            border: 1px solid #cfdfed;
+            background: white;
+            font-size: 0.75rem;
             cursor: pointer;
         }
         .pdf-controls span {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            min-width: 45px;
+            min-width: 40px;
         }
         .btn-pdf {
             background: #1f4870;
@@ -77,7 +86,7 @@
             border-radius: 40px;
             color: white;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -328,11 +337,17 @@
             <button class="lang-btn" data-lang="ru">Русский</button>
         </div>
         <div class="pdf-controls">
-            <label>🔍 Zoom PDF:</label>
+            <label>🔍 Zoom:</label>
             <input type="range" id="zoomRange" min="50" max="150" value="100" step="5">
             <span id="zoomValue">100%</span>
+            <label>📄 Orientation:</label>
+            <select id="orientationSelect">
+                <option value="portrait">Книжная (Portrait)</option>
+                <option value="landscape">Альбомная (Landscape)</option>
+                <option value="auto">Авто (выбирает лучшую)</option>
+            </select>
         </div>
-        <button class="btn-pdf" id="downloadPDF"><i class="fas fa-download"></i> PDF (A4)</button>
+        <button class="btn-pdf" id="downloadPDF"><i class="fas fa-download"></i> PDF</button>
     </div>
 
     <div class="editor">
@@ -409,14 +424,13 @@
 
         let html = `<div class="cv">`;
 
-        // ── ЛЕВАЯ КОЛОНКА ──
+        // Левая колонка
         html += `<div class="cv-left">`;
         html += `<div class="cv-left-top">`;
         if(photoBase64) html += `<div class="cv-photo"><img src="${photoBase64}"></div>`;
         else html += `<div class="cv-photo">📷</div>`;
         html += `<div class="cv-name">${escapeHtml(fullname) || "Pavlo Pashkin"}</div>`;
         html += `</div>`;
-
         html += `<div class="cv-left-body">`;
         html += `<div class="cv-left-title">${t.contact}</div>`;
         if(phone)   html += `<div class="cv-contact"><i class="fas fa-phone-alt"></i>${escapeHtml(phone)}</div>`;
@@ -434,7 +448,7 @@
         }
         html += `</div></div>`;
 
-        // ── ПРАВАЯ КОЛОНКА ──
+        // Правая колонка
         html += `<div class="cv-right">`;
         html += `<div class="cv-stage"><strong>${escapeHtml(stageTitle) || "Recherche un stage"}</strong><p>Du ${escapeHtml(stageStart)} au ${escapeHtml(stageEnd)}</p><p><strong>${escapeHtml(stagePoste) || "Stagiaire CLPS"}</strong></p></div>`;
         if(skills.length) {
@@ -553,15 +567,22 @@
     document.getElementById('addExpBtn').addEventListener('click', addExperience);
     document.getElementById('addEduBtn').addEventListener('click', addEducation);
 
-    // Управление масштабом
+    // Управление масштабом и ориентацией
     const zoomRange = document.getElementById('zoomRange');
     const zoomValue = document.getElementById('zoomValue');
+    const orientationSelect = document.getElementById('orientationSelect');
     let currentZoom = 100;
 
     zoomRange.addEventListener('input', function() {
         currentZoom = parseInt(this.value);
         zoomValue.innerText = currentZoom + '%';
     });
+
+    // Функция определения оптимальной ориентации (Авто)
+    function getOptimalOrientation(canvasWidth, canvasHeight) {
+        // Если ширина больше высоты - лучше альбомная, иначе книжная
+        return canvasWidth > canvasHeight ? 'landscape' : 'portrait';
+    }
 
     async function downloadPDF() {
         const el = document.getElementById('cvPreview');
@@ -571,7 +592,6 @@
         btn.disabled = true;
         try {
             el.style.padding = '0';
-            // Применяем масштаб к элементу перед скриншотом
             const originalTransform = el.style.transform;
             const originalTransformOrigin = el.style.transformOrigin;
             const scale = currentZoom / 100;
@@ -591,9 +611,29 @@
             el.style.padding = '';
             
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-            const pageW = 210;
-            const pageH = 297;
+            
+            // Определяем ориентацию
+            let orientation = orientationSelect.value;
+            if (orientation === 'auto') {
+                orientation = getOptimalOrientation(canvas.width, canvas.height);
+            }
+            
+            // Создаём PDF с выбранной ориентацией
+            const pdf = new jsPDF({ 
+                unit: 'mm', 
+                format: 'a4', 
+                orientation: orientation 
+            });
+            
+            let pageW, pageH;
+            if (orientation === 'portrait') {
+                pageW = 210;
+                pageH = 297;
+            } else {
+                pageW = 297;
+                pageH = 210;
+            }
+            
             const imgW = pageW;
             const imgH = (canvas.height * imgW) / canvas.width;
             
@@ -603,6 +643,7 @@
             } else {
                 pdf.addImage(canvas, 'PNG', 0, 0, imgW, imgH);
             }
+            
             pdf.save('CV_Pavlo_Pashkin.pdf');
         } catch(e) { alert('PDF error: '+e); }
         finally { btn.innerHTML = orig; btn.disabled = false; }
