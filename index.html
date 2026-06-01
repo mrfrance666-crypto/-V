@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <!-- Запрещаем iPhone форматировать номера телефонов -->
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
     <title>CV Builder - Créez votre CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Запрещаем любые стили от Safari для ссылок и номеров */
+        a, a:link, a:visited, a:hover, a:active {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+        /* Отключаем умные ссылки на iPhone */
         body {
             background: #eef2f8;
             font-family: 'Inter', sans-serif;
@@ -65,6 +73,16 @@
             border: 1px solid #cfdfed;
             background: white;
             font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .pdf-controls .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pdf-controls .checkbox-group input {
+            width: 16px;
+            height: 16px;
             cursor: pointer;
         }
         .btn-pdf, .btn-save, .btn-load {
@@ -260,41 +278,6 @@
         .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
         .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
 
-        /* Стили для печати PDF */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-                margin: 0;
-            }
-            .toolbar, .editor, .cv-scroll-wrapper {
-                display: none !important;
-            }
-            .cv {
-                box-shadow: none;
-                min-width: 100%;
-                margin: 0;
-                padding: 10mm;
-            }
-            .cv-left, .cv-right {
-                break-inside: avoid;
-            }
-            .cv-left-title { font-size: 9pt; }
-            .cv-contact { font-size: 9pt; }
-            .cv-text { font-size: 9pt; }
-            .cv-section-title { font-size: 11pt; }
-            .cv-skill { font-size: 9pt; }
-            .cv-job-title { font-size: 10pt; }
-            .cv-job-date { font-size: 9pt; }
-            .cv-job-desc { font-size: 9pt; }
-            .cv-edu-title { font-size: 10pt; }
-            .cv-edu-date { font-size: 9pt; }
-            .cv-edu-place { font-size: 9pt; }
-            .cv-stage strong { font-size: 11pt; }
-            .cv-stage p { font-size: 10pt; }
-            .cv-name { font-size: 12pt; }
-        }
-
         @media (max-width: 700px) {
             body { padding: 12px; }
             .toolbar { flex-direction: column; align-items: stretch; }
@@ -324,6 +307,16 @@
                 <option value="save">Сохранить как PDF</option>
                 <option value="preview">Предпросмотр</option>
             </select>
+            <label>📄 Ориентация:</label>
+            <select id="orientationSelect">
+                <option value="portrait">Книжная</option>
+                <option value="landscape">Альбомная</option>
+                <option value="auto">Авто</option>
+            </select>
+            <div class="checkbox-group">
+                <input type="checkbox" id="hideDateCheckbox">
+                <label>Скрыть дату и время</label>
+            </div>
         </div>
         <div style="display: flex; gap: 8px;">
             <button class="btn-save" id="saveProjectBtn"><i class="fas fa-save"></i> <span id="saveBtnText">Сохранить</span></button>
@@ -649,26 +642,46 @@
     document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
     document.getElementById('loadProjectBtn').addEventListener('click', loadProject);
 
-    // Функция для предпросмотра PDF (открывает в новой вкладке)
     function previewPDF() {
         const fullname = document.getElementById('fullname').value || 'CV';
+        const orientation = document.getElementById('orientationSelect').value;
+        const hideDate = document.getElementById('hideDateCheckbox').checked;
         const printContent = document.getElementById('cvPreview').cloneNode(true);
         const previewWindow = window.open('', '_blank');
+        
+        let orientationStyle = '';
+        if (orientation === 'landscape') {
+            orientationStyle = '@page { size: landscape; }';
+        } else if (orientation === 'portrait') {
+            orientationStyle = '@page { size: portrait; }';
+        } else {
+            orientationStyle = '@page { size: auto; }';
+        }
+        
+        let hideDateStyle = hideDate ? 'body { margin: 0; padding: 0; }' : '';
+        
         previewWindow.document.write(`
             <!DOCTYPE html>
             <html>
             <head>
                 <meta charset="UTF-8">
+                <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
                 <title>Предпросмотр CV - ${escapeHtml(fullname)}</title>
                 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                 <style>
                     * { margin: 0; padding: 0; box-sizing: border-box; }
+                    a, a:link, a:visited, a:hover, a:active {
+                        color: inherit !important;
+                        text-decoration: none !important;
+                    }
                     body {
                         font-family: 'Inter', sans-serif;
                         padding: 20px;
                         background: white;
                     }
+                    ${orientationStyle}
+                    ${hideDateStyle}
                     .cv {
                         display: flex;
                         max-width: 100%;
@@ -786,27 +799,47 @@
         previewWindow.document.close();
     }
 
-    // Функция для сохранения PDF (через печать)
     function saveAsPDF() {
         const fullname = document.getElementById('fullname').value || 'CV';
+        const orientation = document.getElementById('orientationSelect').value;
+        const hideDate = document.getElementById('hideDateCheckbox').checked;
         const printContent = document.getElementById('cvPreview').cloneNode(true);
         const printWindow = window.open('', '_blank');
+        
+        let orientationStyle = '';
+        if (orientation === 'landscape') {
+            orientationStyle = '@page { size: landscape; }';
+        } else if (orientation === 'portrait') {
+            orientationStyle = '@page { size: portrait; }';
+        } else {
+            orientationStyle = '@page { size: auto; }';
+        }
+        
+        let hideDateStyle = hideDate ? '@media print { @page { margin: 0; } body { margin: 0; padding: 0; } }' : '';
+        
         printWindow.document.write(`
             <!DOCTYPE html>
             <html>
             <head>
                 <meta charset="UTF-8">
+                <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
                 <title>CV - ${escapeHtml(fullname)}</title>
                 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                 <style>
                     * { margin: 0; padding: 0; box-sizing: border-box; }
+                    a, a:link, a:visited, a:hover, a:active {
+                        color: inherit !important;
+                        text-decoration: none !important;
+                    }
                     body {
                         font-family: 'Inter', sans-serif;
                         padding: 0;
                         margin: 0;
                         background: white;
                     }
+                    ${orientationStyle}
+                    ${hideDateStyle}
                     .cv {
                         display: flex;
                         max-width: 100%;
@@ -926,7 +959,6 @@
         printWindow.document.close();
     }
 
-    // Основная функция - вызывает либо предпросмотр, либо сохранение PDF
     function handlePDFAction() {
         const action = document.getElementById('pdfActionSelect').value;
         if (action === 'preview') {
