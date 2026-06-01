@@ -7,8 +7,6 @@
     <title>CV Builder - Créez votre CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         a, a:link, a:visited, a:hover, a:active { color: inherit !important; text-decoration: none !important; }
@@ -22,6 +20,7 @@
         .pdf-controls label { font-size: 0.75rem; font-weight: 600; color: #1f4870; }
         .pdf-controls select { padding: 5px 8px; border-radius: 20px; border: 1px solid #cfdfed; background: white; font-size: 0.75rem; cursor: pointer; }
         .pdf-controls .checkbox-group { display: flex; align-items: center; gap: 5px; }
+        .pdf-controls .checkbox-group input { width: 16px; height: 16px; cursor: pointer; }
         .btn-pdf, .btn-save, .btn-load { background: #1f4870; border: none; padding: 8px 20px; border-radius: 40px; color: white; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
         .btn-save { background: #2a6f6f; }
         .btn-load { background: #6c86a3; }
@@ -76,6 +75,11 @@
             <button class="lang-btn" data-lang="ru">Русский</button>
         </div>
         <div class="pdf-controls">
+            <label id="actionLabel">📄 Действие:</label>
+            <select id="pdfActionSelect">
+                <option value="save" id="actionSave">Сохранить как PDF</option>
+                <option value="preview" id="actionPreview">Предпросмотр</option>
+            </select>
             <label id="orientationLabel">📄 Ориентация:</label>
             <select id="orientationSelect">
                 <option value="portrait" id="orientationPortrait">Книжная</option>
@@ -84,14 +88,14 @@
             </select>
             <div class="checkbox-group">
                 <input type="checkbox" id="hideDateCheckbox">
-                <label id="hideDateLabel">Показать дату и время</label>
+                <label id="hideDateLabel">Скрыть дату и время</label>
             </div>
         </div>
         <div style="display: flex; gap: 8px;">
             <button class="btn-save" id="saveProjectBtn"><i class="fas fa-save"></i> <span id="saveBtnText">Сохранить</span></button>
             <button class="btn-load" id="loadProjectBtn"><i class="fas fa-folder-open"></i> <span id="loadBtnText">Загрузить</span></button>
             <input type="file" id="loadFileInput" accept=".json" style="display: none;">
-            <button class="btn-pdf" id="downloadPDFBtn"><i class="fas fa-download"></i> <span id="pdfBtnText">PDF</span></button>
+            <button class="btn-pdf" id="printPDFBtn"><i class="fas fa-print"></i> <span id="pdfBtnText">Готово</span></button>
         </div>
     </div>
     <div class="editor">
@@ -124,6 +128,7 @@
     <div class="cv-scroll-wrapper"><div id="cvPreview"></div></div>
 </div>
 <script>
+    // Данные по умолчанию (Pavlo Pashkin)
     let experiences = [
         { title: "Chef d'Entreprise - PaulMultiService", company: "Rennes", period: "02/2026 - En cours", desc: "Conseil informatique, assistance technique, petit bricolage. Développement du site paulmultiservice.fr. Gestion administrative, comptabilité, relation client." },
         { title: "Officier Logisticien - Chef de Bureau des Transports", company: "Forces Armées de l'Ukraine", period: "2023-2024", desc: "Commandement et acheminement de convois militaires en zones de combat. Gestion tactique des transports sous haute pression." },
@@ -138,13 +143,15 @@
     let photoBase64 = "";
     let currentLang = "fr";
     
+    // ПЕРЕВОДЫ НА ВСЕ ЯЗЫКИ
     const translations = {
-        fr: { labelPhoto:"📷 Photo", labelFullname:"Nom complet", labelPhone:"Téléphone", labelEmail:"Email", labelAddress:"Adresse", labelLicense:"Permis", labelWebsite:"Site web", labelHideWebsite:"Masquer le site", labelLanguages:"Langues", labelHobbies:"Loisirs", labelStageTitle:"Titre du stage", labelStageStart:"Date début", labelStageEnd:"Date fin", labelStagePoste:"Poste recherché", labelSkills:"Compétences (séparées par virgules)", labelExperiences:"Expériences", labelEducations:"Formations", addExpText:"+ Ajouter expérience", addEduText:"+ Ajouter formation", saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"PDF", contact:"Coordonnées", lang:"Langues", loisir:"Loisirs", comp:"COMPÉTENCES", exp:"EXPÉRIENCES PROFESSIONNELLES", edu:"FORMATIONS / DIPLÔMES", orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Paysage", orientationAuto:"Auto", hideDateLabel:"Afficher date et heure" },
-        en: { labelPhoto:"📷 Photo", labelFullname:"Full name", labelPhone:"Phone", labelEmail:"Email", labelAddress:"Address", labelLicense:"License", labelWebsite:"Website", labelHideWebsite:"Hide website", labelLanguages:"Languages", labelHobbies:"Hobbies", labelStageTitle:"Internship title", labelStageStart:"Start date", labelStageEnd:"End date", labelStagePoste:"Position sought", labelSkills:"Skills (comma separated)", labelExperiences:"Work experience", labelEducations:"Education", addExpText:"+ Add experience", addEduText:"+ Add education", saveBtnText:"💾 Save", loadBtnText:"📂 Load", pdfBtnText:"PDF", contact:"Contact", lang:"Languages", loisir:"Hobbies", comp:"SKILLS", exp:"WORK EXPERIENCE", edu:"EDUCATION / DEGREES", orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Landscape", orientationAuto:"Auto", hideDateLabel:"Show date and time" },
-        uk: { labelPhoto:"📷 Фото", labelFullname:"Повне ім'я", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адреса", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Сховати сайт", labelLanguages:"Мови", labelHobbies:"Хобі", labelStageTitle:"Мета стажування", labelStageStart:"Дата початку", labelStageEnd:"Дата завершення", labelStagePoste:"Посада", labelSkills:"Навички (через кому)", labelExperiences:"Досвід роботи", labelEducations:"Освіта", addExpText:"+ Додати досвід", addEduText:"+ Додати освіту", saveBtnText:"💾 Зберегти", loadBtnText:"📂 Завантажити", pdfBtnText:"PDF", contact:"Контакти", lang:"Мови", loisir:"Хобі", comp:"НАВИЧКИ", exp:"ДОСВІД РОБОТИ", edu:"ОСВІТА / ДИПЛОМИ", orientationLabel:"📄 Орієнтація:", orientationPortrait:"Портретна", orientationLandscape:"Альбомна", orientationAuto:"Авто", hideDateLabel:"Показати дату і час" },
-        ru: { labelPhoto:"📷 Фото", labelFullname:"Полное имя", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адрес", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Скрыть сайт", labelLanguages:"Языки", labelHobbies:"Хобби", labelStageTitle:"Цель стажировки", labelStageStart:"Дата начала", labelStageEnd:"Дата окончания", labelStagePoste:"Должность", labelSkills:"Навыки (через запятую)", labelExperiences:"Опыт работы", labelEducations:"Образование", addExpText:"+ Добавить опыт", addEduText:"+ Добавить образование", saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"PDF", contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ", orientationLabel:"📄 Ориентация:", orientationPortrait:"Книжная", orientationLandscape:"Альбомная", orientationAuto:"Авто", hideDateLabel:"Показать дату и время" }
+        fr: { labelPhoto:"📷 Photo", labelFullname:"Nom complet", labelPhone:"Téléphone", labelEmail:"Email", labelAddress:"Adresse", labelLicense:"Permis", labelWebsite:"Site web", labelHideWebsite:"Masquer le site", labelLanguages:"Langues", labelHobbies:"Loisirs", labelStageTitle:"Titre du stage", labelStageStart:"Date début", labelStageEnd:"Date fin", labelStagePoste:"Poste recherché", labelSkills:"Compétences (séparées par virgules)", labelExperiences:"Expériences", labelEducations:"Formations", addExpText:"+ Ajouter expérience", addEduText:"+ Ajouter formation", saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово", contact:"Coordonnées", lang:"Langues", loisir:"Loisirs", comp:"COMPÉTENCES", exp:"EXPÉRIENCES PROFESSIONNELLES", edu:"FORMATIONS / DIPLÔMES", actionLabel:"📄 Action:", actionSave:"Enregistrer en PDF", actionPreview:"Aperçu", orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Paysage", orientationAuto:"Auto", hideDateLabel:"Masquer date et heure" },
+        en: { labelPhoto:"📷 Photo", labelFullname:"Full name", labelPhone:"Phone", labelEmail:"Email", labelAddress:"Address", labelLicense:"License", labelWebsite:"Website", labelHideWebsite:"Hide website", labelLanguages:"Languages", labelHobbies:"Hobbies", labelStageTitle:"Internship title", labelStageStart:"Start date", labelStageEnd:"End date", labelStagePoste:"Position sought", labelSkills:"Skills (comma separated)", labelExperiences:"Work experience", labelEducations:"Education", addExpText:"+ Add experience", addEduText:"+ Add education", saveBtnText:"💾 Save", loadBtnText:"📂 Load", pdfBtnText:"Done", contact:"Contact", lang:"Languages", loisir:"Hobbies", comp:"SKILLS", exp:"WORK EXPERIENCE", edu:"EDUCATION / DEGREES", actionLabel:"📄 Action:", actionSave:"Save as PDF", actionPreview:"Preview", orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Landscape", orientationAuto:"Auto", hideDateLabel:"Hide date and time" },
+        uk: { labelPhoto:"📷 Фото", labelFullname:"Повне ім'я", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адреса", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Сховати сайт", labelLanguages:"Мови", labelHobbies:"Хобі", labelStageTitle:"Мета стажування", labelStageStart:"Дата початку", labelStageEnd:"Дата завершення", labelStagePoste:"Посада", labelSkills:"Навички (через кому)", labelExperiences:"Досвід роботи", labelEducations:"Освіта", addExpText:"+ Додати досвід", addEduText:"+ Додати освіту", saveBtnText:"💾 Зберегти", loadBtnText:"📂 Завантажити", pdfBtnText:"Готово", contact:"Контакти", lang:"Мови", loisir:"Хобі", comp:"НАВИЧКИ", exp:"ДОСВІД РОБОТИ", edu:"ОСВІТА / ДИПЛОМИ", actionLabel:"📄 Дія:", actionSave:"Зберегти як PDF", actionPreview:"Попередній перегляд", orientationLabel:"📄 Орієнтація:", orientationPortrait:"Портретна", orientationLandscape:"Альбомна", orientationAuto:"Авто", hideDateLabel:"Приховати дату і час" },
+        ru: { labelPhoto:"📷 Фото", labelFullname:"Полное имя", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адрес", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Скрыть сайт", labelLanguages:"Языки", labelHobbies:"Хобби", labelStageTitle:"Цель стажировки", labelStageStart:"Дата начала", labelStageEnd:"Дата окончания", labelStagePoste:"Должность", labelSkills:"Навыки (через запятую)", labelExperiences:"Опыт работы", labelEducations:"Образование", addExpText:"+ Добавить опыт", addEduText:"+ Добавить образование", saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово", contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ", actionLabel:"📄 Действие:", actionSave:"Сохранить как PDF", actionPreview:"Предпросмотр", orientationLabel:"📄 Ориентация:", orientationPortrait:"Книжная", orientationLandscape:"Альбомная", orientationAuto:"Авто", hideDateLabel:"Скрыть дату и время" }
     };
     
+    // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПРИ СМЕНЕ ЯЗЫКА
     function updateUILabels() {
         const t = translations[currentLang];
         if(!t) return;
@@ -155,6 +162,8 @@
                 else el.innerText = t[id];
             }
         }
+        document.getElementById('actionSave').innerText = t.actionSave;
+        document.getElementById('actionPreview').innerText = t.actionPreview;
         document.getElementById('orientationPortrait').innerText = t.orientationPortrait;
         document.getElementById('orientationLandscape').innerText = t.orientationLandscape;
         document.getElementById('orientationAuto').innerText = t.orientationAuto;
@@ -162,6 +171,7 @@
         document.getElementById('labelEducations').innerText = t.labelEducations;
     }
     
+    // ОТОБРАЖЕНИЕ CV
     function renderPreview() {
         const t = translations[currentLang];
         const fullname = document.getElementById('fullname').value;
@@ -202,6 +212,7 @@
     
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
     
+    // ФОРМЫ ДЛЯ ОПЫТА И ОБРАЗОВАНИЯ
     function renderExpForm() {
         const container = document.getElementById('expList');
         container.innerHTML = '';
@@ -269,6 +280,7 @@
     function addExperience() { experiences.push({title:"", company:"", period:"", desc:""}); renderExpForm(); renderPreview(); }
     function addEducation() { educations.push({degree:"", institution:"", year:"", desc:""}); renderEduForm(); renderPreview(); }
     
+    // ПРИВЯЗКА ИНПУТОВ
     function bindInputs() {
         const ids = ['fullname','phone','email','address','license','website','hideWebsite','languages','hobbies','stageTitle','stageStart','stageEnd','stagePoste','skills'];
         ids.forEach(id => {
@@ -278,6 +290,7 @@
         });
     }
     
+    // ЗАГРУЗКА ФОТО
     document.getElementById('photoUpload').addEventListener('change', e => {
         if(e.target.files[0]) {
             const reader = new FileReader();
@@ -288,6 +301,7 @@
     document.getElementById('addExpBtn').addEventListener('click', addExperience);
     document.getElementById('addEduBtn').addEventListener('click', addEducation);
     
+    // СОХРАНЕНИЕ/ЗАГРУЗКА ПРОЕКТА
     function saveProject() {
         const projectData = {
             fullname: document.getElementById('fullname').value,
@@ -354,75 +368,22 @@
     document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
     document.getElementById('loadProjectBtn').addEventListener('click', loadProject);
     
-    // Генерация PDF через html2canvas + jsPDF - ничего не обрезается
-    async function downloadPDF() {
-        const element = document.getElementById('cvPreview');
-        const btn = document.getElementById('downloadPDFBtn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        btn.disabled = true;
-        
-        try {
-            // Временное изменение стилей для корректного захвата
-            const originalWidth = element.style.width;
-            element.style.width = '800px';
-            
-            const canvas = await html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#ffffff',
-                logging: false
-            });
-            
-            element.style.width = originalWidth;
-            
-            const { jsPDF } = window.jspdf;
-            let orientation = document.getElementById('orientationSelect').value;
-            let format = 'a4';
-            let orientationValue = 'portrait';
-            
-            if (orientation === 'landscape') {
-                orientationValue = 'landscape';
-            } else if (orientation === 'portrait') {
-                orientationValue = 'portrait';
-            } else {
-                // Авто: выбираем по соотношению сторон
-                orientationValue = canvas.width > canvas.height ? 'landscape' : 'portrait';
-            }
-            
-            const pdf = new jsPDF({ unit: 'mm', format: format, orientation: orientationValue });
-            
-            let pageWidth = pdf.internal.pageSize.getWidth();
-            let pageHeight = pdf.internal.pageSize.getHeight();
-            
-            let imgWidth = pageWidth;
-            let imgHeight = (canvas.height * imgWidth) / canvas.width;
-            
-            let yPosition = 0;
-            
-            if (imgHeight > pageHeight) {
-                // Масштабируем, чтобы поместилось на одну страницу
-                const ratio = pageHeight / imgHeight;
-                imgWidth = imgWidth * ratio;
-                imgHeight = pageHeight;
-                yPosition = 0;
-            }
-            
-            const imgData = canvas.toDataURL('image/png');
-            pdf.addImage(imgData, 'PNG', 0, yPosition, imgWidth, imgHeight);
-            pdf.save('CV_Pavlo_Pashkin.pdf');
-            
-        } catch(e) {
-            console.error('PDF error:', e);
-            alert('Ошибка при создании PDF: ' + e);
-        } finally {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
+    // ГЕНЕРАЦИЯ PDF
+    function handlePDF() {
+        const action = document.getElementById('pdfActionSelect').value;
+        const orientation = document.getElementById('orientationSelect').value;
+        const hideDate = document.getElementById('hideDateCheckbox').checked;
+        const fullname = document.getElementById('fullname').value || 'CV';
+        const printContent = document.getElementById('cvPreview').cloneNode(true);
+        const win = window.open('', '_blank');
+        let orientationStyle = orientation === 'landscape' ? '@page { size: landscape; }' : (orientation === 'portrait' ? '@page { size: portrait; }' : '@page { size: auto; }');
+        let hideDateStyle = hideDate ? '@media print { @page { margin: 0; } body { margin: 0; padding: 0; } }' : '';
+        win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="format-detection" content="telephone=no, date=no, address=no, email=no"><title>${action === 'preview' ? 'Предпросмотр CV - ' + escapeHtml(fullname) : 'CV - ' + escapeHtml(fullname)}</title><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>*{margin:0;padding:0;box-sizing:border-box;}a,a:link,a:visited,a:hover,a:active{color:inherit!important;text-decoration:none!important;}body{font-family:'Inter',sans-serif;${action === 'preview' ? 'padding:20px;' : 'padding:0;margin:0;background:white;'}${orientationStyle}${hideDateStyle}.cv{display:flex;max-width:100%;background:white;${action === 'preview' ? 'box-shadow:0 10px 30px rgba(0,0,0,0.1);border-radius:16px;' : ''}}.cv-left{width:240px;min-width:240px;background:#fafcff;}.cv-left-top{background:#f8fbfe;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;}.cv-photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #2a6f6f;background:#eef2f8;display:flex;align-items:center;justify-content:center;overflow:hidden;}.cv-photo img{width:100%;height:100%;object-fit:cover;}.cv-name{font-size:1.1rem;font-weight:800;color:#1f4870;text-align:center;}.cv-left-body{padding:16px;}.cv-left-title{font-weight:800;font-size:0.7rem;color:#2a6f6f;border-bottom:2px solid #2a6f6f;padding-bottom:4px;margin:14px 0 8px 0;text-transform:uppercase;}.cv-left-title:first-child{margin-top:0;}.cv-contact{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:0.72rem;color:#2c3e4e;}.cv-contact i{width:14px;color:#2a6f6f;font-size:0.65rem;}.cv-text{font-size:0.72rem;line-height:1.4;margin-bottom:4px;}.cv-right{flex:1;padding:20px;}.cv-stage{background:#eef3fa;padding:12px;border-radius:20px;text-align:center;margin-bottom:16px;}.cv-stage p{margin:4px 0;}.cv-section-title{font-weight:800;font-size:0.85rem;color:#1f4a6e;border-left:4px solid #2a6f6f;padding-left:12px;margin:0 0 10px 0;}.cv-skills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}.cv-skill{background:#e6f0f5;padding:4px 12px;border-radius:30px;font-size:0.72rem;font-weight:500;}.cv-job{margin-bottom:12px;}.cv-job-title{font-weight:700;font-size:0.8rem;display:flex;justify-content:space-between;flex-wrap:wrap;}.cv-job-date{font-weight:400;color:#5f7d9c;font-size:0.72rem;}.cv-job-desc{font-size:0.72rem;color:#2c4a6e;margin-top:3px;}.cv-edu{margin-bottom:10px;}.cv-edu-title{font-weight:700;font-size:0.8rem;display:flex;justify-content:space-between;flex-wrap:wrap;}.cv-edu-date{font-weight:400;color:#5f7d9c;font-size:0.72rem;}.cv-edu-place{font-size:0.72rem;color:#4a627a;margin-top:2px;}.cv-edu-desc{font-size:0.68rem;color:#5f7d9c;margin-top:2px;}@media(max-width:700px){.cv{flex-direction:column;min-width:100%;}.cv-left{width:100%;min-width:100%;}.cv-left-top{flex-direction:row;}.cv-name{text-align:left;}}</style></head><body>${printContent.outerHTML}${action === 'save' ? '<script>window.onload=function(){window.print();setTimeout(function(){window.close();},500);}<\/script>' : ''}</body></html>`);
+        win.document.close();
     }
+    document.getElementById('printPDFBtn').addEventListener('click', () => handlePDF());
     
-    document.getElementById('downloadPDFBtn').addEventListener('click', downloadPDF);
-    
+    // ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА
     function setLanguage(lang) {
         currentLang = lang;
         updateUILabels();
@@ -431,6 +392,7 @@
     }
     document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
     
+    // СТАРТ
     bindInputs();
     renderExpForm();
     renderEduForm();
