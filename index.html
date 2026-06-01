@@ -45,6 +45,28 @@
             background: #1f4870;
             color: white;
         }
+        .pdf-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f0f2f5;
+            padding: 5px 15px;
+            border-radius: 40px;
+            flex-wrap: wrap;
+        }
+        .pdf-controls label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1f4870;
+        }
+        .pdf-controls select {
+            padding: 5px 8px;
+            border-radius: 20px;
+            border: 1px solid #cfdfed;
+            background: white;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
         .btn-pdf, .btn-save, .btn-load {
             background: #1f4870;
             border: none;
@@ -252,17 +274,32 @@
                 box-shadow: none;
                 min-width: 100%;
                 margin: 0;
-                padding: 0;
+                padding: 10mm;
             }
             .cv-left, .cv-right {
                 break-inside: avoid;
             }
+            .cv-left-title { font-size: 9pt; }
+            .cv-contact { font-size: 9pt; }
+            .cv-text { font-size: 9pt; }
+            .cv-section-title { font-size: 11pt; }
+            .cv-skill { font-size: 9pt; }
+            .cv-job-title { font-size: 10pt; }
+            .cv-job-date { font-size: 9pt; }
+            .cv-job-desc { font-size: 9pt; }
+            .cv-edu-title { font-size: 10pt; }
+            .cv-edu-date { font-size: 9pt; }
+            .cv-edu-place { font-size: 9pt; }
+            .cv-stage strong { font-size: 11pt; }
+            .cv-stage p { font-size: 10pt; }
+            .cv-name { font-size: 12pt; }
         }
 
         @media (max-width: 700px) {
             body { padding: 12px; }
             .toolbar { flex-direction: column; align-items: stretch; }
             .lang-buttons { justify-content: center; }
+            .pdf-controls { justify-content: center; }
             .btn-pdf, .btn-save, .btn-load { justify-content: center; }
             .editor { padding: 16px; }
         }
@@ -281,11 +318,18 @@
             <button class="lang-btn" data-lang="uk">Українська</button>
             <button class="lang-btn" data-lang="ru">Русский</button>
         </div>
+        <div class="pdf-controls">
+            <label>📄 Действие:</label>
+            <select id="pdfActionSelect">
+                <option value="save">Сохранить как PDF</option>
+                <option value="preview">Предпросмотр</option>
+            </select>
+        </div>
         <div style="display: flex; gap: 8px;">
             <button class="btn-save" id="saveProjectBtn"><i class="fas fa-save"></i> <span id="saveBtnText">Сохранить</span></button>
             <button class="btn-load" id="loadProjectBtn"><i class="fas fa-folder-open"></i> <span id="loadBtnText">Загрузить</span></button>
             <input type="file" id="loadFileInput" accept=".json" style="display: none;">
-            <button class="btn-pdf" id="printPDFBtn"><i class="fas fa-print"></i> <span id="pdfBtnText">PDF</span></button>
+            <button class="btn-pdf" id="printPDFBtn"><i class="fas fa-print"></i> <span id="pdfBtnText">Готово</span></button>
         </div>
     </div>
 
@@ -333,28 +377,28 @@
             labelPhoto:"📷 Photo", labelFullname:"Nom complet", labelPhone:"Téléphone", labelEmail:"Email", labelAddress:"Adresse", labelLicense:"Permis", labelWebsite:"Site web", labelHideWebsite:"Masquer le site",
             labelLanguages:"Langues", labelHobbies:"Loisirs", labelStageTitle:"Titre du stage", labelStageStart:"Date début", labelStageEnd:"Date fin", labelStagePoste:"Poste recherché",
             labelSkills:"Compétences (séparées par virgules)", labelExperiences:"Expériences", labelEducations:"Formations", addExpText:"+ Ajouter expérience", addEduText:"+ Ajouter formation",
-            saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"PDF",
+            saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово",
             contact:"Coordonnées", lang:"Langues", loisir:"Loisirs", comp:"COMPÉTENCES", exp:"EXPÉRIENCES PROFESSIONNELLES", edu:"FORMATIONS / DIPLÔMES"
         },
         en: { 
             labelPhoto:"📷 Photo", labelFullname:"Full name", labelPhone:"Phone", labelEmail:"Email", labelAddress:"Address", labelLicense:"License", labelWebsite:"Website", labelHideWebsite:"Hide website",
             labelLanguages:"Languages", labelHobbies:"Hobbies", labelStageTitle:"Internship title", labelStageStart:"Start date", labelStageEnd:"End date", labelStagePoste:"Position sought",
             labelSkills:"Skills (comma separated)", labelExperiences:"Work experience", labelEducations:"Education", addExpText:"+ Add experience", addEduText:"+ Add education",
-            saveBtnText:"💾 Save", loadBtnText:"📂 Load", pdfBtnText:"PDF",
+            saveBtnText:"💾 Save", loadBtnText:"📂 Load", pdfBtnText:"Done",
             contact:"Contact", lang:"Languages", loisir:"Hobbies", comp:"SKILLS", exp:"WORK EXPERIENCE", edu:"EDUCATION / DEGREES"
         },
         uk: { 
             labelPhoto:"📷 Фото", labelFullname:"Повне ім'я", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адреса", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Сховати сайт",
             labelLanguages:"Мови", labelHobbies:"Хобі", labelStageTitle:"Мета стажування", labelStageStart:"Дата початку", labelStageEnd:"Дата завершення", labelStagePoste:"Посада",
             labelSkills:"Навички (через кому)", labelExperiences:"Досвід роботи", labelEducations:"Освіта", addExpText:"+ Додати досвід", addEduText:"+ Додати освіту",
-            saveBtnText:"💾 Зберегти", loadBtnText:"📂 Завантажити", pdfBtnText:"PDF",
+            saveBtnText:"💾 Зберегти", loadBtnText:"📂 Завантажити", pdfBtnText:"Готово",
             contact:"Контакти", lang:"Мови", loisir:"Хобі", comp:"НАВИЧКИ", exp:"ДОСВІД РОБОТИ", edu:"ОСВІТА / ДИПЛОМИ"
         },
         ru: { 
             labelPhoto:"📷 Фото", labelFullname:"Полное имя", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адрес", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Скрыть сайт",
             labelLanguages:"Языки", labelHobbies:"Хобби", labelStageTitle:"Цель стажировки", labelStageStart:"Дата начала", labelStageEnd:"Дата окончания", labelStagePoste:"Должность",
             labelSkills:"Навыки (через запятую)", labelExperiences:"Опыт работы", labelEducations:"Образование", addExpText:"+ Добавить опыт", addEduText:"+ Добавить образование",
-            saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"PDF",
+            saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово",
             contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ"
         }
     };
@@ -605,12 +649,146 @@
     document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
     document.getElementById('loadProjectBtn').addEventListener('click', loadProject);
 
-    // PDF через печать (работает идеально на всех устройствах)
-    function printPDF() {
-        const originalTitle = document.title;
-        document.title = 'CV - ' + (document.getElementById('fullname').value || 'Document');
-        
-        // Создаём временный элемент для печати
+    // Функция для предпросмотра PDF (открывает в новой вкладке)
+    function previewPDF() {
+        const fullname = document.getElementById('fullname').value || 'CV';
+        const printContent = document.getElementById('cvPreview').cloneNode(true);
+        const previewWindow = window.open('', '_blank');
+        previewWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Предпросмотр CV - ${escapeHtml(fullname)}</title>
+                <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                <style>
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body {
+                        font-family: 'Inter', sans-serif;
+                        padding: 20px;
+                        background: white;
+                    }
+                    .cv {
+                        display: flex;
+                        max-width: 100%;
+                        background: white;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                        border-radius: 16px;
+                    }
+                    .cv-left {
+                        width: 240px;
+                        min-width: 240px;
+                        background: #fafcff;
+                    }
+                    .cv-left-top {
+                        background: #f8fbfe;
+                        padding: 20px 16px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 10px;
+                    }
+                    .cv-photo {
+                        width: 90px;
+                        height: 90px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        border: 3px solid #2a6f6f;
+                        background: #eef2f8;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        overflow: hidden;
+                    }
+                    .cv-photo img { width: 100%; height: 100%; object-fit: cover; }
+                    .cv-name { font-size: 1.1rem; font-weight: 800; color: #1f4870; text-align: center; }
+                    .cv-left-body { padding: 16px; }
+                    .cv-left-title {
+                        font-weight: 800;
+                        font-size: 0.7rem;
+                        color: #2a6f6f;
+                        border-bottom: 2px solid #2a6f6f;
+                        padding-bottom: 4px;
+                        margin: 14px 0 8px 0;
+                        text-transform: uppercase;
+                    }
+                    .cv-left-title:first-child { margin-top: 0; }
+                    .cv-contact {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 8px;
+                        margin-bottom: 8px;
+                        font-size: 0.72rem;
+                        color: #2c3e4e;
+                    }
+                    .cv-contact i { width: 14px; color: #2a6f6f; font-size: 0.65rem; }
+                    .cv-text { font-size: 0.72rem; line-height: 1.4; margin-bottom: 4px; }
+                    .cv-right { flex: 1; padding: 20px; }
+                    .cv-stage {
+                        background: #eef3fa;
+                        padding: 12px;
+                        border-radius: 20px;
+                        text-align: center;
+                        margin-bottom: 16px;
+                    }
+                    .cv-stage p { margin: 4px 0; }
+                    .cv-section-title {
+                        font-weight: 800;
+                        font-size: 0.85rem;
+                        color: #1f4a6e;
+                        border-left: 4px solid #2a6f6f;
+                        padding-left: 12px;
+                        margin: 0 0 10px 0;
+                    }
+                    .cv-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+                    .cv-skill {
+                        background: #e6f0f5;
+                        padding: 4px 12px;
+                        border-radius: 30px;
+                        font-size: 0.72rem;
+                        font-weight: 500;
+                    }
+                    .cv-job { margin-bottom: 12px; }
+                    .cv-job-title {
+                        font-weight: 700;
+                        font-size: 0.8rem;
+                        display: flex;
+                        justify-content: space-between;
+                        flex-wrap: wrap;
+                    }
+                    .cv-job-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
+                    .cv-job-desc { font-size: 0.72rem; color: #2c4a6e; margin-top: 3px; }
+                    .cv-edu { margin-bottom: 10px; }
+                    .cv-edu-title {
+                        font-weight: 700;
+                        font-size: 0.8rem;
+                        display: flex;
+                        justify-content: space-between;
+                        flex-wrap: wrap;
+                    }
+                    .cv-edu-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
+                    .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
+                    .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
+                    @media (max-width: 700px) {
+                        .cv { flex-direction: column; min-width: 100%; }
+                        .cv-left { width: 100%; min-width: 100%; }
+                        .cv-left-top { flex-direction: row; }
+                        .cv-name { text-align: left; }
+                    }
+                </style>
+            </head>
+            <body>
+                ${printContent.outerHTML}
+            </body>
+            </html>
+        `);
+        previewWindow.document.close();
+    }
+
+    // Функция для сохранения PDF (через печать)
+    function saveAsPDF() {
+        const fullname = document.getElementById('fullname').value || 'CV';
         const printContent = document.getElementById('cvPreview').cloneNode(true);
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`
@@ -618,7 +796,7 @@
             <html>
             <head>
                 <meta charset="UTF-8">
-                <title>${document.title}</title>
+                <title>CV - ${escapeHtml(fullname)}</title>
                 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                 <style>
@@ -746,10 +924,19 @@
             </html>
         `);
         printWindow.document.close();
-        document.title = originalTitle;
     }
 
-    document.getElementById('printPDFBtn').addEventListener('click', printPDF);
+    // Основная функция - вызывает либо предпросмотр, либо сохранение PDF
+    function handlePDFAction() {
+        const action = document.getElementById('pdfActionSelect').value;
+        if (action === 'preview') {
+            previewPDF();
+        } else {
+            saveAsPDF();
+        }
+    }
+
+    document.getElementById('printPDFBtn').addEventListener('click', handlePDFAction);
 
     function setLanguage(lang) {
         currentLang = lang;
