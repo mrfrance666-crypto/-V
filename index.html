@@ -414,7 +414,6 @@
                 else el.innerText = t[id];
             }
         }
-        // Обновляем выпадающие списки
         document.getElementById('actionSave').innerText = t.actionSave;
         document.getElementById('actionPreview').innerText = t.actionPreview;
         document.getElementById('orientationPortrait').innerText = t.orientationPortrait;
@@ -673,6 +672,8 @@
             orientationStyle = '@page { size: auto; }';
         }
         
+        let hideDateStyle = hideDate ? '@page { margin: 0; } @page { size: auto; } body { margin: 0; padding: 0; }' : '';
+        
         previewWindow.document.write(`
             <!DOCTYPE html>
             <html>
@@ -687,6 +688,7 @@
                     a, a:link, a:visited, a:hover, a:active { color: inherit !important; text-decoration: none !important; }
                     body { font-family: 'Inter', sans-serif; padding: 20px; background: white; }
                     ${orientationStyle}
+                    ${hideDateStyle}
                     .cv {
                         display: flex;
                         max-width: 100%;
@@ -720,11 +722,9 @@
                     .cv-edu-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
                     .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
                     .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
-                    @media (max-width: 700px) {
-                        .cv { flex-direction: column; min-width: 100%; }
-                        .cv-left { width: 100%; min-width: 100%; }
-                        .cv-left-top { flex-direction: row; }
-                        .cv-name { text-align: left; }
+                    @media print {
+                        body { margin: 0; padding: 0; }
+                        .cv { margin: 0; }
                     }
                 </style>
             </head>
@@ -752,7 +752,15 @@
             orientationStyle = '@page { size: auto; }';
         }
         
-        let hideDateStyle = hideDate ? '@media print { @page { margin: 0; } body { margin: 0; padding: 0; } }' : '';
+        // Добавляем правила для скрытия колонтитулов при печати
+        let hideDateStyle = hideDate ? `
+            @page { margin: 0; }
+            @media print {
+                @page { margin: 0; }
+                body { margin: 1cm; padding: 0; }
+                .cv { margin: 0; }
+            }
+        ` : '';
         
         printWindow.document.write(`
             <!DOCTYPE html>
@@ -800,7 +808,10 @@
                     .cv-edu-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
                     .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
                     .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
-                    @media print { body { margin: 0; padding: 0; } .cv { margin: 0; } }
+                    @media print {
+                        body { margin: 0; padding: 0; }
+                        .cv { margin: 0; }
+                    }
                 </style>
             </head>
             <body>
