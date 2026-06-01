@@ -3,19 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <!-- Запрещаем iPhone форматировать номера телефонов -->
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
     <title>CV Builder - Créez votre CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        /* Запрещаем любые стили от Safari для ссылок и номеров */
         a, a:link, a:visited, a:hover, a:active {
             color: inherit !important;
             text-decoration: none !important;
         }
-        /* Отключаем умные ссылки на iPhone */
         body {
             background: #eef2f8;
             font-family: 'Inter', sans-serif;
@@ -157,7 +154,6 @@
         }
         hr { margin: 16px 0; }
 
-        /* Стили CV */
         .cv-scroll-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -302,20 +298,20 @@
             <button class="lang-btn" data-lang="ru">Русский</button>
         </div>
         <div class="pdf-controls">
-            <label>📄 Действие:</label>
+            <label id="actionLabel">📄 Действие:</label>
             <select id="pdfActionSelect">
-                <option value="save">Сохранить как PDF</option>
-                <option value="preview">Предпросмотр</option>
+                <option value="save" id="actionSave">Сохранить как PDF</option>
+                <option value="preview" id="actionPreview">Предпросмотр</option>
             </select>
-            <label>📄 Ориентация:</label>
+            <label id="orientationLabel">📄 Ориентация:</label>
             <select id="orientationSelect">
-                <option value="portrait">Книжная</option>
-                <option value="landscape">Альбомная</option>
-                <option value="auto">Авто</option>
+                <option value="portrait" id="orientationPortrait">Книжная</option>
+                <option value="landscape" id="orientationLandscape">Альбомная</option>
+                <option value="auto" id="orientationAuto">Авто</option>
             </select>
             <div class="checkbox-group">
                 <input type="checkbox" id="hideDateCheckbox">
-                <label>Скрыть дату и время</label>
+                <label id="hideDateLabel">Скрыть дату и время</label>
             </div>
         </div>
         <div style="display: flex; gap: 8px;">
@@ -371,28 +367,40 @@
             labelLanguages:"Langues", labelHobbies:"Loisirs", labelStageTitle:"Titre du stage", labelStageStart:"Date début", labelStageEnd:"Date fin", labelStagePoste:"Poste recherché",
             labelSkills:"Compétences (séparées par virgules)", labelExperiences:"Expériences", labelEducations:"Formations", addExpText:"+ Ajouter expérience", addEduText:"+ Ajouter formation",
             saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово",
-            contact:"Coordonnées", lang:"Langues", loisir:"Loisirs", comp:"COMPÉTENCES", exp:"EXPÉRIENCES PROFESSIONNELLES", edu:"FORMATIONS / DIPLÔMES"
+            contact:"Coordonnées", lang:"Langues", loisir:"Loisirs", comp:"COMPÉTENCES", exp:"EXPÉRIENCES PROFESSIONNELLES", edu:"FORMATIONS / DIPLÔMES",
+            actionLabel:"📄 Action:", actionSave:"Enregistrer en PDF", actionPreview:"Aperçu",
+            orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Paysage", orientationAuto:"Auto",
+            hideDateLabel:"Masquer date et heure"
         },
         en: { 
             labelPhoto:"📷 Photo", labelFullname:"Full name", labelPhone:"Phone", labelEmail:"Email", labelAddress:"Address", labelLicense:"License", labelWebsite:"Website", labelHideWebsite:"Hide website",
             labelLanguages:"Languages", labelHobbies:"Hobbies", labelStageTitle:"Internship title", labelStageStart:"Start date", labelStageEnd:"End date", labelStagePoste:"Position sought",
             labelSkills:"Skills (comma separated)", labelExperiences:"Work experience", labelEducations:"Education", addExpText:"+ Add experience", addEduText:"+ Add education",
             saveBtnText:"💾 Save", loadBtnText:"📂 Load", pdfBtnText:"Done",
-            contact:"Contact", lang:"Languages", loisir:"Hobbies", comp:"SKILLS", exp:"WORK EXPERIENCE", edu:"EDUCATION / DEGREES"
+            contact:"Contact", lang:"Languages", loisir:"Hobbies", comp:"SKILLS", exp:"WORK EXPERIENCE", edu:"EDUCATION / DEGREES",
+            actionLabel:"📄 Action:", actionSave:"Save as PDF", actionPreview:"Preview",
+            orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Landscape", orientationAuto:"Auto",
+            hideDateLabel:"Hide date and time"
         },
         uk: { 
             labelPhoto:"📷 Фото", labelFullname:"Повне ім'я", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адреса", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Сховати сайт",
             labelLanguages:"Мови", labelHobbies:"Хобі", labelStageTitle:"Мета стажування", labelStageStart:"Дата початку", labelStageEnd:"Дата завершення", labelStagePoste:"Посада",
             labelSkills:"Навички (через кому)", labelExperiences:"Досвід роботи", labelEducations:"Освіта", addExpText:"+ Додати досвід", addEduText:"+ Додати освіту",
             saveBtnText:"💾 Зберегти", loadBtnText:"📂 Завантажити", pdfBtnText:"Готово",
-            contact:"Контакти", lang:"Мови", loisir:"Хобі", comp:"НАВИЧКИ", exp:"ДОСВІД РОБОТИ", edu:"ОСВІТА / ДИПЛОМИ"
+            contact:"Контакти", lang:"Мови", loisir:"Хобі", comp:"НАВИЧКИ", exp:"ДОСВІД РОБОТИ", edu:"ОСВІТА / ДИПЛОМИ",
+            actionLabel:"📄 Дія:", actionSave:"Зберегти як PDF", actionPreview:"Попередній перегляд",
+            orientationLabel:"📄 Орієнтація:", orientationPortrait:"Портретна", orientationLandscape:"Альбомна", orientationAuto:"Авто",
+            hideDateLabel:"Приховати дату і час"
         },
         ru: { 
             labelPhoto:"📷 Фото", labelFullname:"Полное имя", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адрес", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Скрыть сайт",
             labelLanguages:"Языки", labelHobbies:"Хобби", labelStageTitle:"Цель стажировки", labelStageStart:"Дата начала", labelStageEnd:"Дата окончания", labelStagePoste:"Должность",
             labelSkills:"Навыки (через запятую)", labelExperiences:"Опыт работы", labelEducations:"Образование", addExpText:"+ Добавить опыт", addEduText:"+ Добавить образование",
             saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово",
-            contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ"
+            contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ",
+            actionLabel:"📄 Действие:", actionSave:"Сохранить как PDF", actionPreview:"Предпросмотр",
+            orientationLabel:"📄 Ориентация:", orientationPortrait:"Книжная", orientationLandscape:"Альбомная", orientationAuto:"Авто",
+            hideDateLabel:"Скрыть дату и время"
         }
     };
 
@@ -406,6 +414,13 @@
                 else el.innerText = t[id];
             }
         }
+        // Обновляем выпадающие списки
+        document.getElementById('actionSave').innerText = t.actionSave;
+        document.getElementById('actionPreview').innerText = t.actionPreview;
+        document.getElementById('orientationPortrait').innerText = t.orientationPortrait;
+        document.getElementById('orientationLandscape').innerText = t.orientationLandscape;
+        document.getElementById('orientationAuto').innerText = t.orientationAuto;
+        
         document.getElementById('labelExperiences').innerText = t.labelExperiences;
         document.getElementById('labelEducations').innerText = t.labelEducations;
     }
@@ -658,8 +673,6 @@
             orientationStyle = '@page { size: auto; }';
         }
         
-        let hideDateStyle = hideDate ? 'body { margin: 0; padding: 0; }' : '';
-        
         previewWindow.document.write(`
             <!DOCTYPE html>
             <html>
@@ -671,17 +684,9 @@
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                 <style>
                     * { margin: 0; padding: 0; box-sizing: border-box; }
-                    a, a:link, a:visited, a:hover, a:active {
-                        color: inherit !important;
-                        text-decoration: none !important;
-                    }
-                    body {
-                        font-family: 'Inter', sans-serif;
-                        padding: 20px;
-                        background: white;
-                    }
+                    a, a:link, a:visited, a:hover, a:active { color: inherit !important; text-decoration: none !important; }
+                    body { font-family: 'Inter', sans-serif; padding: 20px; background: white; }
                     ${orientationStyle}
-                    ${hideDateStyle}
                     .cv {
                         display: flex;
                         max-width: 100%;
@@ -689,97 +694,29 @@
                         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
                         border-radius: 16px;
                     }
-                    .cv-left {
-                        width: 240px;
-                        min-width: 240px;
-                        background: #fafcff;
-                    }
-                    .cv-left-top {
-                        background: #f8fbfe;
-                        padding: 20px 16px;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        gap: 10px;
-                    }
-                    .cv-photo {
-                        width: 90px;
-                        height: 90px;
-                        border-radius: 50%;
-                        object-fit: cover;
-                        border: 3px solid #2a6f6f;
-                        background: #eef2f8;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        overflow: hidden;
-                    }
+                    .cv-left { width: 240px; min-width: 240px; background: #fafcff; }
+                    .cv-left-top { background: #f8fbfe; padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+                    .cv-photo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #2a6f6f; background: #eef2f8; display: flex; align-items: center; justify-content: center; overflow: hidden; }
                     .cv-photo img { width: 100%; height: 100%; object-fit: cover; }
                     .cv-name { font-size: 1.1rem; font-weight: 800; color: #1f4870; text-align: center; }
                     .cv-left-body { padding: 16px; }
-                    .cv-left-title {
-                        font-weight: 800;
-                        font-size: 0.7rem;
-                        color: #2a6f6f;
-                        border-bottom: 2px solid #2a6f6f;
-                        padding-bottom: 4px;
-                        margin: 14px 0 8px 0;
-                        text-transform: uppercase;
-                    }
+                    .cv-left-title { font-weight: 800; font-size: 0.7rem; color: #2a6f6f; border-bottom: 2px solid #2a6f6f; padding-bottom: 4px; margin: 14px 0 8px 0; text-transform: uppercase; }
                     .cv-left-title:first-child { margin-top: 0; }
-                    .cv-contact {
-                        display: flex;
-                        align-items: flex-start;
-                        gap: 8px;
-                        margin-bottom: 8px;
-                        font-size: 0.72rem;
-                        color: #2c3e4e;
-                    }
+                    .cv-contact { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 0.72rem; color: #2c3e4e; }
                     .cv-contact i { width: 14px; color: #2a6f6f; font-size: 0.65rem; }
                     .cv-text { font-size: 0.72rem; line-height: 1.4; margin-bottom: 4px; }
                     .cv-right { flex: 1; padding: 20px; }
-                    .cv-stage {
-                        background: #eef3fa;
-                        padding: 12px;
-                        border-radius: 20px;
-                        text-align: center;
-                        margin-bottom: 16px;
-                    }
+                    .cv-stage { background: #eef3fa; padding: 12px; border-radius: 20px; text-align: center; margin-bottom: 16px; }
                     .cv-stage p { margin: 4px 0; }
-                    .cv-section-title {
-                        font-weight: 800;
-                        font-size: 0.85rem;
-                        color: #1f4a6e;
-                        border-left: 4px solid #2a6f6f;
-                        padding-left: 12px;
-                        margin: 0 0 10px 0;
-                    }
+                    .cv-section-title { font-weight: 800; font-size: 0.85rem; color: #1f4a6e; border-left: 4px solid #2a6f6f; padding-left: 12px; margin: 0 0 10px 0; }
                     .cv-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-                    .cv-skill {
-                        background: #e6f0f5;
-                        padding: 4px 12px;
-                        border-radius: 30px;
-                        font-size: 0.72rem;
-                        font-weight: 500;
-                    }
+                    .cv-skill { background: #e6f0f5; padding: 4px 12px; border-radius: 30px; font-size: 0.72rem; font-weight: 500; }
                     .cv-job { margin-bottom: 12px; }
-                    .cv-job-title {
-                        font-weight: 700;
-                        font-size: 0.8rem;
-                        display: flex;
-                        justify-content: space-between;
-                        flex-wrap: wrap;
-                    }
+                    .cv-job-title { font-weight: 700; font-size: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
                     .cv-job-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
                     .cv-job-desc { font-size: 0.72rem; color: #2c4a6e; margin-top: 3px; }
                     .cv-edu { margin-bottom: 10px; }
-                    .cv-edu-title {
-                        font-weight: 700;
-                        font-size: 0.8rem;
-                        display: flex;
-                        justify-content: space-between;
-                        flex-wrap: wrap;
-                    }
+                    .cv-edu-title { font-weight: 700; font-size: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
                     .cv-edu-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
                     .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
                     .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
@@ -828,16 +765,8 @@
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                 <style>
                     * { margin: 0; padding: 0; box-sizing: border-box; }
-                    a, a:link, a:visited, a:hover, a:active {
-                        color: inherit !important;
-                        text-decoration: none !important;
-                    }
-                    body {
-                        font-family: 'Inter', sans-serif;
-                        padding: 0;
-                        margin: 0;
-                        background: white;
-                    }
+                    a, a:link, a:visited, a:hover, a:active { color: inherit !important; text-decoration: none !important; }
+                    body { font-family: 'Inter', sans-serif; padding: 0; margin: 0; background: white; }
                     ${orientationStyle}
                     ${hideDateStyle}
                     .cv {
@@ -845,104 +774,33 @@
                         max-width: 100%;
                         background: white;
                     }
-                    .cv-left {
-                        width: 240px;
-                        min-width: 240px;
-                        background: #fafcff;
-                    }
-                    .cv-left-top {
-                        background: #f8fbfe;
-                        padding: 20px 16px;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        gap: 10px;
-                    }
-                    .cv-photo {
-                        width: 90px;
-                        height: 90px;
-                        border-radius: 50%;
-                        object-fit: cover;
-                        border: 3px solid #2a6f6f;
-                        background: #eef2f8;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        overflow: hidden;
-                    }
+                    .cv-left { width: 240px; min-width: 240px; background: #fafcff; }
+                    .cv-left-top { background: #f8fbfe; padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+                    .cv-photo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #2a6f6f; background: #eef2f8; display: flex; align-items: center; justify-content: center; overflow: hidden; }
                     .cv-photo img { width: 100%; height: 100%; object-fit: cover; }
                     .cv-name { font-size: 1.1rem; font-weight: 800; color: #1f4870; text-align: center; }
                     .cv-left-body { padding: 16px; }
-                    .cv-left-title {
-                        font-weight: 800;
-                        font-size: 0.7rem;
-                        color: #2a6f6f;
-                        border-bottom: 2px solid #2a6f6f;
-                        padding-bottom: 4px;
-                        margin: 14px 0 8px 0;
-                        text-transform: uppercase;
-                    }
+                    .cv-left-title { font-weight: 800; font-size: 0.7rem; color: #2a6f6f; border-bottom: 2px solid #2a6f6f; padding-bottom: 4px; margin: 14px 0 8px 0; text-transform: uppercase; }
                     .cv-left-title:first-child { margin-top: 0; }
-                    .cv-contact {
-                        display: flex;
-                        align-items: flex-start;
-                        gap: 8px;
-                        margin-bottom: 8px;
-                        font-size: 0.72rem;
-                        color: #2c3e4e;
-                    }
+                    .cv-contact { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 0.72rem; color: #2c3e4e; }
                     .cv-contact i { width: 14px; color: #2a6f6f; font-size: 0.65rem; }
                     .cv-text { font-size: 0.72rem; line-height: 1.4; margin-bottom: 4px; }
                     .cv-right { flex: 1; padding: 20px; }
-                    .cv-stage {
-                        background: #eef3fa;
-                        padding: 12px;
-                        border-radius: 20px;
-                        text-align: center;
-                        margin-bottom: 16px;
-                    }
+                    .cv-stage { background: #eef3fa; padding: 12px; border-radius: 20px; text-align: center; margin-bottom: 16px; }
                     .cv-stage p { margin: 4px 0; }
-                    .cv-section-title {
-                        font-weight: 800;
-                        font-size: 0.85rem;
-                        color: #1f4a6e;
-                        border-left: 4px solid #2a6f6f;
-                        padding-left: 12px;
-                        margin: 0 0 10px 0;
-                    }
+                    .cv-section-title { font-weight: 800; font-size: 0.85rem; color: #1f4a6e; border-left: 4px solid #2a6f6f; padding-left: 12px; margin: 0 0 10px 0; }
                     .cv-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-                    .cv-skill {
-                        background: #e6f0f5;
-                        padding: 4px 12px;
-                        border-radius: 30px;
-                        font-size: 0.72rem;
-                        font-weight: 500;
-                    }
+                    .cv-skill { background: #e6f0f5; padding: 4px 12px; border-radius: 30px; font-size: 0.72rem; font-weight: 500; }
                     .cv-job { margin-bottom: 12px; }
-                    .cv-job-title {
-                        font-weight: 700;
-                        font-size: 0.8rem;
-                        display: flex;
-                        justify-content: space-between;
-                        flex-wrap: wrap;
-                    }
+                    .cv-job-title { font-weight: 700; font-size: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
                     .cv-job-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
                     .cv-job-desc { font-size: 0.72rem; color: #2c4a6e; margin-top: 3px; }
                     .cv-edu { margin-bottom: 10px; }
-                    .cv-edu-title {
-                        font-weight: 700;
-                        font-size: 0.8rem;
-                        display: flex;
-                        justify-content: space-between;
-                        flex-wrap: wrap;
-                    }
+                    .cv-edu-title { font-weight: 700; font-size: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
                     .cv-edu-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
                     .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
                     .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
-                    @media print {
-                        body { margin: 0; padding: 0; }
-                        .cv { margin: 0; }
-                    }
+                    @media print { body { margin: 0; padding: 0; } .cv { margin: 0; } }
                 </style>
             </head>
             <body>
