@@ -151,7 +151,6 @@
         ru: { labelPhoto:"📷 Фото", labelFullname:"Полное имя", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адрес", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Скрыть сайт", labelLanguages:"Языки", labelHobbies:"Хобби", labelStageTitle:"Цель стажировки", labelStageStart:"Дата начала", labelStageEnd:"Дата окончания", labelStagePoste:"Должность", labelSkills:"Навыки (через запятую)", labelExperiences:"Опыт работы", labelEducations:"Образование", addExpText:"+ Добавить опыт", addEduText:"+ Добавить образование", saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово", contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ", actionLabel:"📄 Действие:", actionSave:"Сохранить как PDF", actionPreview:"Предпросмотр", orientationLabel:"📄 Ориентация:", orientationPortrait:"Книжная", orientationLandscape:"Альбомная", orientationAuto:"Авто", hideDateLabel:"Скрыть дату и время" }
     };
     
-    // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПРИ СМЕНЕ ЯЗЫКА
     function updateUILabels() {
         const t = translations[currentLang];
         if(!t) return;
@@ -171,7 +170,6 @@
         document.getElementById('labelEducations').innerText = t.labelEducations;
     }
     
-    // ОТОБРАЖЕНИЕ CV
     function renderPreview() {
         const t = translations[currentLang];
         const fullname = document.getElementById('fullname').value;
@@ -212,7 +210,6 @@
     
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
     
-    // ФОРМЫ ДЛЯ ОПЫТА И ОБРАЗОВАНИЯ
     function renderExpForm() {
         const container = document.getElementById('expList');
         container.innerHTML = '';
@@ -280,7 +277,6 @@
     function addExperience() { experiences.push({title:"", company:"", period:"", desc:""}); renderExpForm(); renderPreview(); }
     function addEducation() { educations.push({degree:"", institution:"", year:"", desc:""}); renderEduForm(); renderPreview(); }
     
-    // ПРИВЯЗКА ИНПУТОВ
     function bindInputs() {
         const ids = ['fullname','phone','email','address','license','website','hideWebsite','languages','hobbies','stageTitle','stageStart','stageEnd','stagePoste','skills'];
         ids.forEach(id => {
@@ -290,7 +286,6 @@
         });
     }
     
-    // ЗАГРУЗКА ФОТО
     document.getElementById('photoUpload').addEventListener('change', e => {
         if(e.target.files[0]) {
             const reader = new FileReader();
@@ -301,7 +296,6 @@
     document.getElementById('addExpBtn').addEventListener('click', addExperience);
     document.getElementById('addEduBtn').addEventListener('click', addEducation);
     
-    // СОХРАНЕНИЕ/ЗАГРУЗКА ПРОЕКТА
     function saveProject() {
         const projectData = {
             fullname: document.getElementById('fullname').value,
@@ -368,7 +362,7 @@
     document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
     document.getElementById('loadProjectBtn').addEventListener('click', loadProject);
     
-    // ГЕНЕРАЦИЯ PDF
+    // ГЕНЕРАЦИЯ PDF С ПОЛНЫМ СКРЫТИЕМ ДАТЫ И URL
     function handlePDF() {
         const action = document.getElementById('pdfActionSelect').value;
         const orientation = document.getElementById('orientationSelect').value;
@@ -376,14 +370,59 @@
         const fullname = document.getElementById('fullname').value || 'CV';
         const printContent = document.getElementById('cvPreview').cloneNode(true);
         const win = window.open('', '_blank');
-        let orientationStyle = orientation === 'landscape' ? '@page { size: landscape; }' : (orientation === 'portrait' ? '@page { size: portrait; }' : '@page { size: auto; }');
-        let hideDateStyle = hideDate ? '@media print { @page { margin: 0; } body { margin: 0; padding: 0; } }' : '';
+        
+        let orientationStyle = '';
+        if (orientation === 'landscape') {
+            orientationStyle = '@page { size: landscape; }';
+        } else if (orientation === 'portrait') {
+            orientationStyle = '@page { size: portrait; }';
+        } else {
+            orientationStyle = '@page { size: auto; }';
+        }
+        
+        // МОЩНЫЕ ПРАВИЛА ДЛЯ СКРЫТИЯ ДАТЫ, ВРЕМЕНИ И URL НА IPHONE
+        let hideDateStyle = hideDate ? `
+            @page {
+                margin: 0;
+                size: auto;
+            }
+            @media print {
+                @page {
+                    margin: 0;
+                    size: auto;
+                }
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+                /* Скрываем колонтитулы во всех браузерах */
+                    @page :left {
+                    margin: 0;
+                }
+                @page :right {
+                    margin: 0;
+                }
+                @page :first {
+                    margin: 0;
+                }
+                /* Для Chrome/Safari */
+                @page {
+                    margin: 0;
+                }
+                /* Для Firefox */
+                @-moz-document url-prefix() {
+                    @page {
+                        margin: 0;
+                    }
+                }
+            }
+        ` : '';
+        
         win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="format-detection" content="telephone=no, date=no, address=no, email=no"><title>${action === 'preview' ? 'Предпросмотр CV - ' + escapeHtml(fullname) : 'CV - ' + escapeHtml(fullname)}</title><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>*{margin:0;padding:0;box-sizing:border-box;}a,a:link,a:visited,a:hover,a:active{color:inherit!important;text-decoration:none!important;}body{font-family:'Inter',sans-serif;${action === 'preview' ? 'padding:20px;' : 'padding:0;margin:0;background:white;'}${orientationStyle}${hideDateStyle}.cv{display:flex;max-width:100%;background:white;${action === 'preview' ? 'box-shadow:0 10px 30px rgba(0,0,0,0.1);border-radius:16px;' : ''}}.cv-left{width:240px;min-width:240px;background:#fafcff;}.cv-left-top{background:#f8fbfe;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;}.cv-photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #2a6f6f;background:#eef2f8;display:flex;align-items:center;justify-content:center;overflow:hidden;}.cv-photo img{width:100%;height:100%;object-fit:cover;}.cv-name{font-size:1.1rem;font-weight:800;color:#1f4870;text-align:center;}.cv-left-body{padding:16px;}.cv-left-title{font-weight:800;font-size:0.7rem;color:#2a6f6f;border-bottom:2px solid #2a6f6f;padding-bottom:4px;margin:14px 0 8px 0;text-transform:uppercase;}.cv-left-title:first-child{margin-top:0;}.cv-contact{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:0.72rem;color:#2c3e4e;}.cv-contact i{width:14px;color:#2a6f6f;font-size:0.65rem;}.cv-text{font-size:0.72rem;line-height:1.4;margin-bottom:4px;}.cv-right{flex:1;padding:20px;}.cv-stage{background:#eef3fa;padding:12px;border-radius:20px;text-align:center;margin-bottom:16px;}.cv-stage p{margin:4px 0;}.cv-section-title{font-weight:800;font-size:0.85rem;color:#1f4a6e;border-left:4px solid #2a6f6f;padding-left:12px;margin:0 0 10px 0;}.cv-skills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}.cv-skill{background:#e6f0f5;padding:4px 12px;border-radius:30px;font-size:0.72rem;font-weight:500;}.cv-job{margin-bottom:12px;}.cv-job-title{font-weight:700;font-size:0.8rem;display:flex;justify-content:space-between;flex-wrap:wrap;}.cv-job-date{font-weight:400;color:#5f7d9c;font-size:0.72rem;}.cv-job-desc{font-size:0.72rem;color:#2c4a6e;margin-top:3px;}.cv-edu{margin-bottom:10px;}.cv-edu-title{font-weight:700;font-size:0.8rem;display:flex;justify-content:space-between;flex-wrap:wrap;}.cv-edu-date{font-weight:400;color:#5f7d9c;font-size:0.72rem;}.cv-edu-place{font-size:0.72rem;color:#4a627a;margin-top:2px;}.cv-edu-desc{font-size:0.68rem;color:#5f7d9c;margin-top:2px;}@media(max-width:700px){.cv{flex-direction:column;min-width:100%;}.cv-left{width:100%;min-width:100%;}.cv-left-top{flex-direction:row;}.cv-name{text-align:left;}}</style></head><body>${printContent.outerHTML}${action === 'save' ? '<script>window.onload=function(){window.print();setTimeout(function(){window.close();},500);}<\/script>' : ''}</body></html>`);
         win.document.close();
     }
     document.getElementById('printPDFBtn').addEventListener('click', () => handlePDF());
     
-    // ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА
     function setLanguage(lang) {
         currentLang = lang;
         updateUILabels();
@@ -392,7 +431,6 @@
     }
     document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
     
-    // СТАРТ
     bindInputs();
     renderExpForm();
     renderEduForm();
