@@ -45,28 +45,6 @@
             background: #1f4870;
             color: white;
         }
-        .pdf-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #f0f2f5;
-            padding: 5px 15px;
-            border-radius: 40px;
-            flex-wrap: wrap;
-        }
-        .pdf-controls label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #1f4870;
-        }
-        .pdf-controls select {
-            padding: 5px 8px;
-            border-radius: 20px;
-            border: 1px solid #cfdfed;
-            background: white;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
         .btn-pdf, .btn-save, .btn-load {
             background: #1f4870;
             border: none;
@@ -139,7 +117,7 @@
         }
         hr { margin: 16px 0; }
 
-        /* CV стили - для экрана (две колонки на ПК и телефоне) */
+        /* Стили CV */
         .cv-scroll-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -149,9 +127,8 @@
             background: white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border-radius: 16px;
-            display: flex;
             min-width: 700px;
-            width: 100%;
+            display: flex;
         }
         .cv-left {
             width: 240px;
@@ -261,35 +238,7 @@
         .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
         .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
 
-        /* Адаптация для телефонов: увеличение шрифтов, НЕ ломаем колонки */
-        @media (max-width: 700px) {
-            body { padding: 12px; }
-            .toolbar { flex-direction: column; align-items: stretch; }
-            .lang-buttons { justify-content: center; }
-            .pdf-controls { justify-content: center; }
-            .btn-pdf, .btn-save, .btn-load { justify-content: center; }
-            .editor { padding: 16px; }
-            
-            .cv-left-title { font-size: 0.8rem; }
-            .cv-contact { font-size: 0.8rem; }
-            .cv-text { font-size: 0.8rem; }
-            .cv-section-title { font-size: 0.95rem; }
-            .cv-skill { font-size: 0.8rem; padding: 5px 14px; }
-            .cv-job-title { font-size: 0.9rem; }
-            .cv-job-date { font-size: 0.8rem; }
-            .cv-job-desc { font-size: 0.85rem; }
-            .cv-edu-title { font-size: 0.9rem; }
-            .cv-edu-date { font-size: 0.8rem; }
-            .cv-edu-place { font-size: 0.85rem; }
-            .cv-stage strong { font-size: 1rem; }
-            .cv-stage p { font-size: 0.9rem; }
-            .cv-name { font-size: 1.2rem; }
-            .cv-left-top { padding: 15px 12px; }
-            .cv-left-body { padding: 12px; }
-            .cv-right { padding: 15px; }
-        }
-        
-        /* СТИЛИ ДЛЯ ПЕЧАТИ PDF - на телефоне превращаем в одну колонку */
+        /* Стили для печати PDF */
         @media print {
             body {
                 background: white;
@@ -300,53 +249,25 @@
                 display: none !important;
             }
             .cv {
-                display: flex;
-                flex-direction: column;
-                min-width: 100%;
                 box-shadow: none;
+                min-width: 100%;
                 margin: 0;
                 padding: 0;
             }
-            .cv-left {
-                width: 100%;
-                min-width: 100%;
-            }
-            .cv-left-top {
-                flex-direction: row;
-                justify-content: flex-start;
-                text-align: left;
-                padding: 15px;
-            }
-            .cv-name {
-                text-align: left;
-                font-size: 1.3rem;
-            }
-            .cv-photo {
-                width: 70px;
-                height: 70px;
-            }
-            .cv-left-body {
-                padding: 15px;
-            }
-            .cv-right {
-                padding: 15px;
-            }
-            /* Увеличиваем шрифты для печати */
-            .cv-contact, .cv-text, .cv-skill, .cv-job-desc, .cv-edu-place, .cv-edu-desc {
-                font-size: 11pt;
-            }
-            .cv-job-title, .cv-edu-title, .cv-section-title {
-                font-size: 12pt;
-            }
-            .cv-stage strong {
-                font-size: 13pt;
-            }
-            .cv-left-title {
-                font-size: 10pt;
+            .cv-left, .cv-right {
+                break-inside: avoid;
             }
         }
-        
+
+        @media (max-width: 700px) {
+            body { padding: 12px; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .lang-buttons { justify-content: center; }
+            .btn-pdf, .btn-save, .btn-load { justify-content: center; }
+            .editor { padding: 16px; }
+        }
         @media (max-width: 480px) {
+            .cv-photo { width: 70px; height: 70px; }
             .form-group input, .form-group textarea { font-size: 0.8rem; padding: 8px 10px; }
         }
     </style>
@@ -359,14 +280,6 @@
             <button class="lang-btn" data-lang="en">English</button>
             <button class="lang-btn" data-lang="uk">Українська</button>
             <button class="lang-btn" data-lang="ru">Русский</button>
-        </div>
-        <div class="pdf-controls">
-            <label>📄 Orientation:</label>
-            <select id="orientationSelect">
-                <option value="portrait">Книжная (Portrait)</option>
-                <option value="landscape">Альбомная (Landscape)</option>
-                <option value="auto">Авто</option>
-            </select>
         </div>
         <div style="display: flex; gap: 8px;">
             <button class="btn-save" id="saveProjectBtn"><i class="fas fa-save"></i> <span id="saveBtnText">Сохранить</span></button>
@@ -410,18 +323,8 @@
 </div>
 
 <script>
-    let experiences = [
-        { title: "Chef d'Entreprise - PaulMultiService", company: "Rennes", period: "02/2026 - En cours", desc: "Conseil informatique, assistance technique et interventions de petit bricolage. Conception, développement complet et déploiement du site internet de l'entreprise (paulmultiservice.fr). Gestion administrative, comptabilité et relation client." },
-        { title: "Officier Logisticien - Chef de Bureau des Transports", company: "Forces Armées de l'Ukraine", period: "2023-2024", desc: "Commandement et acheminement de convois militaires en zones de combat. Gestion tactique des transports sous haute pression et participation directe aux opérations. Prise de décision critique pour la sécurité des personnels et du matériel." },
-        { title: "Élève-Officier / Chef de Groupe", company: "Académie Militaire / Forces Armées", period: "2019-2023", desc: "Instruction militaire intensive : tactique, secourisme de combat, NRBC et déminage. Entraînements internes réguliers sur le terrain selon les standards OTAN. Management et commandement d'un groupe de cadets au quotidien." },
-        { title: "Militaire de Carrière (Ukraine) — Compagnie de Protection", company: "Forces Armées de l'Ukraine", period: "2018-2019", desc: "Opérations tactiques d'infanterie et missions de combat dans les régions de Louhansk et Donetsk (Ukraine). Reconnaissance de terrain, fortification des positions et protection d'infrastructures. Titulaire du statut officiel d'ancien combattant délivré par l'Ukraine." }
-    ];
-    let educations = [
-        { degree: "Formation Prépa Avenir FLE", institution: "CLPS Rennes", year: "2026 (En cours)", desc: "Formation d'orientation professionnelle + cours de français" },
-        { degree: "Licence (Bac+3) - Technologies de Transport", institution: "Université d'État des Sciences et Technologies d'Ukraine", year: "2023 (Obtenu avec Mention / Diplôme Rouge)", desc: "" },
-        { degree: "Diplôme Professionnel - Opérateur Informatique & Comptabilité", institution: "Collège Professionnel de l'Université Nationale de l'Aviation", year: "2016", desc: "" }
-    ];
-    
+    let experiences = [];
+    let educations = [];
     let photoBase64 = "";
     let currentLang = "fr";
 
@@ -702,73 +605,66 @@
     document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
     document.getElementById('loadProjectBtn').addEventListener('click', loadProject);
 
+    // PDF через печать (работает идеально на всех устройствах)
     function printPDF() {
-        const orientation = document.getElementById('orientationSelect').value;
-        const fullname = document.getElementById('fullname').value || 'CV';
+        const originalTitle = document.title;
+        document.title = 'CV - ' + (document.getElementById('fullname').value || 'Document');
+        
+        // Создаём временный элемент для печати
         const printContent = document.getElementById('cvPreview').cloneNode(true);
         const printWindow = window.open('', '_blank');
-        
-        let orientationStyle = '';
-        if (orientation === 'landscape') {
-            orientationStyle = '@page { size: landscape; }';
-        } else if (orientation === 'portrait') {
-            orientationStyle = '@page { size: portrait; }';
-        } else {
-            orientationStyle = '@page { size: auto; }';
-        }
-        
         printWindow.document.write(`
             <!DOCTYPE html>
             <html>
             <head>
                 <meta charset="UTF-8">
-                <title>CV - ${escapeHtml(fullname)}</title>
+                <title>${document.title}</title>
                 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                 <style>
                     * { margin: 0; padding: 0; box-sizing: border-box; }
                     body {
                         font-family: 'Inter', sans-serif;
-                        padding: 10mm;
+                        padding: 0;
                         margin: 0;
                         background: white;
                     }
-                    ${orientationStyle}
                     .cv {
                         display: flex;
-                        flex-direction: column;
                         max-width: 100%;
                         background: white;
                     }
                     .cv-left {
-                        width: 100%;
+                        width: 240px;
+                        min-width: 240px;
                         background: #fafcff;
                     }
                     .cv-left-top {
                         background: #f8fbfe;
-                        padding: 15px;
+                        padding: 20px 16px;
                         display: flex;
-                        flex-direction: row;
+                        flex-direction: column;
                         align-items: center;
-                        gap: 15px;
+                        gap: 10px;
                     }
                     .cv-photo {
-                        width: 80px;
-                        height: 80px;
+                        width: 90px;
+                        height: 90px;
                         border-radius: 50%;
                         object-fit: cover;
                         border: 3px solid #2a6f6f;
+                        background: #eef2f8;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        overflow: hidden;
                     }
-                    .cv-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-                    .cv-name {
-                        font-size: 1.3rem;
-                        font-weight: 800;
-                        color: #1f4870;
-                    }
-                    .cv-left-body { padding: 15px; }
+                    .cv-photo img { width: 100%; height: 100%; object-fit: cover; }
+                    .cv-name { font-size: 1.1rem; font-weight: 800; color: #1f4870; text-align: center; }
+                    .cv-left-body { padding: 16px; }
                     .cv-left-title {
                         font-weight: 800;
-                        font-size: 0.85rem;
+                        font-size: 0.7rem;
                         color: #2a6f6f;
                         border-bottom: 2px solid #2a6f6f;
                         padding-bottom: 4px;
@@ -781,23 +677,23 @@
                         align-items: flex-start;
                         gap: 8px;
                         margin-bottom: 8px;
-                        font-size: 0.85rem;
+                        font-size: 0.72rem;
                         color: #2c3e4e;
                     }
-                    .cv-contact i { width: 16px; color: #2a6f6f; }
-                    .cv-text { font-size: 0.85rem; line-height: 1.4; margin-bottom: 4px; }
-                    .cv-right { padding: 15px; }
+                    .cv-contact i { width: 14px; color: #2a6f6f; font-size: 0.65rem; }
+                    .cv-text { font-size: 0.72rem; line-height: 1.4; margin-bottom: 4px; }
+                    .cv-right { flex: 1; padding: 20px; }
                     .cv-stage {
                         background: #eef3fa;
-                        padding: 10px;
-                        border-radius: 16px;
+                        padding: 12px;
+                        border-radius: 20px;
                         text-align: center;
                         margin-bottom: 16px;
                     }
-                    .cv-stage p { margin: 4px 0; font-size: 0.9rem; }
+                    .cv-stage p { margin: 4px 0; }
                     .cv-section-title {
                         font-weight: 800;
-                        font-size: 1rem;
+                        font-size: 0.85rem;
                         color: #1f4a6e;
                         border-left: 4px solid #2a6f6f;
                         padding-left: 12px;
@@ -808,30 +704,34 @@
                         background: #e6f0f5;
                         padding: 4px 12px;
                         border-radius: 30px;
-                        font-size: 0.8rem;
+                        font-size: 0.72rem;
                         font-weight: 500;
                     }
                     .cv-job { margin-bottom: 12px; }
                     .cv-job-title {
                         font-weight: 700;
-                        font-size: 0.9rem;
+                        font-size: 0.8rem;
                         display: flex;
                         justify-content: space-between;
                         flex-wrap: wrap;
                     }
-                    .cv-job-date { font-weight: 400; color: #5f7d9c; font-size: 0.8rem; }
-                    .cv-job-desc { font-size: 0.85rem; color: #2c4a6e; margin-top: 3px; }
+                    .cv-job-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
+                    .cv-job-desc { font-size: 0.72rem; color: #2c4a6e; margin-top: 3px; }
                     .cv-edu { margin-bottom: 10px; }
                     .cv-edu-title {
                         font-weight: 700;
-                        font-size: 0.9rem;
+                        font-size: 0.8rem;
                         display: flex;
                         justify-content: space-between;
                         flex-wrap: wrap;
                     }
-                    .cv-edu-date { font-weight: 400; color: #5f7d9c; font-size: 0.8rem; }
-                    .cv-edu-place { font-size: 0.85rem; color: #4a627a; margin-top: 2px; }
-                    .cv-edu-desc { font-size: 0.8rem; color: #5f7d9c; margin-top: 2px; }
+                    .cv-edu-date { font-weight: 400; color: #5f7d9c; font-size: 0.72rem; }
+                    .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
+                    .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
+                    @media print {
+                        body { margin: 0; padding: 0; }
+                        .cv { margin: 0; }
+                    }
                 </style>
             </head>
             <body>
@@ -846,6 +746,7 @@
             </html>
         `);
         printWindow.document.close();
+        document.title = originalTitle;
     }
 
     document.getElementById('printPDFBtn').addEventListener('click', printPDF);
