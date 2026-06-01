@@ -45,6 +45,28 @@
             background: #1f4870;
             color: white;
         }
+        .pdf-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f0f2f5;
+            padding: 5px 15px;
+            border-radius: 40px;
+            flex-wrap: wrap;
+        }
+        .pdf-controls label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1f4870;
+        }
+        .pdf-controls select {
+            padding: 5px 8px;
+            border-radius: 20px;
+            border: 1px solid #cfdfed;
+            background: white;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
         .btn-pdf, .btn-save, .btn-load {
             background: #1f4870;
             border: none;
@@ -238,31 +260,11 @@
         .cv-edu-place { font-size: 0.72rem; color: #4a627a; margin-top: 2px; }
         .cv-edu-desc { font-size: 0.68rem; color: #5f7d9c; margin-top: 2px; }
 
-        /* Стили для печати PDF */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-                margin: 0;
-            }
-            .toolbar, .editor, .cv-scroll-wrapper {
-                display: none !important;
-            }
-            .cv {
-                box-shadow: none;
-                min-width: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            .cv-left, .cv-right {
-                break-inside: avoid;
-            }
-        }
-
         @media (max-width: 700px) {
             body { padding: 12px; }
             .toolbar { flex-direction: column; align-items: stretch; }
             .lang-buttons { justify-content: center; }
+            .pdf-controls { justify-content: center; }
             .btn-pdf, .btn-save, .btn-load { justify-content: center; }
             .editor { padding: 16px; }
         }
@@ -280,6 +282,14 @@
             <button class="lang-btn" data-lang="en">English</button>
             <button class="lang-btn" data-lang="uk">Українська</button>
             <button class="lang-btn" data-lang="ru">Русский</button>
+        </div>
+        <div class="pdf-controls">
+            <label>📄 Orientation:</label>
+            <select id="orientationSelect">
+                <option value="portrait">Книжная (Portrait)</option>
+                <option value="landscape">Альбомная (Landscape)</option>
+                <option value="auto">Авто</option>
+            </select>
         </div>
         <div style="display: flex; gap: 8px;">
             <button class="btn-save" id="saveProjectBtn"><i class="fas fa-save"></i> <span id="saveBtnText">Сохранить</span></button>
@@ -605,14 +615,25 @@
     document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
     document.getElementById('loadProjectBtn').addEventListener('click', loadProject);
 
-    // PDF через печать (работает идеально на всех устройствах)
+    // PDF через печать с выбором ориентации
     function printPDF() {
+        const orientation = document.getElementById('orientationSelect').value;
+        const fullname = document.getElementById('fullname').value || 'CV';
         const originalTitle = document.title;
-        document.title = 'CV - ' + (document.getElementById('fullname').value || 'Document');
+        document.title = 'CV - ' + fullname;
         
-        // Создаём временный элемент для печати
         const printContent = document.getElementById('cvPreview').cloneNode(true);
         const printWindow = window.open('', '_blank');
+        
+        let orientationStyle = '';
+        if (orientation === 'landscape') {
+            orientationStyle = '@page { size: landscape; }';
+        } else if (orientation === 'portrait') {
+            orientationStyle = '@page { size: portrait; }';
+        } else {
+            orientationStyle = '@page { size: auto; }';
+        }
+        
         printWindow.document.write(`
             <!DOCTYPE html>
             <html>
@@ -629,6 +650,7 @@
                         margin: 0;
                         background: white;
                     }
+                    ${orientationStyle}
                     .cv {
                         display: flex;
                         max-width: 100%;
