@@ -20,7 +20,6 @@
         .pdf-controls label { font-size: 0.75rem; font-weight: 600; color: #1f4870; }
         .pdf-controls select { padding: 5px 8px; border-radius: 20px; border: 1px solid #cfdfed; background: white; font-size: 0.75rem; cursor: pointer; }
         .pdf-controls .checkbox-group { display: flex; align-items: center; gap: 5px; }
-        .pdf-controls .checkbox-group input { width: 16px; height: 16px; cursor: pointer; }
         .btn-pdf, .btn-save, .btn-load { background: #1f4870; border: none; padding: 8px 20px; border-radius: 40px; color: white; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
         .btn-save { background: #2a6f6f; }
         .btn-load { background: #6c86a3; }
@@ -92,10 +91,10 @@
             </div>
         </div>
         <div style="display: flex; gap: 8px;">
-            <button class="btn-save" id="saveProjectBtn"><i class="fas fa-save"></i> <span id="saveBtnText">Сохранит</span></button>
-            <button class="btn-load" id="loadProjectBtn"><i class="fas fa-folder-open"></i> <span id="loadBtnText">Загрузить</span></button>
+            <button class="btn-save" id="saveProjectBtn"><i class="fas fa-save"></i> <span id="saveBtnText">Sauvegarder</span></button>
+            <button class="btn-load" id="loadProjectBtn"><i class="fas fa-folder-open"></i> <span id="loadBtnText">Charger</span></button>
             <input type="file" id="loadFileInput" accept=".json" style="display: none;">
-            <button class="btn-pdf" id="printPDFBtn"><i class="fas fa-print"></i> <span id="pdfBtnText">Готово</span></button>
+            <button class="btn-pdf" id="printPDFBtn"><i class="fas fa-print"></i> <span id="pdfBtnText">PDF</span></button>
         </div>
     </div>
     <div class="editor">
@@ -128,7 +127,6 @@
     <div class="cv-scroll-wrapper"><div id="cvPreview"></div></div>
 </div>
 <script>
-    // Данные по умолчанию (Pavlo Pashkin)
     let experiences = [
         { title: "Chef d'Entreprise - PaulMultiService", company: "Rennes", period: "02/2026 - En cours", desc: "Conseil informatique, assistance technique, petit bricolage. Développement du site paulmultiservice.fr. Gestion administrative, comptabilité, relation client." },
         { title: "Officier Logisticien - Chef de Bureau des Transports", company: "Forces Armées de l'Ukraine", period: "2023-2024", desc: "Commandement et acheminement de convois militaires en zones de combat. Gestion tactique des transports sous haute pression." },
@@ -143,15 +141,13 @@
     let photoBase64 = "";
     let currentLang = "fr";
     
-    // ПЕРЕВОДЫ НА ВСЕ ЯЗЫКИ
     const translations = {
-        fr: { labelPhoto:"📷 Photo", labelFullname:"Nom complet", labelPhone:"Téléphone", labelEmail:"Email", labelAddress:"Adresse", labelLicense:"Permis", labelWebsite:"Site web", labelHideWebsite:"Masquer le site", labelLanguages:"Langues", labelHobbies:"Loisirs", labelStageTitle:"Titre du stage", labelStageStart:"Date début", labelStageEnd:"Date fin", labelStagePoste:"Poste recherché", labelSkills:"Compétences (séparées par virgules)", labelExperiences:"Expériences", labelEducations:"Formations", addExpText:"+ Ajouter expérience", addEduText:"+ Ajouter formation", saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово", contact:"Coordonnées", lang:"Langues", loisir:"Loisirs", comp:"COMPÉTENCES", exp:"EXPÉRIENCES PROFESSIONNELLES", edu:"FORMATIONS / DIPLÔMES", actionLabel:"📄 Action:", actionSave:"Enregistrer en PDF", actionPreview:"Aperçu", orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Paysage", orientationAuto:"Auto", hideDateLabel:"Masquer date et heure" },
-        en: { labelPhoto:"📷 Photo", labelFullname:"Full name", labelPhone:"Phone", labelEmail:"Email", labelAddress:"Address", labelLicense:"License", labelWebsite:"Website", labelHideWebsite:"Hide website", labelLanguages:"Languages", labelHobbies:"Hobbies", labelStageTitle:"Internship title", labelStageStart:"Start date", labelStageEnd:"End date", labelStagePoste:"Position sought", labelSkills:"Skills (comma separated)", labelExperiences:"Work experience", labelEducations:"Education", addExpText:"+ Add experience", addEduText:"+ Add education", saveBtnText:"💾 Save", loadBtnText:"📂 Load", pdfBtnText:"Done", contact:"Contact", lang:"Languages", loisir:"Hobbies", comp:"SKILLS", exp:"WORK EXPERIENCE", edu:"EDUCATION / DEGREES", actionLabel:"📄 Action:", actionSave:"Save as PDF", actionPreview:"Preview", orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Landscape", orientationAuto:"Auto", hideDateLabel:"Hide date and time" },
-        uk: { labelPhoto:"📷 Фото", labelFullname:"Повне ім'я", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адреса", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Сховати сайт", labelLanguages:"Мови", labelHobbies:"Хобі", labelStageTitle:"Мета стажування", labelStageStart:"Дата початку", labelStageEnd:"Дата завершення", labelStagePoste:"Посада", labelSkills:"Навички (через кому)", labelExperiences:"Досвід роботи", labelEducations:"Освіта", addExpText:"+ Додати досвід", addEduText:"+ Додати освіту", saveBtnText:"💾 Зберегти", loadBtnText:"📂 Завантажити", pdfBtnText:"Готово", contact:"Контакти", lang:"Мови", loisir:"Хобі", comp:"НАВИЧКИ", exp:"ДОСВІД РОБОТИ", edu:"ОСВІТА / ДИПЛОМИ", actionLabel:"📄 Дія:", actionSave:"Зберегти як PDF", actionPreview:"Попередній перегляд", orientationLabel:"📄 Орієнтація:", orientationPortrait:"Портретна", orientationLandscape:"Альбомна", orientationAuto:"Авто", hideDateLabel:"Приховати дату і час" },
-        ru: { labelPhoto:"📷 Фото", labelFullname:"Полное имя", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адрес", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Скрыть сайт", labelLanguages:"Языки", labelHobbies:"Хобби", labelStageTitle:"Цель стажировки", labelStageStart:"Дата начала", labelStageEnd:"Дата окончания", labelStagePoste:"Должность", labelSkills:"Навыки (через запятую)", labelExperiences:"Опыт работы", labelEducations:"Образование", addExpText:"+ Добавить опыт", addEduText:"+ Добавить образование", saveBtnText:"💾 Сохранить", loadBtnText:"📂 Загрузить", pdfBtnText:"Готово", contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ", actionLabel:"📄 Действие:", actionSave:"Сохранить как PDF", actionPreview:"Предпросмотр", orientationLabel:"📄 Ориентация:", orientationPortrait:"Книжная", orientationLandscape:"Альбомная", orientationAuto:"Авто", hideDateLabel:"Скрыть дату и время" }
+        fr: { labelPhoto:"📷 Photo", labelFullname:"Nom complet", labelPhone:"Téléphone", labelEmail:"Email", labelAddress:"Adresse", labelLicense:"Permis", labelWebsite:"Site web", labelHideWebsite:"Masquer le site", labelLanguages:"Langues", labelHobbies:"Loisirs", labelStageTitle:"Titre du stage", labelStageStart:"Date début", labelStageEnd:"Date fin", labelStagePoste:"Poste recherché", labelSkills:"Compétences (séparées par virgules)", labelExperiences:"Expériences", labelEducations:"Formations", addExpText:"+ Ajouter expérience", addEduText:"+ Ajouter formation", saveBtnText:"Sauvegarder", loadBtnText:"Charger", pdfBtnText:"PDF", contact:"Coordonnées", lang:"Langues", loisir:"Loisirs", comp:"COMPÉTENCES", exp:"EXPÉRIENCES PROFESSIONNELLES", edu:"FORMATIONS / DIPLÔMES", actionLabel:"📄 Action:", actionSave:"Enregistrer en PDF", actionPreview:"Aperçu", orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Paysage", orientationAuto:"Auto", hideDateLabel:"Masquer date et heure" },
+        en: { labelPhoto:"📷 Photo", labelFullname:"Full name", labelPhone:"Phone", labelEmail:"Email", labelAddress:"Address", labelLicense:"License", labelWebsite:"Website", labelHideWebsite:"Hide website", labelLanguages:"Languages", labelHobbies:"Hobbies", labelStageTitle:"Internship title", labelStageStart:"Start date", labelStageEnd:"End date", labelStagePoste:"Position sought", labelSkills:"Skills (comma separated)", labelExperiences:"Work experience", labelEducations:"Education", addExpText:"+ Add experience", addEduText:"+ Add education", saveBtnText:"Save", loadBtnText:"Load", pdfBtnText:"PDF", contact:"Contact", lang:"Languages", loisir:"Hobbies", comp:"SKILLS", exp:"WORK EXPERIENCE", edu:"EDUCATION / DEGREES", actionLabel:"📄 Action:", actionSave:"Save as PDF", actionPreview:"Preview", orientationLabel:"📄 Orientation:", orientationPortrait:"Portrait", orientationLandscape:"Landscape", orientationAuto:"Auto", hideDateLabel:"Hide date and time" },
+        uk: { labelPhoto:"📷 Фото", labelFullname:"Повне ім'я", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адреса", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Сховати сайт", labelLanguages:"Мови", labelHobbies:"Хобі", labelStageTitle:"Мета стажування", labelStageStart:"Дата початку", labelStageEnd:"Дата завершення", labelStagePoste:"Посада", labelSkills:"Навички (через кому)", labelExperiences:"Досвід роботи", labelEducations:"Освіта", addExpText:"+ Додати досвід", addEduText:"+ Додати освіту", saveBtnText:"Зберегти", loadBtnText:"Завантажити", pdfBtnText:"PDF", contact:"Контакти", lang:"Мови", loisir:"Хобі", comp:"НАВИЧКИ", exp:"ДОСВІД РОБОТИ", edu:"ОСВІТА / ДИПЛОМИ", actionLabel:"📄 Дія:", actionSave:"Зберегти як PDF", actionPreview:"Попередній перегляд", orientationLabel:"📄 Орієнтація:", orientationPortrait:"Портретна", orientationLandscape:"Альбомна", orientationAuto:"Авто", hideDateLabel:"Приховати дату і час" },
+        ru: { labelPhoto:"📷 Фото", labelFullname:"Полное имя", labelPhone:"Телефон", labelEmail:"Email", labelAddress:"Адрес", labelLicense:"Права", labelWebsite:"Сайт", labelHideWebsite:"Скрыть сайт", labelLanguages:"Языки", labelHobbies:"Хобби", labelStageTitle:"Цель стажировки", labelStageStart:"Дата начала", labelStageEnd:"Дата окончания", labelStagePoste:"Должность", labelSkills:"Навыки (через запятую)", labelExperiences:"Опыт работы", labelEducations:"Образование", addExpText:"+ Добавить опыт", addEduText:"+ Добавить образование", saveBtnText:"Сохранить", loadBtnText:"Загрузить", pdfBtnText:"PDF", contact:"Контакты", lang:"Языки", loisir:"Хобби", comp:"НАВЫКИ", exp:"ОПЫТ РАБОТЫ", edu:"ОБРАЗОВАНИЕ / ДИПЛОМЫ", actionLabel:"📄 Действие:", actionSave:"Сохранить как PDF", actionPreview:"Предпросмотр", orientationLabel:"📄 Ориентация:", orientationPortrait:"Книжная", orientationLandscape:"Альбомная", orientationAuto:"Авто", hideDateLabel:"Скрыть дату и время" }
     };
     
-    // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПРИ СМЕНЕ ЯЗЫКА
     function updateUILabels() {
         const t = translations[currentLang];
         if(!t) return;
@@ -171,7 +167,6 @@
         document.getElementById('labelEducations').innerText = t.labelEducations;
     }
     
-    // ОТОБРАЖЕНИЕ CV
     function renderPreview() {
         const t = translations[currentLang];
         const fullname = document.getElementById('fullname').value;
@@ -212,7 +207,6 @@
     
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
     
-    // ФОРМЫ ДЛЯ ОПЫТА И ОБРАЗОВАНИЯ
     function renderExpForm() {
         const container = document.getElementById('expList');
         container.innerHTML = '';
@@ -280,7 +274,6 @@
     function addExperience() { experiences.push({title:"", company:"", period:"", desc:""}); renderExpForm(); renderPreview(); }
     function addEducation() { educations.push({degree:"", institution:"", year:"", desc:""}); renderEduForm(); renderPreview(); }
     
-    // ПРИВЯЗКА ИНПУТОВ
     function bindInputs() {
         const ids = ['fullname','phone','email','address','license','website','hideWebsite','languages','hobbies','stageTitle','stageStart','stageEnd','stagePoste','skills'];
         ids.forEach(id => {
@@ -290,7 +283,6 @@
         });
     }
     
-    // ЗАГРУЗКА ФОТО
     document.getElementById('photoUpload').addEventListener('change', e => {
         if(e.target.files[0]) {
             const reader = new FileReader();
@@ -301,7 +293,6 @@
     document.getElementById('addExpBtn').addEventListener('click', addExperience);
     document.getElementById('addEduBtn').addEventListener('click', addEducation);
     
-    // СОХРАНЕНИЕ/ЗАГРУЗКА ПРОЕКТА
     function saveProject() {
         const projectData = {
             fullname: document.getElementById('fullname').value,
@@ -368,7 +359,6 @@
     document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
     document.getElementById('loadProjectBtn').addEventListener('click', loadProject);
     
-    // ГЕНЕРАЦИЯ PDF
     function handlePDF() {
         const action = document.getElementById('pdfActionSelect').value;
         const orientation = document.getElementById('orientationSelect').value;
@@ -383,7 +373,6 @@
     }
     document.getElementById('printPDFBtn').addEventListener('click', () => handlePDF());
     
-    // ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА
     function setLanguage(lang) {
         currentLang = lang;
         updateUILabels();
@@ -392,7 +381,6 @@
     }
     document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
     
-    // СТАРТ
     bindInputs();
     renderExpForm();
     renderEduForm();
