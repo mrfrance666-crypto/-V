@@ -100,21 +100,21 @@
     <div class="editor">
         <div class="editor-column">
             <div class="form-group"><label id="labelPhoto">📷 Photo</label><input type="file" id="photoUpload"></div>
-            <div class="form-group"><label id="labelFullname">Nom complet</label><input type="text" id="fullname" placeholder="Ex: Sophie Martin"></div>
-            <div class="form-group"><label id="labelPhone">Téléphone</label><input type="text" id="phone" placeholder="+33 6 12 34 56 78"></div>
-            <div class="form-group"><label id="labelEmail">Email</label><input type="email" id="email" placeholder="nom@exemple.com"></div>
-            <div class="form-group"><label id="labelAddress">Adresse</label><input type="text" id="address" placeholder="Paris, France"></div>
-            <div class="form-group"><label id="labelLicense">Permis</label><input type="text" id="license" placeholder="Permis B"></div>
-            <div class="form-group"><label id="labelWebsite">Site web</label><input type="text" id="website" placeholder="www.monsite.com"></div>
+            <div class="form-group"><label id="labelFullname">Nom complet</label><input type="text" id="fullname" placeholder="Ex: Sophie Martin" value=""></div>
+            <div class="form-group"><label id="labelPhone">Téléphone</label><input type="text" id="phone" placeholder="+33 6 12 34 56 78" value=""></div>
+            <div class="form-group"><label id="labelEmail">Email</label><input type="email" id="email" placeholder="nom@exemple.com" value=""></div>
+            <div class="form-group"><label id="labelAddress">Adresse</label><input type="text" id="address" placeholder="Paris, France" value=""></div>
+            <div class="form-group"><label id="labelLicense">Permis</label><input type="text" id="license" placeholder="Permis B" value=""></div>
+            <div class="form-group"><label id="labelWebsite">Site web</label><input type="text" id="website" placeholder="www.monsite.com" value=""></div>
             <div><label><input type="checkbox" id="hideWebsite"> <span id="labelHideWebsite">Masquer le site</span></label></div>
-            <div class="form-group"><label id="labelLanguages">Langues</label><input type="text" id="languages" placeholder="Anglais courant, Espagnol"></div>
-            <div class="form-group"><label id="labelHobbies">Loisirs</label><input type="text" id="hobbies" placeholder="Sport, voyage"></div>
+            <div class="form-group"><label id="labelLanguages">Langues</label><input type="text" id="languages" placeholder="Anglais courant, Espagnol" value=""></div>
+            <div class="form-group"><label id="labelHobbies">Loisirs</label><input type="text" id="hobbies" placeholder="Sport, voyage" value=""></div>
         </div>
         <div class="editor-column">
-            <div class="form-group"><label id="labelStageTitle">Titre du stage</label><input type="text" id="stageTitle" placeholder="Recherche stage"></div>
-            <div class="form-group"><label id="labelStageStart">Date début</label><input type="text" id="stageStart" placeholder="01/06/2025"></div>
-            <div class="form-group"><label id="labelStageEnd">Date fin</label><input type="text" id="stageEnd" placeholder="31/08/2025"></div>
-            <div class="form-group"><label id="labelStagePoste">Poste recherché</label><input type="text" id="stagePoste" placeholder="Stagiaire"></div>
+            <div class="form-group"><label id="labelStageTitle">Titre du stage</label><input type="text" id="stageTitle" placeholder="Recherche stage" value=""></div>
+            <div class="form-group"><label id="labelStageStart">Date début</label><input type="text" id="stageStart" placeholder="01/06/2025" value=""></div>
+            <div class="form-group"><label id="labelStageEnd">Date fin</label><input type="text" id="stageEnd" placeholder="31/08/2025" value=""></div>
+            <div class="form-group"><label id="labelStagePoste">Poste recherché</label><input type="text" id="stagePoste" placeholder="Stagiaire" value=""></div>
             <div class="form-group"><label id="labelSkills">Compétences (virgules)</label><textarea id="skills" rows="3" placeholder="Gestion de projet, Canva, WordPress, SEO"></textarea></div>
             <div class="form-group"><label id="labelExperiences">Expériences</label></div>
             <div id="expList"></div>
@@ -127,7 +127,6 @@
     <div class="cv-scroll-wrapper"><div id="cvPreview"></div></div>
 </div>
 <script>
-    // Données initiales vides
     let experiences = [];
     let educations = [];
     let photoBase64 = "";
@@ -157,6 +156,10 @@
         document.getElementById('orientationAuto').innerText = t.orientationAuto;
         document.getElementById('labelExperiences').innerText = t.labelExperiences;
         document.getElementById('labelEducations').innerText = t.labelEducations;
+        // обновляем текст кнопок, которые не имеют id, но используют spans
+        document.getElementById('saveBtnText').innerText = t.saveBtnText;
+        document.getElementById('loadBtnText').innerText = t.loadBtnText;
+        document.getElementById('pdfBtnText').innerText = t.pdfBtnText;
     }
     
     function renderPreview() {
