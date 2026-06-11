@@ -100,22 +100,22 @@
     <div class="editor">
         <div class="editor-column">
             <div class="form-group"><label id="labelPhoto">📷 Photo</label><input type="file" id="photoUpload"></div>
-            <div class="form-group"><label id="labelFullname">Nom complet</label><input type="text" id="fullname" placeholder="Ex: Sophie Martin" value="Pavlo Pashkin"></div>
-            <div class="form-group"><label id="labelPhone">Téléphone</label><input type="text" id="phone" placeholder="+33 6 12 34 56 78" value="07 45 62 50 07"></div>
-            <div class="form-group"><label id="labelEmail">Email</label><input type="text" id="email" placeholder="nom@exemple.com" value="contact@paulmultiservice.fr"></div>
-            <div class="form-group"><label id="labelAddress">Adresse</label><input type="text" id="address" placeholder="Paris, France" value="Rennes, France"></div>
-            <div class="form-group"><label id="labelLicense">Permis</label><input type="text" id="license" placeholder="Permis B" value="Permis B, Véhicule"></div>
-            <div class="form-group"><label id="labelWebsite">Site web</label><input type="text" id="website" placeholder="www.monsite.com" value="paulmultiservice.fr"></div>
+            <div class="form-group"><label id="labelFullname">Nom complet</label><input type="text" id="fullname" placeholder="Ex: Sophie Martin"></div>
+            <div class="form-group"><label id="labelPhone">Téléphone</label><input type="text" id="phone" placeholder="+33 6 12 34 56 78"></div>
+            <div class="form-group"><label id="labelEmail">Email</label><input type="email" id="email" placeholder="nom@exemple.com"></div>
+            <div class="form-group"><label id="labelAddress">Adresse</label><input type="text" id="address" placeholder="Paris, France"></div>
+            <div class="form-group"><label id="labelLicense">Permis</label><input type="text" id="license" placeholder="Permis B"></div>
+            <div class="form-group"><label id="labelWebsite">Site web</label><input type="text" id="website" placeholder="www.monsite.com"></div>
             <div><label><input type="checkbox" id="hideWebsite"> <span id="labelHideWebsite">Masquer le site</span></label></div>
-            <div class="form-group"><label id="labelLanguages">Langues</label><input type="text" id="languages" placeholder="Anglais courant, Espagnol" value="Ukrainien (maternel), Russe (bilingue), Français (A2-B1)"></div>
-            <div class="form-group"><label id="labelHobbies">Loisirs</label><input type="text" id="hobbies" placeholder="Sport, voyage" value="Football, Boxe, Nouvelles technologies"></div>
+            <div class="form-group"><label id="labelLanguages">Langues</label><input type="text" id="languages" placeholder="Anglais courant, Espagnol"></div>
+            <div class="form-group"><label id="labelHobbies">Loisirs</label><input type="text" id="hobbies" placeholder="Sport, voyage"></div>
         </div>
         <div class="editor-column">
-            <div class="form-group"><label id="labelStageTitle">Titre du stage</label><input type="text" id="stageTitle" placeholder="Recherche stage" value="Recherche un stage"></div>
-            <div class="form-group"><label id="labelStageStart">Date début</label><input type="text" id="stageStart" placeholder="01/06/2025" value="29/06/2026"></div>
-            <div class="form-group"><label id="labelStageEnd">Date fin</label><input type="text" id="stageEnd" placeholder="31/08/2025" value="17/07/2026"></div>
-            <div class="form-group"><label id="labelStagePoste">Poste recherché</label><input type="text" id="stagePoste" placeholder="Stagiaire" value="Stagiaire CLPS"></div>
-            <div class="form-group"><label id="labelSkills">Compétences (virgules)</label><textarea id="skills" rows="3" placeholder="Compétence 1, Compétence 2">Petit bricolage, Maintenance technique, Conseil informatique, Assistance technique, Gestion des flux logistiques, Développement Web (HTML/JS), Pack Office, Management d'équipe, Gestion de crise, Planification opérationnelle, Gestion des risques</textarea></div>
+            <div class="form-group"><label id="labelStageTitle">Titre du stage</label><input type="text" id="stageTitle" placeholder="Recherche stage"></div>
+            <div class="form-group"><label id="labelStageStart">Date début</label><input type="text" id="stageStart" placeholder="01/06/2025"></div>
+            <div class="form-group"><label id="labelStageEnd">Date fin</label><input type="text" id="stageEnd" placeholder="31/08/2025"></div>
+            <div class="form-group"><label id="labelStagePoste">Poste recherché</label><input type="text" id="stagePoste" placeholder="Stagiaire"></div>
+            <div class="form-group"><label id="labelSkills">Compétences (virgules)</label><textarea id="skills" rows="3" placeholder="Gestion de projet, Canva, WordPress, SEO"></textarea></div>
             <div class="form-group"><label id="labelExperiences">Expériences</label></div>
             <div id="expList"></div>
             <button class="btn-add" id="addExpBtn"><span id="addExpText">+ Ajouter expérience</span></button>
@@ -127,17 +127,9 @@
     <div class="cv-scroll-wrapper"><div id="cvPreview"></div></div>
 </div>
 <script>
-    let experiences = [
-        { title: "Chef d'Entreprise - PaulMultiService", company: "Rennes", period: "02/2026 - En cours", desc: "Conseil informatique, assistance technique, petit bricolage. Développement du site paulmultiservice.fr. Gestion administrative, comptabilité, relation client." },
-        { title: "Officier Logisticien - Chef de Bureau des Transports", company: "Forces Armées de l'Ukraine", period: "2023-2024", desc: "Commandement et acheminement de convois militaires en zones de combat. Gestion tactique des transports sous haute pression." },
-        { title: "Élève-Officier / Chef de Groupe", company: "Académie Militaire / Forces Armées", period: "2019-2023", desc: "Instruction militaire intensive : tactique, secourisme de combat, NRBC et déminage." },
-        { title: "Militaire de Carrière — Compagnie de Protection", company: "Forces Armées de l'Ukraine", period: "2018-2019", desc: "Opérations tactiques d'infanterie et missions de combat. Titulaire du statut d'ancien combattant." }
-    ];
-    let educations = [
-        { degree: "Formation Prépa Avenir FLE", institution: "CLPS Rennes", year: "2026 (En cours)", desc: "Formation d'orientation professionnelle + cours de français" },
-        { degree: "Licence (Bac+3) - Technologies de Transport", institution: "Université d'État des Sciences et Technologies d'Ukraine", year: "2023 (Mention / Diplôme Rouge)", desc: "" },
-        { degree: "Diplôme Professionnel - Opérateur Informatique & Comptabilité", institution: "Collège Professionnel de l'Université Nationale de l'Aviation", year: "2016", desc: "" }
-    ];
+    // Données initiales vides
+    let experiences = [];
+    let educations = [];
     let photoBase64 = "";
     let currentLang = "fr";
     
